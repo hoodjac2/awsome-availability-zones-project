@@ -1,8 +1,15 @@
-<div class="toolbar" role="banner">
-  <span
-    width="40" style="padding-left: 25px;">PIN ROUGH DRAFT</span>
-    <span style="padding-left: 25px;">Lowest Latency</span>
-</div>
-<div style="padding-top: 50px;">
-  <img src="/assets/mockup.png" alt="mockup" style="height: 100%; width: 100%; position: fixed; left: 0;">
-</div>
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <h1>Latency Pin</h1>
+    <span class="menu-spacer"></span>
+    <div>
+      <a mat-button routerLink='/list-view' routerLinkActive="active" style="color: white;">List View</a>
+      <a mat-button routerLink='/upload-csv' routerLinkActive="active" style="color: white;">Upload CSV (DEV USE ONLY)</a>
+    </div>
+  </mat-toolbar-row>
+  <mat-toolbar-row>
+      <span style="font-size: 12px;">Pin is designed to help with determining latency with AWS services.</span>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<router-outlet></router-outlet>
