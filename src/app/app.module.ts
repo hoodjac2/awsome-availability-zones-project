@@ -8,9 +8,11 @@ import { NotFoundPageComponent } from './not-found-page/not-found-page.component
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from  '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button'
+import {MatTableModule} from '@angular/material/table'
 @NgModule({
   declarations: [
     AppComponent,
+    UploadCsvComponent,
     NotFoundPageComponent
   ],
   imports: [
@@ -23,7 +25,8 @@ import {MatButtonModule} from '@angular/material/button'
     ]),
     BrowserAnimationsModule,
     MatToolbarModule,
-    MatButtonModule
+    MatButtonModule,
+    MatTableModule
   ],
   providers: [],
   bootstrap: [AppComponent]
