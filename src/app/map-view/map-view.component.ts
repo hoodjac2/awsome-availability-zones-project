@@ -5,15 +5,6 @@ import { Component, OnInit } from "@angular/core";
   templateUrl: './map-view.component.html',
   styleUrls: ['./map-view.component.css']
 })
-export class MapViewComponent implements OnInit{
+export class MapViewComponent{
     title = 'capstone-test';
-    ImagePath: string;
-  
-    constructor() {
-        //image location
-        this.ImagePath = '/assets/mockup.jpg'
-    }
-  
-    ngOnInit() {
-    }
 }
