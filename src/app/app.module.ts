@@ -21,10 +21,10 @@ import {MatTableModule} from '@angular/material/table'
     BrowserModule,
     RouterModule.forRoot([
       {path: 'upload-csv', component: UploadCsvComponent},
+      {path: 'map-view', component: MapViewComponent},
       {path: 'list-view', component: ListViewComponent},
       {path: '', redirectTo: '/list-view', pathMatch: 'full'},
-      {path: '**', component: NotFoundPageComponent},
-      {path: 'map-view', component: MapViewComponent}
+      {path: '**', component: NotFoundPageComponent}
     ]),
     BrowserAnimationsModule,
     MatToolbarModule,
