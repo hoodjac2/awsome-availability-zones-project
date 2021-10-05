@@ -1,5 +1,12 @@
 img {
-    width: 1920px;
-    height: 1080px;
-    padding: 15px;
+  width: 955px;
+  height: 480px;
+  
+}
+
+h1 {
+  padding: 50px 0px 25px;
+  text-align: center;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-size: 50px;
 }
