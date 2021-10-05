@@ -5,10 +5,10 @@ img {
 }
 .map-container {
   position: fixed;
-  top: 60px;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: 155px;
+  left: 25px;
+  right: 25px;
+  bottom: 25px;
   margin: 0px;
 }
 
