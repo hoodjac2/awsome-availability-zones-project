@@ -10,6 +10,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from  '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button'
 import {MatTableModule} from '@angular/material/table'
+import { HttpClientModule } from '@angular/common/http';
+import { HttpClientServiceComponent } from './http-client.service/http-client.service.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,7 +31,8 @@ import {MatTableModule} from '@angular/material/table'
     BrowserAnimationsModule,
     MatToolbarModule,
     MatButtonModule,
-    MatTableModule
+    MatTableModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
