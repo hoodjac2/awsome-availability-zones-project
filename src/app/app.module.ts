@@ -6,6 +6,7 @@ import { ListViewComponent } from './list-view/list-view.component';
 import { UploadCsvComponent } from './upload-csv/upload-csv.component';
 import { NotFoundPageComponent } from './not-found-page/not-found-page.component';
 import { MapViewComponent } from './map-view/map-view.component';
+import { MarkerService } from './marker.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from  '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button'
@@ -16,6 +17,7 @@ import { HttpClientServiceComponent } from './http-client.service/http-client.se
   declarations: [
     AppComponent,
     UploadCsvComponent,
+    ListViewComponent,
     NotFoundPageComponent,
     MapViewComponent
   ],
@@ -34,7 +36,9 @@ import { HttpClientServiceComponent } from './http-client.service/http-client.se
     MatTableModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    MarkerService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
