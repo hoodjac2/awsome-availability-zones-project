@@ -1,7 +1,7 @@
 .map-heading {
   text-align: center;
-  margin-top: 20px;
-  font-size: 45px;
+  margin-top: 15px;
+  font-size: 25px;
   font-family: Roboto, "Helvetica Neue", sans-serif;
   color: rgba(0, 0, 0, 0.651);
 }
@@ -13,7 +13,7 @@ img {
 }
 .map-container {
   position: fixed;
-  top: 190px;
+  top: 175px;
   left: 25px;
   right: 25px;
   bottom: 25px;

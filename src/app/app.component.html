@@ -1,15 +1,19 @@
-<mat-toolbar color = "primary">
-  <mat-toolbar-row>
+<mat-toolbar>
+  <mat-toolbar-row style="color:black;background-color:#ffb100e6;">
     <h1>Latency Pin</h1>
     <span class="menu-spacer"></span>
+    <!--
+      <mat-toolbar-row>
+      <span style="font-size: 12px;">Pin is designed to help with determining latency with AWS services.</span>
+    </mat-toolbar-row>*/
+    -->
+  </mat-toolbar-row>
+  <mat-toolbar-row style="background-color: #000000d1;">
     <div class="button">
-      <a mat-raised-button routerLink='/list-view' routerLinkActive="active" color="primary" style="color:white;margin:5px 5px 5px 15px;">List View</a>
-      <a mat-raised-button routerLink='/map-view' routerLinkActive="active" color="primary" style="color:white;margin:5px;">Map View</a>
-      <a mat-raised-button routerLink='/upload-csv' routerLinkActive="active" color="primary" style="color:white;margin:5px;">Upload CSV (DEV USE ONLY)</a>
+      <a mat-raised-button routerLink='/list-view' routerLinkActive="active" style="color:white;margin:5px 5px 5px 0px;background-color:#444444;">List View</a>
+      <a mat-raised-button routerLink='/map-view' routerLinkActive="active" color="primary" style="color:white;margin:5px;background-color:#444444">Map View</a>
+      <a mat-raised-button routerLink='/upload-csv' routerLinkActive="active" color="primary" style="color:white;margin:5px;background-color:#444444">Upload CSV (DEV USE ONLY)</a>
     </div>
   </mat-toolbar-row>
-  <mat-toolbar-row>
-      <span style="font-size: 12px;">Pin is designed to help with determining latency with AWS services.</span>
-    </mat-toolbar-row>
 </mat-toolbar>
 <router-outlet></router-outlet>
