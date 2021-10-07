@@ -1,1 +1,21 @@
-<h1>AWSome Availability Zones!</h1>
+<h1 style="padding-top: 50px;">List View</h1>
+<table mat-table [dataSource]="dataSource" class="table">
+
+  <ng-container matColumnDef="azTitle">
+    <th mat-header-cell *matHeaderCellDef> Title </th>
+    <td mat-cell *matCellDef="let element"> {{element.azTitle}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="latency">
+    <th mat-header-cell *matHeaderCellDef> Latency </th>
+    <td mat-cell *matCellDef="let element"> {{element.latency}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="date">
+    <th mat-header-cell *matHeaderCellDef> Date </th>
+    <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

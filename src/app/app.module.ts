@@ -17,6 +17,7 @@ import { HttpClientServiceComponent } from './http-client.service/http-client.se
   declarations: [
     AppComponent,
     UploadCsvComponent,
+    ListViewComponent,
     NotFoundPageComponent,
     MapViewComponent
   ],
