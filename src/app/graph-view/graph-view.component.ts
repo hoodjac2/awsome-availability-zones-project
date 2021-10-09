@@ -1,6 +1,7 @@
 import { Component, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { MOCK_DATA } from '../classes-and-interfaces/temp-mock-data';
 
 /**
  * Graph view created by Wynton using ngx-charts by Swimlane
@@ -13,9 +14,10 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
   styleUrls: ['./graph-view.component.css']
 })
 export class GraphViewComponent {
+  points: any[] = MOCK_DATA
   view: any[] = [1000, 600];
 
-  // options
+  // options/settings
   legend: boolean = true;
   showLabels: boolean = true;
   animations: boolean = true;
@@ -27,5 +29,19 @@ export class GraphViewComponent {
   yAxisLabel: string = 'Latency';
   timeline: boolean = true;
 
+  constructor() {
+    Object.assign(this, {  });
+  }
 
+  onSelect(data): void {
+    console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+  }
+
+  onActivate(data): void {
+    console.log('Activate', JSON.parse(JSON.stringify(data)));
+  }
+
+  onDeactivate(data): void {
+    console.log('Deactivate', JSON.parse(JSON.stringify(data)));
+  }
 }
