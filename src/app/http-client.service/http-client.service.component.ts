@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { Service,  DynamoDB, Config} from 'aws-sdk';
+import { DynamoDB, Config} from 'aws-sdk';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -7,10 +6,9 @@ import { Injectable } from '@angular/core';
 })
 export class HttpClientServiceComponent {
 
-  constructor() { }
-  public getFromDB(){
+  public getFromDB(): void{
 
-    var config = new Config();
+    const config = new Config();
     config.update({
       region: "us-east-2",
       endpoint: "http://localhost:8001",
@@ -22,14 +20,14 @@ export class HttpClientServiceComponent {
       secretAccessKey: "fakeSecretAccessKey"
     }, true);
 
-    var docClient = new DynamoDB.DocumentClient(config);
+    const docClient = new DynamoDB.DocumentClient(config);
 
-    var table = "Test";
+    const table = "Test";
 
-    var latency = 11;
-    var region = "us-east-1";
+    const latency = 11;
+    const region = "us-east-1";
 
-    var params = {
+    const params = {
         TableName: table,
         Key:{
             "Region": region,

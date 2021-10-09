@@ -21,7 +21,7 @@ export class MapViewComponent implements AfterViewInit{
         center: [37.663711, -78.723905],
         zoom: 3
       });
-      var regions = this.getRegionMarkers();
+      const regions = this.getRegionMarkers();
       regions.forEach(regionMarker => {
         regionMarker.addTo(this.map);
       });
@@ -34,7 +34,7 @@ export class MapViewComponent implements AfterViewInit{
     tiles.addTo(this.map);
     }
     private getRegionMarkers(): any[]{
-      var arrayOfRegions = [
+      const arrayOfRegions = [
         //Virginia
         L.circle([38.262715, -78.205075], {
           color: 'orange',
