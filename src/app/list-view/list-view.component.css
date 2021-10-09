@@ -1,10 +1,9 @@
 h1 {
-  padding-top: 28px;
+  padding-top: 15px;
   text-align: center;
 }
 table {
-  margin-left: 10px;
-  width: 100%;
+  width: 250%;
 }
 
 .checkbox-section {
@@ -20,7 +19,20 @@ ul {
   margin-top: 4px;
 }
 
-span.card-section {
+span.checkbox-card {
+  margin: 0px;
+  vertical-align: middle;
   display: inline-block;
-  margin: 0 auto;
 }
+
+span.table-card {
+  margin: 0px;
+  vertical-align: middle;
+  display: inline-block;
+  margin-left: 115px;
+}
+
+div.main-section {
+  margin-top: 40px;
+}
+

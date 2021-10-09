@@ -1,24 +1,54 @@
-<h1>List View</h1>
-<div>
-  <span class="card-section">
-    <section class="checkbox-section">
-      <mat-checkbox class="checkbox-margin">Check me!</mat-checkbox>
-      <mat-checkbox class="checkbox-margin" [disabled]="true">Disabled</mat-checkbox>
-    </section>
-
-    <section class="checkbox-section">
-      <span class="checkbox-list-section">
-        <mat-checkbox class="checkbox-margin"
-                      [checked]="allComplete"
-                      [color]="task.color"
-                      [indeterminate]="someComplete()"
-                      (change)="setAll($event.checked)">
-          {{task.name}}
-        </mat-checkbox>
-      </span>
-    </section>
+<div class= "main-section">
+  <span class="checkbox-card">
+    <mat-card style="background-color: #062f5e;">
+    <mat-card>
+      <section class="checkbox-section">
+        <mat-checkbox class="checkbox-margin">us-east-1</mat-checkbox>
+        <mat-checkbox class="checkbox-margin">us-east-2</mat-checkbox>
+      </section>
+      <section class="checkbox-section">
+        <mat-checkbox class="checkbox-margin">us-west-1</mat-checkbox>
+        <mat-checkbox class="checkbox-margin">us-west-2</mat-checkbox>
+      </section>
+      <section class="checkbox-section">
+        <mat-checkbox class="checkbox-margin">af-south-1</mat-checkbox>
+        <mat-checkbox class="checkbox-margin">ap-east-1</mat-checkbox>
+      </section>
+      <section class="checkbox-section">
+        <mat-checkbox class="checkbox-margin">ap-south-1</mat-checkbox>
+        <mat-checkbox class="checkbox-margin">ap-northeast-3</mat-checkbox>
+      </section>
+      <section class="checkbox-section">
+        <mat-checkbox class="checkbox-margin">ap-northeast-2</mat-checkbox>
+        <mat-checkbox class="checkbox-margin">ap-southeast-2</mat-checkbox>
+      </section>
+      <section class="checkbox-section">
+        <mat-checkbox class="checkbox-margin">ap-southeast-1</mat-checkbox>
+        <mat-checkbox class="checkbox-margin">ap-northeast-1</mat-checkbox>
+      </section>
+      <section class="checkbox-section">
+        <mat-checkbox class="checkbox-margin">ca-central-1</mat-checkbox>
+      </section>
+      <section class="checkbox-section">
+        <mat-checkbox class="checkbox-margin">eu-central-1</mat-checkbox>
+        <mat-checkbox class="checkbox-margin">eu-west-1</mat-checkbox>
+      </section>
+          <section class="checkbox-section">
+        <mat-checkbox class="checkbox-margin">eu-west-2</mat-checkbox>
+        <mat-checkbox class="checkbox-margin">eu-south-1</mat-checkbox>
+      </section>
+      <section class="checkbox-section">
+        <mat-checkbox class="checkbox-margin">eu-west-3</mat-checkbox>
+        <mat-checkbox class="checkbox-margin">eu-north-1</mat-checkbox>
+      </section>
+      <section class="checkbox-section">
+        <mat-checkbox class="checkbox-margin">me-south-1</mat-checkbox>
+        <mat-checkbox class="checkbox-margin">sa-east-1</mat-checkbox>
+      </section>
+      </mat-card>
+    </mat-card>
   </span>
-  <span class="card-section">
+  <span class="table-card">
     <table mat-table [dataSource]="dataSource" class="table">
 
       <ng-container matColumnDef="azTitle">
