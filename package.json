@@ -19,6 +19,7 @@
     "@angular/platform-browser": "^12.2.9",
     "@angular/platform-browser-dynamic": "^12.2.9",
     "@angular/router": "^12.2.9",
+    "@swimlane/ngx-charts": "^19.1.0",
     "ajv": "^8.6.3",
     "aws-sdk": "^2.1004.0",
     "leaflet": "^1.7.1",
