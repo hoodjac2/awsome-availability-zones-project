@@ -1,25 +1,12 @@
-.map-heading {
-  text-align: center;
-  margin-top: 15px;
-  font-size: 25px;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-  color: rgba(0, 0, 0, 0.651);
-}
-
-img {
-  width: 1920px;
-  height: 1080px;
-  padding: 15px;
-}
 .map-container {
-  position: fixed;
-  height: 100%;
+  position: relative;
+  height: 99.5%;
   width: 100%;
   margin: 0px;
 }
 
 .map-frame {
-  border: 2px solid black;
+  border: 1px solid black;
   height: 100%;
 }
 
@@ -27,3 +14,39 @@ img {
   height: 100%;
 }
 
+.example-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.side-bar {
+  width: 25%;
+  background: grey;
+  color: white;
+}
+
+mat-sidenav {
+  width: 300px;
+  border-right: none;
+  background: #062f5e;
+  color: white;
+  text-align: start;
+}
+
+
+mat-sidenav-container {
+  height: 100vh;
+}
+
+.fields{
+  padding-left: 10px;
+  padding-top: 10%;
+  width: 90%;
+}
+
+mat-divider {
+  border-top-color: white;
+  width: 100%;
+}

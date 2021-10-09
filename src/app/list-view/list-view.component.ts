@@ -1,4 +1,4 @@
-import { Component, NgModule, OnInit } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { HttpClientServiceComponent } from "../http-client.service/http-client.service.component";
 import { ListViewModel } from "../classes-and-interfaces/listview.model";
 import {MOCK_DATA} from "../classes-and-interfaces/temp-mock-data";
@@ -24,7 +24,7 @@ export class ListViewComponent implements OnInit{
 
   constructor(private _service: HttpClientServiceComponent){}
 
-  ngOnInit(){
+  ngOnInit(): void{
     this._service.getFromDB();
   }
 
@@ -40,9 +40,9 @@ export class ListViewComponent implements OnInit{
     ]
   };
 
-  allComplete: boolean = false;
+  allComplete = false;
 
-  updateAllComplete() {
+  updateAllComplete(): void {
     this.allComplete = this.task.subtasks != null && this.task.subtasks.every(t => t.completed);
   }
 
@@ -53,7 +53,7 @@ export class ListViewComponent implements OnInit{
     return this.task.subtasks.filter(t => t.completed).length > 0 && !this.allComplete;
   }
 
-  setAll(completed: boolean) {
+  setAll(completed: boolean): void {
     this.allComplete = completed;
     if (this.task.subtasks == null) {
       return;
