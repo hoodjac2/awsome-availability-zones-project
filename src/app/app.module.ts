@@ -18,6 +18,8 @@ import {MatInputModule} from '@angular/material/input';
 import {MatDividerModule} from '@angular/material/divider';
 import { MatIconModule} from '@angular/material/icon'
 import {MatCardModule} from '@angular/material/card';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { GraphViewComponent } from './graph-view/graph-view.component';
 @NgModule({
   imports: [
     BrowserModule,
@@ -38,13 +40,15 @@ import {MatCardModule} from '@angular/material/card';
     MatInputModule,
     MatDividerModule,
     MatIconModule,
-    MatCardModule
+    MatCardModule,
+    NgxChartsModule
   ],
   declarations: [
     AppComponent,
     ListViewComponent,
     NotFoundPageComponent,
-    MapViewComponent
+    MapViewComponent,
+    GraphViewComponent
   ],
   providers: [
     MarkerService

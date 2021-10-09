@@ -14,7 +14,34 @@ import { MOCK_DATA } from '../classes-and-interfaces/temp-mock-data';
   styleUrls: ['./graph-view.component.css']
 })
 export class GraphViewComponent {
-  view: any[] = [1000, 600];
+  // buncha testing data
+  points = [
+    {
+      "name": "US-East-1a",
+      series: [
+        {
+          "name": 10/6/21,
+          "value": 40632,
+        },
+        {
+          "name": 10/7/21,
+          "value": 50000,
+        },
+        {
+          "name": 10/8/21,
+          "value": 30000,
+        },
+        {
+          "name": 10/9/21,
+          "value": 40000,
+        },
+        {
+          "name": 10/10/21,
+          "value": 35000,
+        },
+      ]
+    },
+  ]
 
   // options/settings
   legend = true;
@@ -28,9 +55,9 @@ export class GraphViewComponent {
   yAxisLabel = 'Latency';
   timeline = true;
 
-  constructor() {
-    Object.assign(this, { MOCK_DATA });
-  }
+  // constructor() {
+  //   Object.assign(this, { points });
+  // }
 
   // in theory this stuff is to let you do mouseovers of the data
   // onSelect(data): void {

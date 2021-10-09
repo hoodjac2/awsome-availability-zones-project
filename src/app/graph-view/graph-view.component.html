@@ -1,6 +1,5 @@
 <!ngx-charts-line-chart
-  [view]="view"
-  [scheme]="colorScheme"
+  [view] = "[700, 300]"
   [legend]="legend"
   [showXAxisLabel]="showXAxisLabel"
   [showYAxisLabel]="showYAxisLabel"
@@ -9,9 +8,9 @@
   [xAxisLabel]="xAxisLabel"
   [yAxisLabel]="yAxisLabel"
   [timeline]="timeline"
-  [results]="multi"
-  (select)="onSelect($event)"
-  (activate)="onActivate($event)"
-  (deactivate)="onDeactivate($event)"
+  [results]="points"
   >
 <!/ngx-charts-line-chart>
+<!-- (select)="onSelect($event)"
+  (activate)="onActivate($event)"
+  (deactivate)="onDeactivate($event)" -->
