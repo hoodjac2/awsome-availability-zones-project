@@ -11,7 +11,7 @@ table {
 }
 
 .checkbox-margin {
-  margin: 0 12px;
+  width: 50%
 }
 
 ul {
@@ -31,6 +31,8 @@ span.table-card {
   display: inline-block;
   margin-left: 115px;
 }
+
+
 
 div.main-section {
   margin-top: 40px;
