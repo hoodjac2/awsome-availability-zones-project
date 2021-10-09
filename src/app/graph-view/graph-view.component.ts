@@ -21,29 +21,30 @@ export class GraphViewComponent {
       series: [
         {
           "name": "10/6/21",
-          "value": 40632,
+          "value": 406,
         },
         {
           "name": "10/7/21",
-          "value": 50000,
+          "value": 500,
         },
         {
           "name": "10/8/21",
-          "value": 30000,
+          "value": 300,
         },
         {
           "name": "10/9/21",
-          "value": 40000,
+          "value": 400,
         },
         {
           "name": "10/10/21",
-          "value": 35000,
+          "value": 350,
         },
       ]
     },
   ]
 
   // options/settings
+  // there's no title setting on this so we gotta DIY
   legend = true;
   showLabels = true;
   animations = true;
@@ -52,7 +53,7 @@ export class GraphViewComponent {
   showYAxisLabel = true;
   showXAxisLabel = true;
   xAxisLabel = 'Date';
-  yAxisLabel = 'Latency';
+  yAxisLabel = 'Latency (ms)';
   timeline = true;
 
   // constructor() {
