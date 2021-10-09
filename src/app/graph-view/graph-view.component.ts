@@ -15,5 +15,17 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 export class GraphViewComponent {
   view: any[] = [1000, 600];
 
+  // options
+  legend: boolean = true;
+  showLabels: boolean = true;
+  animations: boolean = true;
+  xAxis: boolean = true;
+  yAxis: boolean = true;
+  showYAxisLabel: boolean = true;
+  showXAxisLabel: boolean = true;
+  xAxisLabel: string = 'Date';
+  yAxisLabel: string = 'Latency';
+  timeline: boolean = true;
+
 
 }
