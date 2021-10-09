@@ -20,23 +20,23 @@ export class GraphViewComponent {
       "name": "US-East-1a",
       series: [
         {
-          "name": 10/6/21,
+          "name": "10/6/21",
           "value": 40632,
         },
         {
-          "name": 10/7/21,
+          "name": "10/7/21",
           "value": 50000,
         },
         {
-          "name": 10/8/21,
+          "name": "10/8/21",
           "value": 30000,
         },
         {
-          "name": 10/9/21,
+          "name": "10/9/21",
           "value": 40000,
         },
         {
-          "name": 10/10/21,
+          "name": "10/10/21",
           "value": 35000,
         },
       ]

@@ -26,6 +26,7 @@ import { GraphViewComponent } from './graph-view/graph-view.component';
     RouterModule.forRoot([
       {path: 'map-view', component: MapViewComponent},
       {path: 'list-view', component: ListViewComponent},
+      {path: 'graph-view', component: GraphViewComponent},
       {path: '', redirectTo: '/map-view', pathMatch: 'full'},
       {path: '**', component: NotFoundPageComponent}
     ]),
