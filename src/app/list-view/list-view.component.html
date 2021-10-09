@@ -1,21 +1,43 @@
-<h1 style="padding-top: 50px;">List View</h1>
-<table mat-table [dataSource]="dataSource" class="table">
+<h1>List View</h1>
+<div>
+  <span class="card-section">
+    <section class="checkbox-section">
+      <mat-checkbox class="checkbox-margin">Check me!</mat-checkbox>
+      <mat-checkbox class="checkbox-margin" [disabled]="true">Disabled</mat-checkbox>
+    </section>
 
-  <ng-container matColumnDef="azTitle">
-    <th mat-header-cell *matHeaderCellDef> Title </th>
-    <td mat-cell *matCellDef="let element"> {{element.azTitle}} </td>
-  </ng-container>
+    <section class="checkbox-section">
+      <span class="checkbox-list-section">
+        <mat-checkbox class="checkbox-margin"
+                      [checked]="allComplete"
+                      [color]="task.color"
+                      [indeterminate]="someComplete()"
+                      (change)="setAll($event.checked)">
+          {{task.name}}
+        </mat-checkbox>
+      </span>
+    </section>
+  </span>
+  <span class="card-section">
+    <table mat-table [dataSource]="dataSource" class="table">
 
-  <ng-container matColumnDef="latency">
-    <th mat-header-cell *matHeaderCellDef> Latency </th>
-    <td mat-cell *matCellDef="let element"> {{element.latency}} </td>
-  </ng-container>
+      <ng-container matColumnDef="azTitle">
+        <th mat-header-cell *matHeaderCellDef> Title </th>
+        <td mat-cell *matCellDef="let element"> {{element.azTitle}} </td>
+      </ng-container>
 
-  <ng-container matColumnDef="date">
-    <th mat-header-cell *matHeaderCellDef> Date </th>
-    <td mat-cell *matCellDef="let element"> {{element.date}} </td>
-  </ng-container>
+      <ng-container matColumnDef="latency">
+        <th mat-header-cell *matHeaderCellDef> Latency </th>
+        <td mat-cell *matCellDef="let element"> {{element.latency}} </td>
+      </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef> Date </th>
+        <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </span>
+</div>

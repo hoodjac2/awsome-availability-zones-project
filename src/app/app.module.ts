@@ -11,6 +11,8 @@ import { MatToolbarModule } from  '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button'
 import {MatTableModule} from '@angular/material/table'
 import { HttpClientModule } from '@angular/common/http';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -24,7 +26,8 @@ import { HttpClientModule } from '@angular/common/http';
     MatToolbarModule,
     MatButtonModule,
     MatTableModule,
-    HttpClientModule
+    HttpClientModule,
+    MatCheckboxModule
   ],
   declarations: [
     AppComponent,
