@@ -14,23 +14,22 @@ import { MOCK_DATA } from '../classes-and-interfaces/temp-mock-data';
   styleUrls: ['./graph-view.component.css']
 })
 export class GraphViewComponent {
-  points: any[] = MOCK_DATA
   view: any[] = [1000, 600];
 
   // options/settings
-  legend: boolean = true;
-  showLabels: boolean = true;
-  animations: boolean = true;
-  xAxis: boolean = true;
-  yAxis: boolean = true;
-  showYAxisLabel: boolean = true;
-  showXAxisLabel: boolean = true;
-  xAxisLabel: string = 'Date';
-  yAxisLabel: string = 'Latency';
-  timeline: boolean = true;
+  legend = true;
+  showLabels = true;
+  animations = true;
+  xAxis = true;
+  yAxis = true;
+  showYAxisLabel = true;
+  showXAxisLabel = true;
+  xAxisLabel = 'Date';
+  yAxisLabel = 'Latency';
+  timeline = true;
 
   constructor() {
-    Object.assign(this, {  });
+    Object.assign(this, { MOCK_DATA });
   }
 
   onSelect(data): void {
