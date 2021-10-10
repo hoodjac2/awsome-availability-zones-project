@@ -40,6 +40,14 @@ export class GraphViewComponent {
           "name": "10/10/21",
           "value": 350,
         },
+        {
+          "name": "10/11/21",
+          "value": 150,
+        },
+        {
+          "name": "10/12/21",
+          "value": 233,
+        },
       ]
     },
   ]
@@ -47,6 +55,7 @@ export class GraphViewComponent {
   // options/settings
   // there's no title setting on this so we gotta DIY
   legend = true;
+  legendTitle = "Availability Zones"
   showLabels = true;
   animations = true;
   xAxis = true;
