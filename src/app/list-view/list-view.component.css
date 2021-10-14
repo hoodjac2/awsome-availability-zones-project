@@ -1,5 +1,25 @@
-h1 {
-  padding-top: 15px;
+.table-container {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.drawer-container {
+  height: 100%;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10%;
+}
+
+
+
+h2 {
+  color: white;
+  padding: 15px;
   text-align: center;
 }
 table {
@@ -29,12 +49,30 @@ span.table-card {
   margin: 0px;
   vertical-align: middle;
   display: inline-block;
-  margin-left: 115px;
 }
 
-
-
-div.main-section {
-  margin-top: 40px;
+mat-sidenav {
+  width: 300px;
+  border-right: none;
+  background: #062f5e;
+  color: white;
+  text-align: start;
 }
 
+mat-sidenav-container {
+  height: 100vh;
+}
+
+.drawer-container {
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+mat-card {
+  padding: 13px;
+  margin: 10px;
+}
+
+mat-divider {
+  border-top-color: white;
+  width: 100%;
+}
