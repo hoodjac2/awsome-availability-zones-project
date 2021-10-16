@@ -48,24 +48,36 @@
       </section>
     </mat-card>
     <div class="button-container">
-      <button mat-raised-button color="warn">FILTER</button>
+      <button mat-raised-button color="warn" (click)="bttnClick()">FILTER</button>
     </div>
   </mat-sidenav>
 
   <div class="table-container">
     <span class="table-card">
       <table mat-table [dataSource]="dataSource" class="table">
-        <ng-container matColumnDef="azTitle">
-          <th mat-header-cell *matHeaderCellDef> Title </th>
-          <td mat-cell *matCellDef="let element"> {{element.azTitle}} </td>
+        <ng-container matColumnDef="sourceAZ">
+          <th mat-header-cell *matHeaderCellDef> Source AZ </th>
+          <td mat-cell *matCellDef="let element"> {{element.sourceAZ}} </td>
         </ng-container>
-        <ng-container matColumnDef="latency">
-          <th mat-header-cell *matHeaderCellDef> Latency </th>
-          <td mat-cell *matCellDef="let element"> {{element.latency}} </td>
+        <ng-container matColumnDef="destinationAZ">
+          <th mat-header-cell *matHeaderCellDef> Destination AZ </th>
+          <td mat-cell *matCellDef="let element"> {{element.destinationAZ}} </td>
         </ng-container>
-        <ng-container matColumnDef="date">
-          <th mat-header-cell *matHeaderCellDef> Date </th>
-          <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+        <ng-container matColumnDef="rtt">
+          <th mat-header-cell *matHeaderCellDef> RTT </th>
+          <td mat-cell *matCellDef="let element"> {{element.rtt}} </td>
+        </ng-container>
+        <ng-container matColumnDef="unixTimestamp">
+          <th mat-header-cell *matHeaderCellDef> Unix Timestamp </th>
+          <td mat-cell *matCellDef="let element"> {{element.unixTimestamp}} </td>
+        </ng-container>
+        <ng-container matColumnDef="handshakeTime">
+          <th mat-header-cell *matHeaderCellDef> Handshake Time </th>
+          <td mat-cell *matCellDef="let element"> {{element.handshakeTime}} </td>
+        </ng-container>
+        <ng-container matColumnDef="resolveTime">
+          <th mat-header-cell *matHeaderCellDef> Resolve Time </th>
+          <td mat-cell *matCellDef="let element"> {{element.resolveTime}} </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>

@@ -10,7 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule } from  '@angular/material/toolbar';
 import {MatButtonModule} from '@angular/material/button';
 import {MatTableModule} from '@angular/material/table';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientJsonpModule, HttpClientModule } from '@angular/common/http';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import {MatSidenavModule} from '@angular/material/sidenav';
@@ -34,8 +34,10 @@ import { GraphViewComponent } from './graph-view/graph-view.component';
     ]),
     BrowserAnimationsModule,
     MatToolbarModule,
+    HttpClientModule,
     MatButtonModule,
     MatTableModule,
+    HttpClientJsonpModule,
     HttpClientModule,
     MatCheckboxModule,
     MatSidenavModule,

@@ -3,6 +3,7 @@ import { HttpClientServiceComponent } from "../http-client.service/http-client.s
 import { ListViewModel } from "../classes-and-interfaces/listview.model";
 import {MOCK_DATA} from "../classes-and-interfaces/temp-mock-data";
 import {ThemePalette} from '@angular/material/core';
+import { AZData } from "../classes-and-interfaces/az.model";
 
 export interface Task {
   name: string;
@@ -19,15 +20,22 @@ export interface Task {
 
 export class ListViewComponent implements OnInit{
   title = 'capstone-test';
-  displayedColumns: string[] = ['azTitle', 'latency', 'date'];
-  dataSource :ListViewModel[] = MOCK_DATA;
+  displayedColumns: string[] = ['sourceAZ', 'destinationAZ', 'rtt', 'unixTimestamp', 'handshakeTime', 'resolveTime'];
+  dataSource :AZData[] = [];
 
   constructor(private _service: HttpClientServiceComponent){}
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   ngOnInit(): void{
-    this._service.getFromDB();
+
   }
 
+
+  bttnClick():void{
+    const result = this._service.getFromDB('use2-az2');
+    this.dataSource = result;
+    console.log(result);
+  }
   //Checkbox
   task: Task = {
     name: 'Indeterminate',
