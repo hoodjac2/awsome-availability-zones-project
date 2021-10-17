@@ -17,39 +17,19 @@ import { MOCK_DATA } from '../classes-and-interfaces/temp-mock-data';
 export class GraphViewComponent {
   // buncha testing data
   points = [
+
     {
-      "name": "US-East-1a",
-      series: [
-        {
-          "name": "10/6/21",
-          "value": 406,
-        },
-        {
-          "name": "10/7/21",
-          "value": 500,
-        },
-        {
-          "name": "10/8/21",
-          "value": 300,
-        },
-        {
-          "name": "10/9/21",
-          "value": 400,
-        },
-        {
-          "name": "10/10/21",
-          "value": 350,
-        },
-        {
-          "name": "10/11/21",
-          "value": 150,
-        },
-        {
-          "name": "10/12/21",
-          "value": 233,
-        },
-      ]
+      "name": "Germany",
+      "value": 8940000
     },
+    {
+      "name": "USA",
+      "value": 5000000
+    },
+    {
+      "name": "France",
+      "value": 7200000
+    }
   ]
 
   // options/settings
@@ -62,9 +42,12 @@ export class GraphViewComponent {
   yAxis = true;
   showYAxisLabel = true;
   showXAxisLabel = true;
-  xAxisLabel = 'Date';
-  yAxisLabel = 'Latency (ms)';
-  timeline = true;
+  xAxisLabel = 'Latency (ms)';
+  yAxisLabel = 'Frequency (percentage)';
+  colorScheme = {
+    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+  };
+
 
   // constructor() {
   //   Object.assign(this, { points });

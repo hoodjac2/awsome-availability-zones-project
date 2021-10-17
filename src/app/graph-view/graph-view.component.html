@@ -4,8 +4,7 @@
   </header>
   <div class="graph-container">
     <div class="graph">
-      <ngx-charts-line-chart
-
+      <ngx-charts-bar-vertical
         [legend]="legend"
         [legendTitle]="legendTitle"
         [showXAxisLabel]="showXAxisLabel"
@@ -14,10 +13,9 @@
         [yAxis]="yAxis"
         [xAxisLabel]="xAxisLabel"
         [yAxisLabel]="yAxisLabel"
-        [timeline]="timeline"
         [results]="points"
         >
-      </ngx-charts-line-chart>
+      </ngx-charts-bar-vertical>
     </div>
   </div>
   <!-- (select)="onSelect($event)"
