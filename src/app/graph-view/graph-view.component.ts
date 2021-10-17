@@ -62,17 +62,13 @@ export class GraphViewComponent implements AfterViewInit{
 
     });
 
-    //construct graphed Dataset
-    this.graphDataFormatting();
-
-
   }
 
   // buncha testing data
   points = [
     {
-      "name": "",
-      "value": 0
+      "name": "test",
+      "value": 1000
     }
   ]
 
@@ -90,11 +86,17 @@ export class GraphViewComponent implements AfterViewInit{
   xAxisLabel = 'Latency (ns)';
   yAxisLabel = 'Frequency (percentage)';
 
-  colorScheme = {
-    domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
-  };
 
-
+  onClick() {
+    // Object.assign(this, {points: [
+    //   {
+    //     "name": "test",
+    //     "value": 5000
+    //   }
+    // ]})
+    //construct graphed Dataset
+    this.graphDataFormatting();
+  }
   // constructor() {
   //   Object.assign(this, { points });
   // }
@@ -113,14 +115,13 @@ export class GraphViewComponent implements AfterViewInit{
   // }
   graphDataFormatting(): void {
     // create the buckets and total counter
-    let total = 0;
+    const total = this.dataArray.length;
     let sub9k = 0;
     let over9k = 0;
 
     this.dataArray.forEach(azRecord => {
       const time = azRecord.rtt;
       // resolve it into ms? or just lop off the ends?
-      total += 1;
       // Bucket all the timing data into tallies
       if( time > 900000){
         sub9k += 1
@@ -133,15 +134,17 @@ export class GraphViewComponent implements AfterViewInit{
 
     // convert those tallies into percentages in Points
     Object.assign(this, {points:[
-      {
-        "name": "less than 900000",
-        "value": sub9k/total
-      },
-      {
-        "name": "over 900000",
-        "value": over9k/total
+          {
+            "name": "less than 900000",
+            "value": (sub9k)
+          },
+          {
+            "name": "over 900000",
+            "value": (over9k)
+          }
+        ]
       }
-    ]})
+    )
 
   }
 
