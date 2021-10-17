@@ -110,9 +110,14 @@ export class ListViewComponent implements OnInit{
 
   //CHECKBOIX HANDLERS. THERE IS PROBABLY A BETTER WAY TO DO THIS....
   bttnUSEAST1Click(event: any):void{
-    this.filterArray.push('use2-az2');
-    this.filterGrid();
-    console.log(event);
+    if(this.filterArray.includes('use1-az2')){
+      this.filterArray.splice(this.filterArray.indexOf('use1-az2'));
+      this.filterGrid();
+    }
+    else{
+      this.filterArray.push('use1-az2');
+      this.filterGrid();
+    }
   }
   bttnUSEAST2Click(event: any):void{
     if(this.filterArray.includes('use2-az2')){
