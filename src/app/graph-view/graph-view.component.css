@@ -17,3 +17,9 @@ div.graph{
   width: 100%;
   float: left;
 }
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 10%;
+}

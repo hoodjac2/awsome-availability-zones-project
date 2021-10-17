@@ -2,9 +2,6 @@
   <header>
     <h1>Latency within the last few days</h1>
   </header>
-  <div class="button-container">
-    <button mat-raised-button color="warn" (click)="onClick()">LOAD</button>
-  </div>
   <div class="graph-container">
     <div class="graph">
       <ngx-charts-bar-vertical
@@ -19,6 +16,9 @@
         [results]="points"
         >
       </ngx-charts-bar-vertical>
+      <div class="button-container">
+        <button mat-raised-button color="primary" (click)="onClick()">SHOW LATENCIES</button>
+      </div>
     </div>
   </div>
   <!-- (select)="onSelect($event)"

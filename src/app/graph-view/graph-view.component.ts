@@ -21,7 +21,7 @@ import { HttpClientServiceComponent } from "../http-client.service/http-client.s
 })
 export class GraphViewComponent implements AfterViewInit{
 
-  dataArray: AZData[] = [];
+  dataArray: AZData[] = []; //data pulled from database
 
   constructor(private dbService: HttpClientServiceComponent){
 
@@ -67,7 +67,7 @@ export class GraphViewComponent implements AfterViewInit{
   // buncha testing data
   points = [
     {
-      "name": "test",
+      "name": " ",
       "value": 1000
     }
   ]
@@ -76,18 +76,18 @@ export class GraphViewComponent implements AfterViewInit{
   // options/settings
   // there's no title setting on this so we gotta DIY
   legend = true;
-  legendTitle = "Availability Zones"
+  legendTitle = "Legend"
   showLabels = true;
   animations = true;
   xAxis = true;
   yAxis = true;
   showYAxisLabel = true;
   showXAxisLabel = true;
-  xAxisLabel = 'Latency (ns)';
-  yAxisLabel = 'Frequency (percentage)';
+  xAxisLabel = 'Latency (ms)';
+  yAxisLabel = 'Frequency (%)';
 
 
-  onClick() {
+  onClick(): void{
     // Object.assign(this, {points: [
     //   {
     //     "name": "test",
@@ -116,21 +116,52 @@ export class GraphViewComponent implements AfterViewInit{
   graphDataFormatting(): void {
     // create the buckets and total counter
     const total = this.dataArray.length;
-    let sub9k = 0;
-    let over9k = 0;
+
+    let below900k = 0;
+    let over900k = 0;
+    let over903 = 0;
+    let over904 = 0;
+    let over910 = 0;
+    let over913 = 0;
+    let over920 = 0;
+    let over921 = 0;
+    let over922 = 0;
 
     this.dataArray.forEach(azRecord => {
       const time = azRecord.rtt;
       // resolve it into ms? or just lop off the ends?
       // Bucket all the timing data into tallies
-      if( time > 900000){
-        sub9k += 1
+      if(time < 1000000){
+        below900k += 1
       }
-      else{
-        over9k += 1
+      else if ((time >= 1000000) && (time < 90300000)){
+        over900k += 1
       }
-
+      else if ((time >= 90300000) && (time < 90400000)){
+        over903 += 1
+      }
+      else if ((time >= 90400000) && (time < 91000000)){
+        over904 += 1
+      }
+      else if ((time >= 91000000) && (time < 91300000)){
+        over910 += 1
+      }
+      else if ((time >= 91300000) && (time < 92000000)){
+        over913 += 1
+      }
+      else if ((time >= 92000000) && (time < 92100000)){
+        over920 += 1
+      }
+      else if ((time >= 92100000) && (time < 92200000)){
+        over921 += 1
+      }
+      else if (time > 92200000) {
+        over922 += 1
+      }
     });
+
+    //sub9k = sub9k/total;
+
 
     // convert those tallies into percentages in Points
     // Format:
@@ -140,17 +171,43 @@ export class GraphViewComponent implements AfterViewInit{
     // }
     Object.assign(this, {points:[
           {
-            "name": "less than 900000",
-            "value": (sub9k)
+            "name": "> 900k",
+            "value": (below900k)/total*100
           },
           {
-            "name": "over 900000",
-            "value": (over9k)
+            "name": "900k-90.2m",
+            "value": (over900k)/total*100
+          },
+          {
+            "name": "90.3m",
+            "value": (over903)/total*100
+          },
+          {
+            "name": "90.4m",
+            "value": (over904)/total*100
+          },
+          {
+            "name": "91m",
+            "value": (over910)/total*100
+          },
+          {
+            "name": "91.3m",
+            "value": (over913)/total*100
+          },
+          {
+            "name": "92m",
+            "value": (over920)/total*100
+          },
+          {
+            "name": "92.1m",
+            "value": (over921)/total*100
+          },
+          {
+            "name": "92.2m <",
+            "value": (over922)/total*100
           }
         ]
       }
     )
-
   }
-
 }
