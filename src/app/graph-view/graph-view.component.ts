@@ -21,7 +21,7 @@ import { HttpClientServiceComponent } from "../http-client.service/http-client.s
 })
 export class GraphViewComponent implements AfterViewInit{
 
-  dataArray: AZData[] = [];
+  dataArray: AZData[] = []; //data pulled from database
 
   constructor(private dbService: HttpClientServiceComponent){
 
@@ -63,7 +63,7 @@ export class GraphViewComponent implements AfterViewInit{
     });
 
     //construct graphed Dataset
-    this.graphDataFormatting();
+    this.graphDataFormatting(); // DATA FORMAT FROM DATA PULL INTO DATA FROM GRAPH
 
 
   }
@@ -144,5 +144,4 @@ export class GraphViewComponent implements AfterViewInit{
     ]})
 
   }
-
 }
