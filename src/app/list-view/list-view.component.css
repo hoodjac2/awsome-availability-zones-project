@@ -1,8 +1,7 @@
 .table-container {
   display: flex;
   height: 100%;
-  align-items: center;
-  justify-content: center;
+  padding-left: 300px;
 }
 
 .drawer-container {
