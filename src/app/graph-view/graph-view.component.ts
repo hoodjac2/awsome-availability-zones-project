@@ -3,6 +3,8 @@
 import { Component, AfterViewInit } from "@angular/core";
 import { BrowserModule } from '@angular/platform-browser';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { Subject } from "rxjs";
+import { PassThrough } from "stream";
 import { AZDataResponse, JsonObj, AZData } from "../classes-and-interfaces/az.model";
 import { MOCK_DATA } from '../classes-and-interfaces/temp-mock-data';
 import { HttpClientServiceComponent } from "../http-client.service/http-client.service.component";
@@ -63,24 +65,17 @@ export class GraphViewComponent implements AfterViewInit{
     //construct graphed Dataset
     this.graphDataFormatting();
 
+
   }
 
   // buncha testing data
   points = [
-
     {
-      "name": "Germany",
-      "value": 8940000
-    },
-    {
-      "name": "USA",
-      "value": 5000000
-    },
-    {
-      "name": "France",
-      "value": 7200000
+      "name": "",
+      "value": 0
     }
   ]
+
 
   // options/settings
   // there's no title setting on this so we gotta DIY
@@ -94,6 +89,7 @@ export class GraphViewComponent implements AfterViewInit{
   showXAxisLabel = true;
   xAxisLabel = 'Latency (ns)';
   yAxisLabel = 'Frequency (percentage)';
+
   colorScheme = {
     domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
   };
@@ -116,41 +112,36 @@ export class GraphViewComponent implements AfterViewInit{
   //   console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   // }
   graphDataFormatting(): void {
-    // create the buckets
+    // create the buckets and total counter
+    let total = 0;
+    let sub9k = 0;
+    let over9k = 0;
+
     this.dataArray.forEach(azRecord => {
       const time = azRecord.rtt;
       // resolve it into ms? or just lop off the ends?
-
+      total += 1;
       // Bucket all the timing data into tallies
-      switch(time){
-        case 0:
-          break;
-        case 1:
-          break;
-        case 2:
-          break;
-        case 3:
-          break;
-        case 4:
-          break;
-        case 5:
-          break;
-        case 6:
-          break;
-        case 7:
-          break;
-        case 8:
-          break;
-        case 9:
-          break;
-        case 10:
-          break;
-
+      if( time > 900000){
+        sub9k += 1
+      }
+      else{
+        over9k += 1
       }
 
     });
 
     // convert those tallies into percentages in Points
+    Object.assign(this, {points:[
+      {
+        "name": "less than 900000",
+        "value": sub9k/total
+      },
+      {
+        "name": "over 900000",
+        "value": over9k/total
+      }
+    ]})
 
   }
 
