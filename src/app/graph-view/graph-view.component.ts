@@ -133,6 +133,11 @@ export class GraphViewComponent implements AfterViewInit{
     });
 
     // convert those tallies into percentages in Points
+    // Format:
+    // {
+    //   "name": "name the column here"
+    //   "value": the data point here
+    // }
     Object.assign(this, {points:[
           {
             "name": "less than 900000",
