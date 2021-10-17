@@ -3,18 +3,20 @@
     <h2 style="color: white; padding: 10px;">Region Selction Panel</h2>
     <mat-divider></mat-divider>
     <mat-form-field appearance="fill" class="fields">
-        <mat-label style="color: white;">Select the sending AZ Region</mat-label>
+        <mat-label style="color: white;">{{this.sendingAZString}}</mat-label>
         <input matInput placeholder="Select an AZ">
         <mat-hint style="color: white;">Sending AZ</mat-hint>
     </mat-form-field>
     <mat-icon style="padding-top: 10%; padding-left: 40%;">swap_vert</mat-icon>
     <mat-form-field appearance="fill" class="fields" style="padding-bottom: 20%;">
-      <mat-label style="color: white;">Select the receiving AZ Region</mat-label>
+      <mat-label style="color: white;">{{this.receivingAZString}}</mat-label>
       <input matInput placeholder="Select a second AZ">
       <mat-hint style="color: white;">Receiving AZ</mat-hint>
     </mat-form-field>
-    <h3 style="color: white; padding: 10px;">Fastest AZ pair for these regions: </h3>
-    <mat-card>US-East-1a to US-West-1a at 1.12ms</mat-card>
+    <h3 style="color: white; padding: 10px;">Fastest AZ pair for these regions:</h3>
+    <mat-card>
+        <span *ngIf="this.fastestAZRecord.sourceAZ">{{this.fastestAZRecord.sourceAZ}} to {{this.fastestAZRecord.destinationAZ}} at {{this.fastestAZRecord.rtt}}ns</span>
+    </mat-card>
     <button style="margin-left: 25%; margin-top: 15%;" mat-raised-button color="warn">More Info..</button>
   </mat-sidenav>
   <div class="map-container">

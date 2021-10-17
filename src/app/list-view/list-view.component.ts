@@ -3,7 +3,8 @@ import { HttpClientServiceComponent } from "../http-client.service/http-client.s
 import { ListViewModel } from "../classes-and-interfaces/listview.model";
 import {MOCK_DATA} from "../classes-and-interfaces/temp-mock-data";
 import {ThemePalette} from '@angular/material/core';
-import { AZData } from "../classes-and-interfaces/az.model";
+import { AZData, AZDataResponse } from "../classes-and-interfaces/az.model";
+import { deserialize } from "v8";
 
 export interface Task {
   name: string;
@@ -21,7 +22,8 @@ export interface Task {
 export class ListViewComponent implements OnInit{
   title = 'capstone-test';
   displayedColumns: string[] = ['sourceAZ', 'destinationAZ', 'rtt', 'unixTimestamp', 'handshakeTime', 'resolveTime'];
-  dataSource :AZData[] = [];
+  dataSource :AZDataResponse[] = [];
+  test: AZData[] = [];
 
   constructor(private _service: HttpClientServiceComponent){}
 
@@ -32,8 +34,10 @@ export class ListViewComponent implements OnInit{
 
 
   bttnClick():void{
-    const result = this._service.getFromDB('use2-az2');
-    this.dataSource = result;
+    const result = this._service.getFromDB('use2-az2').subscribe(data =>{
+      this.dataSource = data.Items;
+      this.test = this._service.deserializeOneObj(data);
+    });
     console.log(result);
   }
   //Checkbox

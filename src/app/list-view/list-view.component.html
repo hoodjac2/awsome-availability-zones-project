@@ -57,11 +57,11 @@
       <table mat-table [dataSource]="dataSource" class="table">
         <ng-container matColumnDef="sourceAZ">
           <th mat-header-cell *matHeaderCellDef> Source AZ </th>
-          <td mat-cell *matCellDef="let element"> {{element.sourceAZ}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.sourceAZ.S}} </td>
         </ng-container>
         <ng-container matColumnDef="destinationAZ">
           <th mat-header-cell *matHeaderCellDef> Destination AZ </th>
-          <td mat-cell *matCellDef="let element"> {{element.destinationAZ}} </td>
+          <td mat-cell *matCellDef="let element"> {{element.destinationAZ.S}} </td>
         </ng-container>
         <ng-container matColumnDef="rtt">
           <th mat-header-cell *matHeaderCellDef> RTT </th>
