@@ -1,8 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Component, NgModule } from '@angular/core';
+/* eslint-disable @typescript-eslint/no-empty-function */
+import { Component, AfterViewInit } from "@angular/core";
 import { BrowserModule } from '@angular/platform-browser';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { AZDataResponse, JsonObj, AZData } from "../classes-and-interfaces/az.model";
 import { MOCK_DATA } from '../classes-and-interfaces/temp-mock-data';
+import { HttpClientServiceComponent } from "../http-client.service/http-client.service.component";
 
 /**
  * Graph view created by Wynton using ngx-charts by Swimlane
@@ -14,7 +17,54 @@ import { MOCK_DATA } from '../classes-and-interfaces/temp-mock-data';
   templateUrl: './graph-view.component.html',
   styleUrls: ['./graph-view.component.css']
 })
-export class GraphViewComponent {
+export class GraphViewComponent implements AfterViewInit{
+
+  dataArray: AZData[] = [];
+
+  constructor(private dbService: HttpClientServiceComponent){
+
+  }
+
+
+  ngAfterViewInit(): void {
+    this.dbService.getFromDB('use2-az2').subscribe( data => {
+      data.Items.forEach((azRecord: AZDataResponse) => {
+        //--------------------------------------------------------
+        //These two fields can be undefined in the alpha DB
+        if(azRecord.handshakeTime === undefined){
+          const set : JsonObj = {
+            S: '',
+            N: 0
+          };
+          azRecord.handshakeTime = set;
+        }
+        if(azRecord.resolveTime === undefined){
+          const set : JsonObj = {
+            S: '',
+            N: 0
+          };
+          azRecord.resolveTime = set;
+        }
+        // Probably remove above later
+        //-----------------------------------------
+        const azRecordReturn: AZData = {
+          destinationAZ: azRecord.destinationAZ.S,
+          rtt: Number(azRecord.rtt.N),
+          unixTimestamp: Number(azRecord.unixTimestamp.N),
+          handshakeTime: Number(azRecord.handshakeTime.N),
+          sourceAZ: azRecord.sourceAZ.S,
+          resolveTime: Number(azRecord.resolveTime.N)
+        }
+        this.dataArray.push(azRecordReturn);
+      });
+
+    });
+
+    //construct graphed Dataset
+    this.graphDataFormatting();
+
+  }
+
   // buncha testing data
   points = [
 
@@ -42,7 +92,7 @@ export class GraphViewComponent {
   yAxis = true;
   showYAxisLabel = true;
   showXAxisLabel = true;
-  xAxisLabel = 'Latency (ms)';
+  xAxisLabel = 'Latency (ns)';
   yAxisLabel = 'Frequency (percentage)';
   colorScheme = {
     domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
@@ -65,4 +115,43 @@ export class GraphViewComponent {
   // onDeactivate(data): void {
   //   console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   // }
+  graphDataFormatting(): void {
+    // create the buckets
+    this.dataArray.forEach(azRecord => {
+      const time = azRecord.rtt;
+      // resolve it into ms? or just lop off the ends?
+
+      // Bucket all the timing data into tallies
+      switch(time){
+        case 0:
+          break;
+        case 1:
+          break;
+        case 2:
+          break;
+        case 3:
+          break;
+        case 4:
+          break;
+        case 5:
+          break;
+        case 6:
+          break;
+        case 7:
+          break;
+        case 8:
+          break;
+        case 9:
+          break;
+        case 10:
+          break;
+
+      }
+
+    });
+
+    // convert those tallies into percentages in Points
+
+  }
+
 }
