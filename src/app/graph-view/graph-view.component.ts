@@ -171,39 +171,39 @@ export class GraphViewComponent implements AfterViewInit{
     // }
     Object.assign(this, {points:[
           {
-            "name": "> 900k",
+            "name": "< 90",
             "value": (below900k)/total*100
           },
           {
-            "name": "900k-90.2m",
+            "name": "90-90.2",
             "value": (over900k)/total*100
           },
           {
-            "name": "90.3m",
+            "name": "90.3",
             "value": (over903)/total*100
           },
           {
-            "name": "90.4m",
+            "name": "90.4",
             "value": (over904)/total*100
           },
           {
-            "name": "91m",
+            "name": "91",
             "value": (over910)/total*100
           },
           {
-            "name": "91.3m",
+            "name": "91.3",
             "value": (over913)/total*100
           },
           {
-            "name": "92m",
+            "name": "92",
             "value": (over920)/total*100
           },
           {
-            "name": "92.1m",
+            "name": "92.1",
             "value": (over921)/total*100
           },
           {
-            "name": "92.2m <",
+            "name": ">= 92.2",
             "value": (over922)/total*100
           }
         ]
