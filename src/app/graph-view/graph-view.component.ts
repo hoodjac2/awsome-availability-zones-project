@@ -86,8 +86,8 @@ export class GraphViewComponent implements AfterViewInit{
   showXAxisLabel = true;
   xAxisLabel = 'Latency by floor (ms)';
   yAxisLabel = 'Frequency (%)';
-  AZ1 = "USE2-AZ2";
-  AZ2 = "EUW2-AZ2";
+  AZ1 = 'USE2-AZ2';
+  AZ2 = 'EUW2-AZ2';
 
   onClick(): void{
     // Object.assign(this, {points: [
