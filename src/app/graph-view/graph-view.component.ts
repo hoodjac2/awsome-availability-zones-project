@@ -3,10 +3,7 @@
 import { Component, AfterViewInit } from "@angular/core";
 import { BrowserModule } from '@angular/platform-browser';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { Subject } from "rxjs";
-import { PassThrough } from "stream";
 import { AZDataResponse, JsonObj, AZData } from "../classes-and-interfaces/az.model";
-import { MOCK_DATA } from '../classes-and-interfaces/temp-mock-data';
 import { HttpClientServiceComponent } from "../http-client.service/http-client.service.component";
 
 /**
@@ -90,12 +87,6 @@ export class GraphViewComponent implements AfterViewInit{
   AZ2 = 'EUW2-AZ2';
 
   onClick(): void{
-    // Object.assign(this, {points: [
-    //   {
-    //     "name": "test",
-    //     "value": 5000
-    //   }
-    // ]})
     //construct graphed Dataset
     this.graphDataFormatting();
   }
@@ -167,49 +158,15 @@ export class GraphViewComponent implements AfterViewInit{
     //   "value": the data point here
     // }
     const shifter = Math.pow(10, -6);
-    Object.assign(this, {points:[
-          {
-            "name": (buckets[0] * shifter).toFixed(2),
-            "value": (counts[0])/total*100
-          },
-          {
-            "name": (buckets[1] * shifter).toFixed(2),
-            "value": (counts[1])/total*100
-          },
-          {
-            "name": (buckets[2] * shifter).toFixed(2),
-            "value": (counts[2])/total*100
-          },
-          {
-            "name": (buckets[3] * shifter).toFixed(2),
-            "value": (counts[3])/total*100
-          },
-          {
-            "name": (buckets[4] * shifter).toFixed(2),
-            "value": (counts[4])/total*100
-          },
-          {
-            "name": (buckets[5] * shifter).toFixed(2),
-            "value": (counts[5])/total*100
-          },
-          {
-            "name": (buckets[6] * shifter).toFixed(2),
-            "value": (counts[6])/total*100
-          },
-          {
-            "name": (buckets[7] * shifter).toFixed(2),
-            "value": (counts[7])/total*100
-          },
-          {
-            "name": (buckets[8] * shifter).toFixed(2),
-            "value": (counts[8])/total*100
-          },
-          {
-            "name": (buckets[9] * shifter).toFixed(2),
-            "value": (counts[9])/total*100
-          }
-        ]
-      }
-    )
+    const JSONthing = [];
+    for( let i = 0; i < buckets.length; i++){
+      JSONthing.push({
+        "name": (buckets[i] * shifter).toFixed(2),
+        "value": (counts[i])/total*100
+      });
+    }
+
+    Object.assign(this, {points: JSONthing});
+
   }
 }
