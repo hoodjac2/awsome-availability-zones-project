@@ -28,6 +28,7 @@ export class GraphViewComponent implements AfterViewInit{
   }
 
 
+
   ngAfterViewInit(): void {
     this.dbService.getFromDB('use2-az2').subscribe( data => {
       data.Items.forEach((azRecord: AZDataResponse) => {
@@ -85,7 +86,8 @@ export class GraphViewComponent implements AfterViewInit{
   showXAxisLabel = true;
   xAxisLabel = 'Latency by floor (ms)';
   yAxisLabel = 'Frequency (%)';
-
+  AZ1 = "USE2-AZ2";
+  AZ2 = "EUW2-AZ2";
 
   onClick(): void{
     // Object.assign(this, {points: [
@@ -97,22 +99,7 @@ export class GraphViewComponent implements AfterViewInit{
     //construct graphed Dataset
     this.graphDataFormatting();
   }
-  // constructor() {
-  //   Object.assign(this, { points });
-  // }
 
-  // in theory this stuff is to let you do mouseovers of the data
-  // onSelect(data): void {
-  //   console.log('Item clicked', JSON.parse(data)));
-  // }
-
-  // onActivate(data): void {
-  //   console.log('Activate', JSON.parse(data)));
-  // }
-
-  // onDeactivate(data): void {
-  //   console.log('Deactivate', JSON.parse(data)));
-  // }
   graphDataFormatting(): void {
     // create the buckets and total counter
     // max out around say 20? starting with 10 for now
