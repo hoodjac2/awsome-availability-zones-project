@@ -1,20 +1,33 @@
 .table-container {
   display: flex;
   height: 100%;
-  padding-left: 300px;
 }
 
-.drawer-container {
+.mat-drawer {
   height: 100%;
+  background-color: #062f5e;
+  color: white;
 }
 
 .button-container {
   display: flex;
   justify-content: center;
-  margin-top: 10%;
 }
 
+::ng-deep .mat-form-field-appearance-legacy .mat-form-field-label {
+  /*change color of label*/
+  color: white !important;
+ }
 
+ ::ng-deep.mat-form-field-underline {
+  /*change color of underline*/
+  background-color: white !important;
+}
+
+::ng-deep.mat-form-field-ripple {
+ /*change color of underline when focused*/
+ background-color: white !important;;
+}
 
 h2 {
   color: white;

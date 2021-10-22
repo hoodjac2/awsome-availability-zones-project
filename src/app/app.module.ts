@@ -12,7 +12,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatTableModule} from '@angular/material/table';
 import { HttpClientJsonpModule, HttpClientModule } from '@angular/common/http';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-
+import { MatSlideToggleModule } from '@angular/material/slide-toggle'
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatFormFieldModule} from '@angular/material/form-field';
@@ -40,6 +40,7 @@ import { GraphViewComponent } from './graph-view/graph-view.component';
     HttpClientJsonpModule,
     HttpClientModule,
     MatCheckboxModule,
+    MatSlideToggleModule,
     MatSidenavModule,
     MatRadioModule,
     MatFormFieldModule,
