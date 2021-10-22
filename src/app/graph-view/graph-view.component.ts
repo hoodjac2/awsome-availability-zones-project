@@ -115,7 +115,19 @@ export class GraphViewComponent implements AfterViewInit{
   // }
   graphDataFormatting(): void {
     // create the buckets and total counter
+    // max out around say 20? starting with 10 for now
     const total = this.dataArray.length;
+
+    // const mini = this.dataArray.sort((a, b) => a.rtt - b.rtt)[0].rtt;
+    // const maxi = this.dataArray.sort((a, b) => a.rtt - b.rtt)[-1].rtt;
+
+    // const bucketSize = (maxi - mini)/10;
+
+    const buckets: number[] = new Array(10);
+    for (let i = 0;  i < buckets.length; i++){
+    //   buckets[i] = mini + (bucketSize * i);
+      buckets[i] = 420696969
+    }
 
     let below900k = 0;
     let over900k = 0;
@@ -171,7 +183,7 @@ export class GraphViewComponent implements AfterViewInit{
     // }
     Object.assign(this, {points:[
           {
-            "name": "< 90",
+            "name": JSON.stringify(buckets[0]),
             "value": (below900k)/total*100
           },
           {
