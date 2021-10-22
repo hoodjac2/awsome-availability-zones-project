@@ -1,11 +1,11 @@
 <mat-drawer-container class="drawer-container" autosize>
-  <mat-sidenav opened mode="side"  class="mat-elevation-z8">
+  <mat-drawer opened mode="side"  class="mat-elevation-z8">
     <h2>Region Selection Panel</h2>
     <mat-divider></mat-divider>
     <mat-card>
       <section class="checkbox-section">
-        <mat-checkbox (change)="bttnUSEAST1Click($event)" class="checkbox-margin">us-east-1</mat-checkbox>
-        <mat-checkbox (change)="bttnUSEAST2Click($event)"  class="checkbox-margin">us-east-2</mat-checkbox>
+        <mat-checkbox (change)="bttnCheckBox($event, 'use1-az2')" class="checkbox-margin">us-east-1</mat-checkbox>
+        <mat-checkbox (change)="bttnCheckBox($event, 'use2-az2')" class="checkbox-margin">us-east-2</mat-checkbox>
       </section>
       <section class="checkbox-section">
         <mat-checkbox (change)="bttnClick($event)"  class="checkbox-margin">us-west-1</mat-checkbox>
@@ -39,7 +39,7 @@
         <mat-checkbox (change)="bttnClick($event)"  class="checkbox-margin">eu-south-1</mat-checkbox>
       </section>
       <section class="checkbox-section">
-        <mat-checkbox (change)="bttnEUWEST3Click($event)"  class="checkbox-margin">eu-west-3</mat-checkbox>
+        <mat-checkbox (change)="bttnCheckBox($event, 'euw3-az2')" class="checkbox-margin">eu-west-3</mat-checkbox>
         <mat-checkbox (change)="bttnClick($event)"  class="checkbox-margin">eu-north-1</mat-checkbox>
       </section>
       <section class="checkbox-section">
@@ -47,12 +47,19 @@
         <mat-checkbox (change)="bttnClick($event)"  class="checkbox-margin">sa-east-1</mat-checkbox>
       </section>
     </mat-card>
+    <mat-form-field style="color: white; display: flex; justify-content: center;">
+      <input matInput type="text">
+      <mat-placeholder class="placeholder">Filter</mat-placeholder>
+    </mat-form-field>
     <div class="button-container">
       <button mat-raised-button color="warn" (click)="bttnClick($event)">FILTER</button>
     </div>
-  </mat-sidenav>
+    <div class="button-container" style="padding-top: 50px;">
+        <mat-slide-toggle name="list">Map View!</mat-slide-toggle>
+    </div>
+  </mat-drawer>
 
-  <div class="table-container">
+  <mat-drawer-content class="table-container">
     <span class="table-card">
       <table mat-table [dataSource]="filteredDataArray" class="table">
         <ng-container matColumnDef="sourceAZ">
@@ -79,5 +86,5 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
     </span>
-  </div>
+  </mat-drawer-content>
 </mat-drawer-container>

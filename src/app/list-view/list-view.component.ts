@@ -73,8 +73,15 @@ export class ListViewComponent implements OnInit{
 
 
   bttnClick(event: any):void{
+    //const val = document.querySelector('input').value;
     console.log(event);
   }
+
+  applyFilter(filterValue: string):void {
+    this.filterArray.splice(this.filterArray.indexOf(filterValue));
+    this.filterGrid();
+  }
+
   //Checkbox
   task: Task = {
     name: 'Indeterminate',
@@ -108,7 +115,33 @@ export class ListViewComponent implements OnInit{
     this.task.subtasks.forEach(t => t.completed = completed);
   }
 
+  // This should toggle the slide toggle button and switch views
+  // * STILL A WORK IN PROGRESS *
+  // ------------------------------------------------------------
+  slideToggle(event: unknown, isChecked: boolean):void{
+    const elem = <HTMLInputElement> document.getElementById('list');
+    if(typeof elem !== null) {
+      console.log('TRUE');
+    }
+    if (elem.checked) {
+        isChecked = elem.checked;
+        console.log(isChecked);
+      }
+  }
+
   //CHECKBOIX HANDLERS. THERE IS PROBABLY A BETTER WAY TO DO THIS....
+  bttnCheckBox(event: unknown, filterValue: string):void{
+    if (this.filterArray.includes(filterValue)) {
+      this.filterArray.splice(this.filterArray.indexOf(filterValue));
+      this.filterGrid();
+    }
+    else {
+      this.filterArray.push(filterValue);
+      this.filterGrid();
+    }
+    console.log(event);
+  }
+/*
   bttnUSEAST1Click(event: any):void{
     if(this.filterArray.includes('use1-az2')){
       this.filterArray.splice(this.filterArray.indexOf('use1-az2'));
@@ -120,7 +153,7 @@ export class ListViewComponent implements OnInit{
     }
   }
   bttnUSEAST2Click(event: any):void{
-    if(this.filterArray.includes('use2-az2')){
+     if(this.filterArray.includes('use2-az2')){
       this.filterArray.splice(this.filterArray.indexOf('use2-az2'));
       this.filterGrid();
     }
@@ -128,6 +161,7 @@ export class ListViewComponent implements OnInit{
       this.filterArray.push('use2-az2');
       this.filterGrid();
     }
+
     console.log(event);
   }
   bttnEUWEST3Click(event: any):void{
@@ -141,7 +175,7 @@ export class ListViewComponent implements OnInit{
     }
 
     console.log(event);
-  }
+  } */
   filterGrid():void{
     if(this.filterArray.length === 0){
       this.filteredDataArray = this.dataArray;
@@ -160,6 +194,5 @@ export class ListViewComponent implements OnInit{
       this.table?.renderRows();
   }
 }
-
 }
 
