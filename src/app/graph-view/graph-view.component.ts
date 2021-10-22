@@ -83,7 +83,7 @@ export class GraphViewComponent implements AfterViewInit{
   yAxis = true;
   showYAxisLabel = true;
   showXAxisLabel = true;
-  xAxisLabel = 'Latency (ms)';
+  xAxisLabel = 'Latency by floor (ms)';
   yAxisLabel = 'Frequency (%)';
 
 
@@ -103,15 +103,15 @@ export class GraphViewComponent implements AfterViewInit{
 
   // in theory this stuff is to let you do mouseovers of the data
   // onSelect(data): void {
-  //   console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+  //   console.log('Item clicked', JSON.parse(data)));
   // }
 
   // onActivate(data): void {
-  //   console.log('Activate', JSON.parse(JSON.stringify(data)));
+  //   console.log('Activate', JSON.parse(data)));
   // }
 
   // onDeactivate(data): void {
-  //   console.log('Deactivate', JSON.parse(JSON.stringify(data)));
+  //   console.log('Deactivate', JSON.parse(data)));
   // }
   graphDataFormatting(): void {
     // create the buckets and total counter
@@ -127,7 +127,7 @@ export class GraphViewComponent implements AfterViewInit{
 
     const buckets: number[] = new Array(10);
     for (let i = 0;  i < buckets.length; i++){
-      buckets[i] = mini + (bucketSize * i);
+      buckets[i] = Math.round(mini + (bucketSize * i));
     //  buckets[i] = 420696969
     }
 
@@ -138,31 +138,31 @@ export class GraphViewComponent implements AfterViewInit{
       const time = azRecord.rtt;
       // resolve it into ms? or just lop off the ends?
       // Bucket all the timing data into tallies
-      if(time < buckets[0]){
+      if ((time >= buckets[0]) && (time < buckets[1])){
         counts[0] += 1
       }
-      else if ((time >= buckets[0]) && (time < buckets[1])){
+      else if ((time >= buckets[1]) && (time < buckets[2])){
         counts[1] += 1
       }
-      else if ((time >= buckets[1]) && (time < buckets[2])){
+      else if ((time >= buckets[2]) && (time < buckets[3])){
         counts[2] += 1
       }
-      else if ((time >= buckets[2]) && (time < buckets[3])){
+      else if ((time >= buckets[3]) && (time < buckets[4])){
         counts[3] += 1
       }
-      else if ((time >= buckets[3]) && (time < buckets[4])){
+      else if ((time >= buckets[4]) && (time < buckets[5])){
         counts[4] += 1
       }
-      else if ((time >= buckets[4]) && (time < buckets[5])){
+      else if ((time >= buckets[5]) && (time < buckets[6])){
         counts[5] += 1
       }
-      else if ((time >= buckets[5]) && (time < buckets[6])){
+      else if ((time >= buckets[6]) && (time < buckets[7])){
         counts[6] += 1
       }
-      else if ((time >= buckets[6]) && (time < buckets[7])){
+      else if ((time >= buckets[7]) && (time < buckets[8])){
         counts[7] += 1
       }
-      else if ((time >= buckets[7]) && (time < buckets[8])){
+      else if ((time >= buckets[8]) && (time < buckets[9])){
         counts[8] += 1
       }
       else if (time > buckets[9]) {
@@ -179,45 +179,46 @@ export class GraphViewComponent implements AfterViewInit{
     //   "name": "name the column here"
     //   "value": the data point here
     // }
+    const shifter = Math.pow(10, -6);
     Object.assign(this, {points:[
           {
-            "name": JSON.stringify(buckets[0]),
+            "name": (buckets[0] * shifter).toFixed(2),
             "value": (counts[0])/total*100
           },
           {
-            "name": JSON.stringify(buckets[1]),
+            "name": (buckets[1] * shifter).toFixed(2),
             "value": (counts[1])/total*100
           },
           {
-            "name": JSON.stringify(buckets[2]),
+            "name": (buckets[2] * shifter).toFixed(2),
             "value": (counts[2])/total*100
           },
           {
-            "name": JSON.stringify(buckets[3]),
+            "name": (buckets[3] * shifter).toFixed(2),
             "value": (counts[3])/total*100
           },
           {
-            "name": JSON.stringify(buckets[4]),
+            "name": (buckets[4] * shifter).toFixed(2),
             "value": (counts[4])/total*100
           },
           {
-            "name": JSON.stringify(buckets[5]),
+            "name": (buckets[5] * shifter).toFixed(2),
             "value": (counts[5])/total*100
           },
           {
-            "name": JSON.stringify(buckets[6]),
+            "name": (buckets[6] * shifter).toFixed(2),
             "value": (counts[6])/total*100
           },
           {
-            "name": JSON.stringify(buckets[7]),
+            "name": (buckets[7] * shifter).toFixed(2),
             "value": (counts[7])/total*100
           },
           {
-            "name": JSON.stringify(buckets[8]),
+            "name": (buckets[8] * shifter).toFixed(2),
             "value": (counts[8])/total*100
           },
           {
-            "name": JSON.stringify(buckets[9]),
+            "name": (buckets[9] * shifter).toFixed(2),
             "value": (counts[9])/total*100
           }
         ]
