@@ -118,15 +118,17 @@ export class GraphViewComponent implements AfterViewInit{
     // max out around say 20? starting with 10 for now
     const total = this.dataArray.length;
 
-    // const mini = this.dataArray.sort((a, b) => a.rtt - b.rtt)[0].rtt;
-    // const maxi = this.dataArray.sort((a, b) => a.rtt - b.rtt)[-1].rtt;
+    const sortedArray = this.dataArray.sort((a, b) => a.rtt - b.rtt);
 
-    // const bucketSize = (maxi - mini)/10;
+    const mini = sortedArray[0].rtt;
+    const maxi = sortedArray[total - 1].rtt;
+
+    const bucketSize = (maxi - mini)/10;
 
     const buckets: number[] = new Array(10);
     for (let i = 0;  i < buckets.length; i++){
-    //   buckets[i] = mini + (bucketSize * i);
-      buckets[i] = 420696969
+      buckets[i] = mini + (bucketSize * i);
+    //  buckets[i] = 420696969
     }
 
     let below900k = 0;
@@ -187,35 +189,35 @@ export class GraphViewComponent implements AfterViewInit{
             "value": (below900k)/total*100
           },
           {
-            "name": "90-90.2",
+            "name": JSON.stringify(buckets[1]),
             "value": (over900k)/total*100
           },
           {
-            "name": "90.3",
+            "name": JSON.stringify(buckets[2]),
             "value": (over903)/total*100
           },
           {
-            "name": "90.4",
+            "name": JSON.stringify(buckets[3]),
             "value": (over904)/total*100
           },
           {
-            "name": "91",
+            "name": JSON.stringify(buckets[4]),
             "value": (over910)/total*100
           },
           {
-            "name": "91.3",
+            "name": JSON.stringify(buckets[5]),
             "value": (over913)/total*100
           },
           {
-            "name": "92",
+            "name": JSON.stringify(buckets[6]),
             "value": (over920)/total*100
           },
           {
-            "name": "92.1",
+            "name": JSON.stringify(buckets[7]),
             "value": (over921)/total*100
           },
           {
-            "name": ">= 92.2",
+            "name": JSON.stringify(buckets[8]),
             "value": (over922)/total*100
           }
         ]
