@@ -311,25 +311,6 @@ export class MapViewComponent implements AfterViewInit{
               this.findFastestAZ();
             }
           }).bindPopup("This is usw2-az2");
-        //Bahrain
-        const bahrain = L.circle([26.037042, 50.356672], {
-          color: 'orange',
-          fillColor: '#FFA500',
-          fillOpacity: 0.5,
-          radius: 187500
-        })
-        .on('click', (e) => {
-          if(this.sendingAZString === 'Select the sending AZ Region' ){
-            this.sendingAZString ='EUW3-AZ2';
-            this.createSendingCircles(e.sourceTarget._latlng);
-            this.findFastestAZ();
-          }
-          else{
-            this.receivingAZString = 'EUW3-AZ2';
-            this.createReceivingCircles(e.sourceTarget._latlng);
-            this.findFastestAZ();
-          }
-        }).bindPopup("This is usw2-az2");
       //Cape Town
       const cape_town = L.circle([-33.797409, 18.890479], {
         color: 'orange',
@@ -467,29 +448,10 @@ export class MapViewComponent implements AfterViewInit{
         }
       }).bindPopup("This is usw2-az2");
 
-      //Hong Kong
-      const hong_kong = L.circle([22.3193, 114.1694], {
-        color: 'orange',
-        fillColor: '#FFA500',
-        fillOpacity: 0.5,
-        radius: 187500
-      })
-      .on('click', (e) => {
-        if(this.sendingAZString === 'Select the sending AZ Region' ){
-          this.sendingAZString ='EUW3-AZ2';
-          this.createSendingCircles(e.sourceTarget._latlng);
-          this.findFastestAZ();
-        }
-        else{
-          this.receivingAZString = 'EUW3-AZ2';
-          this.createReceivingCircles(e.sourceTarget._latlng);
-          this.findFastestAZ();
-        }
-      }).bindPopup("This is usw2-az2");
 
 
       const markers = L.layerGroup([virginia, ohio, NCalifornia, oregon, paris, south_america, frankfurt,
-      london, bahrain, ireland, milan, stockholm, cape_town, sydney, singapore, tokyo, seoul, osaka, mumbai, hong_kong]);
+      london, ireland, milan, stockholm, cape_town, sydney, singapore, tokyo, seoul, osaka, mumbai]);
       markers.addTo(this.map);
     }
 
