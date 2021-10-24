@@ -65,10 +65,13 @@ export class MapViewComponent implements AfterViewInit{
       this.initMap();
      }
 
+
      private initMap(): void {
       this.map = L.map('map', {
-        center: [35.663711, -95.723905],
-        zoom: 4
+        center: [26.115986, -32.827080],
+        zoom: 1,
+        maxBounds: L.latLngBounds(L.latLng(-89.99, -180),  L.latLng(89.99, 180)),
+        maxBoundsViscosity: 1.0
       });
       this.getRegionMarkers();
       const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -189,7 +192,266 @@ export class MapViewComponent implements AfterViewInit{
             this.findFastestAZ();
           }
         }).bindPopup("This is usw2-az2");
-      const markers = L.layerGroup([virginia, ohio, NCalifornia, oregon, paris]);
+
+         //South America
+         const south_america = L.circle([-23.845650, -46.735590], {
+          color: 'orange',
+          fillColor: '#FFA500',
+          fillOpacity: 0.5,
+          radius: 187500
+        })
+        .on('click', (e) => {
+          if(this.sendingAZString === 'Select the sending AZ Region' ){
+            this.sendingAZString ='EUW3-AZ2';
+            this.createSendingCircles(e.sourceTarget._latlng);
+            this.findFastestAZ();
+          }
+          else{
+            this.receivingAZString = 'EUW3-AZ2';
+            this.createReceivingCircles(e.sourceTarget._latlng);
+            this.findFastestAZ();
+          }
+        }).bindPopup("This is usw2-az2");
+
+         //Ireland
+        const ireland = L.circle([53.120405, -8.740041], {
+          color: 'orange',
+          fillColor: '#FFA500',
+          fillOpacity: 0.5,
+          radius: 187500
+        })
+        .on('click', (e) => {
+          if(this.sendingAZString === 'Select the sending AZ Region' ){
+            this.sendingAZString ='EUW3-AZ2';
+            this.createSendingCircles(e.sourceTarget._latlng);
+            this.findFastestAZ();
+          }
+          else{
+            this.receivingAZString = 'EUW3-AZ2';
+            this.createReceivingCircles(e.sourceTarget._latlng);
+            this.findFastestAZ();
+          }
+        }).bindPopup("This is usw2-az2");
+
+        //Frankfurt
+        const frankfurt = L.circle([51.124213, -2.496520], {
+          color: 'orange',
+          fillColor: '#FFA500',
+          fillOpacity: 0.5,
+          radius: 187500
+        })
+        .on('click', (e) => {
+          if(this.sendingAZString === 'Select the sending AZ Region' ){
+            this.sendingAZString ='EUW3-AZ2';
+            this.createSendingCircles(e.sourceTarget._latlng);
+            this.findFastestAZ();
+          }
+          else{
+            this.receivingAZString = 'EUW3-AZ2';
+            this.createReceivingCircles(e.sourceTarget._latlng);
+            this.findFastestAZ();
+          }
+        }).bindPopup("This is usw2-az2");
+
+          //London
+          const london = L.circle([51.727028, -0.385737], {
+            color: 'orange',
+            fillColor: '#FFA500',
+            fillOpacity: 0.5,
+            radius: 187500
+          })
+          .on('click', (e) => {
+            if(this.sendingAZString === 'Select the sending AZ Region' ){
+              this.sendingAZString ='EUW3-AZ2';
+              this.createSendingCircles(e.sourceTarget._latlng);
+              this.findFastestAZ();
+            }
+            else{
+              this.receivingAZString = 'EUW3-AZ2';
+              this.createReceivingCircles(e.sourceTarget._latlng);
+              this.findFastestAZ();
+            }
+          }).bindPopup("This is usw2-az2");
+          //Milan
+          const milan = L.circle([43.850374, 11.374745], {
+            color: 'orange',
+            fillColor: '#FFA500',
+            fillOpacity: 0.5,
+            radius: 187500
+          })
+          .on('click', (e) => {
+            if(this.sendingAZString === 'Select the sending AZ Region' ){
+              this.sendingAZString ='EUW3-AZ2';
+              this.createSendingCircles(e.sourceTarget._latlng);
+              this.findFastestAZ();
+            }
+            else{
+              this.receivingAZString = 'EUW3-AZ2';
+              this.createReceivingCircles(e.sourceTarget._latlng);
+              this.findFastestAZ();
+            }
+          }).bindPopup("This is usw2-az2");
+
+          //Stockholm
+          const stockholm = L.circle([59.623325, 17.738570], {
+            color: 'orange',
+            fillColor: '#FFA500',
+            fillOpacity: 0.5,
+            radius: 187500
+          })
+          .on('click', (e) => {
+            if(this.sendingAZString === 'Select the sending AZ Region' ){
+              this.sendingAZString ='EUW3-AZ2';
+              this.createSendingCircles(e.sourceTarget._latlng);
+              this.findFastestAZ();
+            }
+            else{
+              this.receivingAZString = 'EUW3-AZ2';
+              this.createReceivingCircles(e.sourceTarget._latlng);
+              this.findFastestAZ();
+            }
+          }).bindPopup("This is usw2-az2");
+      //Cape Town
+      const cape_town = L.circle([-33.797409, 18.890479], {
+        color: 'orange',
+        fillColor: '#FFA500',
+        fillOpacity: 0.5,
+        radius: 187500
+      })
+      .on('click', (e) => {
+        if(this.sendingAZString === 'Select the sending AZ Region' ){
+          this.sendingAZString ='EUW3-AZ2';
+          this.createSendingCircles(e.sourceTarget._latlng);
+          this.findFastestAZ();
+        }
+        else{
+          this.receivingAZString = 'EUW3-AZ2';
+          this.createReceivingCircles(e.sourceTarget._latlng);
+          this.findFastestAZ();
+        }
+      }).bindPopup("This is usw2-az2");
+
+      //Sydney
+      const sydney = L.circle([-33.943360, 150.880895], {
+        color: 'orange',
+        fillColor: '#FFA500',
+        fillOpacity: 0.5,
+        radius: 187500
+      })
+      .on('click', (e) => {
+        if(this.sendingAZString === 'Select the sending AZ Region' ){
+          this.sendingAZString ='EUW3-AZ2';
+          this.createSendingCircles(e.sourceTarget._latlng);
+          this.findFastestAZ();
+        }
+        else{
+          this.receivingAZString = 'EUW3-AZ2';
+          this.createReceivingCircles(e.sourceTarget._latlng);
+          this.findFastestAZ();
+        }
+      }).bindPopup("This is usw2-az2");
+
+      //singapore
+      const singapore = L.circle([1.318243, 103.758844], {
+        color: 'orange',
+        fillColor: '#FFA500',
+        fillOpacity: 0.5,
+        radius: 187500
+      })
+      .on('click', (e) => {
+        if(this.sendingAZString === 'Select the sending AZ Region' ){
+          this.sendingAZString ='EUW3-AZ2';
+          this.createSendingCircles(e.sourceTarget._latlng);
+          this.findFastestAZ();
+        }
+        else{
+          this.receivingAZString = 'EUW3-AZ2';
+          this.createReceivingCircles(e.sourceTarget._latlng);
+          this.findFastestAZ();
+        }
+      }).bindPopup("This is usw2-az2");
+      //mumbai
+      const mumbai = L.circle([18.812718, 72.976586], {
+        color: 'orange',
+        fillColor: '#FFA500',
+        fillOpacity: 0.5,
+        radius: 187500
+      })
+      .on('click', (e) => {
+        if(this.sendingAZString === 'Select the sending AZ Region' ){
+          this.sendingAZString ='EUW3-AZ2';
+          this.createSendingCircles(e.sourceTarget._latlng);
+          this.findFastestAZ();
+        }
+        else{
+          this.receivingAZString = 'EUW3-AZ2';
+          this.createReceivingCircles(e.sourceTarget._latlng);
+          this.findFastestAZ();
+        }
+      }).bindPopup("This is usw2-az2");
+      //seoul
+      const seoul = L.circle([37.492294, 126.950256], {
+        color: 'orange',
+        fillColor: '#FFA500',
+        fillOpacity: 0.5,
+        radius: 187500
+      })
+      .on('click', (e) => {
+        if(this.sendingAZString === 'Select the sending AZ Region' ){
+          this.sendingAZString ='EUW3-AZ2';
+          this.createSendingCircles(e.sourceTarget._latlng);
+          this.findFastestAZ();
+        }
+        else{
+          this.receivingAZString = 'EUW3-AZ2';
+          this.createReceivingCircles(e.sourceTarget._latlng);
+          this.findFastestAZ();
+        }
+      }).bindPopup("This is usw2-az2");
+      //Tokyo
+      const tokyo = L.circle([35.639441, 139.783990], {
+        color: 'orange',
+        fillColor: '#FFA500',
+        fillOpacity: 0.5,
+        radius: 187500
+      })
+      .on('click', (e) => {
+        if(this.sendingAZString === 'Select the sending AZ Region' ){
+          this.sendingAZString ='EUW3-AZ2';
+          this.createSendingCircles(e.sourceTarget._latlng);
+          this.findFastestAZ();
+        }
+        else{
+          this.receivingAZString = 'EUW3-AZ2';
+          this.createReceivingCircles(e.sourceTarget._latlng);
+          this.findFastestAZ();
+        }
+      }).bindPopup("This is usw2-az2");
+
+      //Osaka
+      const osaka = L.circle([34.6937, 135.5023], {
+        color: 'orange',
+        fillColor: '#FFA500',
+        fillOpacity: 0.5,
+        radius: 187500
+      })
+      .on('click', (e) => {
+        if(this.sendingAZString === 'Select the sending AZ Region' ){
+          this.sendingAZString ='EUW3-AZ2';
+          this.createSendingCircles(e.sourceTarget._latlng);
+          this.findFastestAZ();
+        }
+        else{
+          this.receivingAZString = 'EUW3-AZ2';
+          this.createReceivingCircles(e.sourceTarget._latlng);
+          this.findFastestAZ();
+        }
+      }).bindPopup("This is usw2-az2");
+
+
+
+      const markers = L.layerGroup([virginia, ohio, NCalifornia, oregon, paris, south_america, frankfurt,
+      london, ireland, milan, stockholm, cape_town, sydney, singapore, tokyo, seoul, osaka, mumbai]);
       markers.addTo(this.map);
     }
 

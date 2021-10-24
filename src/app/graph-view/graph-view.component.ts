@@ -3,10 +3,7 @@
 import { Component, AfterViewInit } from "@angular/core";
 import { BrowserModule } from '@angular/platform-browser';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { Subject } from "rxjs";
-import { PassThrough } from "stream";
 import { AZDataResponse, JsonObj, AZData } from "../classes-and-interfaces/az.model";
-import { MOCK_DATA } from '../classes-and-interfaces/temp-mock-data';
 import { HttpClientServiceComponent } from "../http-client.service/http-client.service.component";
 
 /**
@@ -26,6 +23,7 @@ export class GraphViewComponent implements AfterViewInit{
   constructor(private dbService: HttpClientServiceComponent){
 
   }
+
 
 
   ngAfterViewInit(): void {
@@ -83,80 +81,70 @@ export class GraphViewComponent implements AfterViewInit{
   yAxis = true;
   showYAxisLabel = true;
   showXAxisLabel = true;
-  xAxisLabel = 'Latency (ms)';
+  xAxisLabel = 'Latency by floor (ms)';
   yAxisLabel = 'Frequency (%)';
-
+  AZ1 = 'USE2-AZ2';
+  AZ2 = 'EUW2-AZ2';
 
   onClick(): void{
-    // Object.assign(this, {points: [
-    //   {
-    //     "name": "test",
-    //     "value": 5000
-    //   }
-    // ]})
     //construct graphed Dataset
     this.graphDataFormatting();
   }
-  // constructor() {
-  //   Object.assign(this, { points });
-  // }
 
-  // in theory this stuff is to let you do mouseovers of the data
-  // onSelect(data): void {
-  //   console.log('Item clicked', JSON.parse(JSON.stringify(data)));
-  // }
-
-  // onActivate(data): void {
-  //   console.log('Activate', JSON.parse(JSON.stringify(data)));
-  // }
-
-  // onDeactivate(data): void {
-  //   console.log('Deactivate', JSON.parse(JSON.stringify(data)));
-  // }
   graphDataFormatting(): void {
     // create the buckets and total counter
+    // max out around say 20? starting with 10 for now
     const total = this.dataArray.length;
 
-    let below900k = 0;
-    let over900k = 0;
-    let over903 = 0;
-    let over904 = 0;
-    let over910 = 0;
-    let over913 = 0;
-    let over920 = 0;
-    let over921 = 0;
-    let over922 = 0;
+    const sortedArray = this.dataArray.sort((a, b) => a.rtt - b.rtt);
+
+    const mini = sortedArray[0].rtt;
+    const maxi = sortedArray[total - 1].rtt;
+
+    const bucketSize = (maxi - mini)/10;
+
+    const buckets: number[] = new Array(10);
+    for (let i = 0;  i < buckets.length; i++){
+      buckets[i] = Math.round(mini + (bucketSize * i));
+    //  buckets[i] = 420696969
+    }
+
+    // convert into a list later?
+    const counts: number[] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
     this.dataArray.forEach(azRecord => {
       const time = azRecord.rtt;
       // resolve it into ms? or just lop off the ends?
       // Bucket all the timing data into tallies
-      if(time < 1000000){
-        below900k += 1
+      if ((time >= buckets[0]) && (time < buckets[1])){
+        counts[0] += 1
       }
-      else if ((time >= 1000000) && (time < 90300000)){
-        over900k += 1
+      else if ((time >= buckets[1]) && (time < buckets[2])){
+        counts[1] += 1
       }
-      else if ((time >= 90300000) && (time < 90400000)){
-        over903 += 1
+      else if ((time >= buckets[2]) && (time < buckets[3])){
+        counts[2] += 1
       }
-      else if ((time >= 90400000) && (time < 91000000)){
-        over904 += 1
+      else if ((time >= buckets[3]) && (time < buckets[4])){
+        counts[3] += 1
       }
-      else if ((time >= 91000000) && (time < 91300000)){
-        over910 += 1
+      else if ((time >= buckets[4]) && (time < buckets[5])){
+        counts[4] += 1
       }
-      else if ((time >= 91300000) && (time < 92000000)){
-        over913 += 1
+      else if ((time >= buckets[5]) && (time < buckets[6])){
+        counts[5] += 1
       }
-      else if ((time >= 92000000) && (time < 92100000)){
-        over920 += 1
+      else if ((time >= buckets[6]) && (time < buckets[7])){
+        counts[6] += 1
       }
-      else if ((time >= 92100000) && (time < 92200000)){
-        over921 += 1
+      else if ((time >= buckets[7]) && (time < buckets[8])){
+        counts[7] += 1
       }
-      else if (time > 92200000) {
-        over922 += 1
+      else if ((time >= buckets[8]) && (time < buckets[9])){
+        counts[8] += 1
+      }
+      else if (time > buckets[9]) {
+        counts[9] += 1
       }
     });
 
@@ -169,45 +157,16 @@ export class GraphViewComponent implements AfterViewInit{
     //   "name": "name the column here"
     //   "value": the data point here
     // }
-    Object.assign(this, {points:[
-          {
-            "name": "< 90",
-            "value": (below900k)/total*100
-          },
-          {
-            "name": "90-90.2",
-            "value": (over900k)/total*100
-          },
-          {
-            "name": "90.3",
-            "value": (over903)/total*100
-          },
-          {
-            "name": "90.4",
-            "value": (over904)/total*100
-          },
-          {
-            "name": "91",
-            "value": (over910)/total*100
-          },
-          {
-            "name": "91.3",
-            "value": (over913)/total*100
-          },
-          {
-            "name": "92",
-            "value": (over920)/total*100
-          },
-          {
-            "name": "92.1",
-            "value": (over921)/total*100
-          },
-          {
-            "name": ">= 92.2",
-            "value": (over922)/total*100
-          }
-        ]
-      }
-    )
+    const shifter = Math.pow(10, -6);
+    const JSONthing = [];
+    for( let i = 0; i < buckets.length; i++){
+      JSONthing.push({
+        "name": (buckets[i] * shifter).toFixed(2),
+        "value": (counts[i])/total*100
+      });
+    }
+
+    Object.assign(this, {points: JSONthing});
+
   }
 }
