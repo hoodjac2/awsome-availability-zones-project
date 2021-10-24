@@ -7,6 +7,7 @@ import {ThemePalette} from '@angular/material/core';
 import { AZData, AZDataResponse, JsonObj } from "../classes-and-interfaces/az.model";
 import { deserialize } from "v8";
 import { MatTable } from "@angular/material/table";
+import { MatSlideToggleChange } from "@angular/material/slide-toggle";
 
 export interface Task {
   name: string;
@@ -31,8 +32,11 @@ export class ListViewComponent implements OnInit{
   displayedColumns: string[] = ['sourceAZ', 'destinationAZ', 'rtt', 'unixTimestamp','resolveTime'];
   filterArray : string[] = [];
 
+  yourFlag = true;
+
   constructor(private dbService: HttpClientServiceComponent){
   }
+
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   ngOnInit(): void{
@@ -71,6 +75,9 @@ export class ListViewComponent implements OnInit{
     });
   }
 
+  isTrue():void {
+    this.yourFlag = true;
+  }
 
   bttnClick(event: any):void{
     //const val = document.querySelector('input').value;
@@ -115,20 +122,6 @@ export class ListViewComponent implements OnInit{
     this.task.subtasks.forEach(t => t.completed = completed);
   }
 
-  // This should toggle the slide toggle button and switch views
-  // * STILL A WORK IN PROGRESS *
-  // ------------------------------------------------------------
-  slideToggle(event: unknown, isChecked: boolean):void{
-    const elem = <HTMLInputElement> document.getElementById('list');
-    if(typeof elem !== null) {
-      console.log('TRUE');
-    }
-    if (elem.checked) {
-        isChecked = elem.checked;
-        console.log(isChecked);
-      }
-  }
-
   //CHECKBOIX HANDLERS. THERE IS PROBABLY A BETTER WAY TO DO THIS....
   bttnCheckBox(event: unknown, filterValue: string):void{
     if (this.filterArray.includes(filterValue)) {
@@ -141,7 +134,7 @@ export class ListViewComponent implements OnInit{
     }
     console.log(event);
   }
-/*
+  /*
   bttnUSEAST1Click(event: any):void{
     if(this.filterArray.includes('use1-az2')){
       this.filterArray.splice(this.filterArray.indexOf('use1-az2'));
@@ -176,23 +169,23 @@ export class ListViewComponent implements OnInit{
 
     console.log(event);
   } */
-  filterGrid():void{
-    if(this.filterArray.length === 0){
-      this.filteredDataArray = this.dataArray;
-    }
-    else{
-    this.filteredDataArray = [];
-    this.filterArray.forEach(filterValue =>
-      {
-        this.dataArray.forEach(data =>{
-          if( data.sourceAZ === filterValue || data.destinationAZ === filterValue){
-            this.filteredDataArray.push(data);
-          }
+    filterGrid():void{
+      if(this.filterArray.length === 0){
+        this.filteredDataArray = this.dataArray;
+      }
+      else{
+      this.filteredDataArray = [];
+      this.filterArray.forEach(filterValue =>
+        {
+          this.dataArray.forEach(data =>{
+            if( data.sourceAZ === filterValue || data.destinationAZ === filterValue){
+              this.filteredDataArray.push(data);
+            }
 
+          });
         });
-      });
-      this.table?.renderRows();
+        this.table?.renderRows();
+    }
   }
-}
 }
 

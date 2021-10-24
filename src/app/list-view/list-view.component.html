@@ -51,12 +51,18 @@
       <input matInput type="text">
       <mat-placeholder class="placeholder">Filter</mat-placeholder>
     </mat-form-field>
+
     <div class="button-container">
       <button mat-raised-button color="warn" (click)="bttnClick($event)">FILTER</button>
     </div>
-    <div class="button-container" style="padding-top: 50px;">
-        <mat-slide-toggle name="list">Map View!</mat-slide-toggle>
+
+    <div class="button-container" style="padding-top: 30px;">
+        <mat-slide-toggle [checked]="yourFlag" routerLink="/map-view" routerLinkActive="active">Map Component</mat-slide-toggle>
     </div>
+    <!-- The routed views render in the <router-outlet>-->
+    <router-outlet></router-outlet>
+
+
   </mat-drawer>
 
   <mat-drawer-content class="table-container">

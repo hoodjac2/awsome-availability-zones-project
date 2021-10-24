@@ -10,6 +10,10 @@
   height: 100%;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 #map {
   height: 100%;
 }
@@ -49,4 +53,88 @@ mat-sidenav-container {
 mat-divider {
   border-top-color: white;
   width: 100%;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+}
+
+/****************
+* LIST-VIEW CSS *
+*****************/
+
+.table-container-list {
+  display: flex;
+  height: 100%;
+}
+
+.mat-drawer {
+  height: 100%;
+  background-color: #062f5e;
+  color: white;
+}
+
+::ng-deep .mat-form-field-appearance-legacy .mat-form-field-label {
+  /*change color of label*/
+  color: white !important;
+ }
+
+ ::ng-deep.mat-form-field-underline {
+  /*change color of underline*/
+  background-color: white !important;
+}
+
+::ng-deep.mat-form-field-ripple {
+ /*change color of underline when focused*/
+ background-color: white !important;;
+}
+
+h2 {
+  color: white;
+  padding: 15px;
+  text-align: center;
+}
+
+table {
+  width: 250%;
+}
+
+.checkbox-section-list {
+  margin: 12px 0;
+}
+
+.checkbox-margin-list {
+  width: 50%
+}
+
+ul {
+  list-style-type: none;
+  margin-top: 4px;
+}
+
+span.checkbox-card {
+  margin: 0px;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+span.table-card {
+  margin: 0px;
+  vertical-align: middle;
+  display: inline-block;
+}
+
+.drawer-container {
+  height: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+mat-card {
+  padding: 13px;
+  margin: 10px;
 }
