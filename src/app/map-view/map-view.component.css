@@ -67,6 +67,7 @@ mat-divider {
 .table-container-list {
   display: flex;
   height: 100%;
+  margin-left: 300px;
 }
 
 .mat-drawer {
