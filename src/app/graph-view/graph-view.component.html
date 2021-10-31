@@ -16,9 +16,18 @@
         [results]="points"
         >
       </ngx-charts-bar-vertical>
+      <div class="statbox">
+        <body>Average: {{aved}} ms<br>
+          Minimum: {{mind}} ms<br>
+          Maximum: {{maxd}} ms<br>
+          Median: {{medd}} ms</body>
+      </div>
       <div class="button-container">
         <button mat-raised-button color="primary" (click)="onClick()">SHOW LATENCIES</button>
       </div>
+
+      <!-- Stats that might matter to display in a text box:
+      Minimum, Maximum, Median and Average-->
     </div>
   </div>
   <!-- (select)="onSelect($event)"

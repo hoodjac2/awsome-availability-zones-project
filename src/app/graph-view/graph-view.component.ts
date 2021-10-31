@@ -66,7 +66,7 @@ export class GraphViewComponent implements AfterViewInit{
   points = [
     {
       "name": " ",
-      "value": 1000
+      "value": 100
     }
   ]
 
@@ -85,6 +85,14 @@ export class GraphViewComponent implements AfterViewInit{
   yAxisLabel = 'Frequency (%)';
   AZ1 = 'USE2-AZ2';
   AZ2 = 'EUW2-AZ2';
+  mind = '0';
+  maxd = '0';
+  aved = '0';
+  medd = '0';
+  percent50 = '0';
+  percent75 = '0';
+  percent90 = '0';
+  percent99 = '0';
 
   onClick(): void{
     //construct graphed Dataset
@@ -103,6 +111,9 @@ export class GraphViewComponent implements AfterViewInit{
 
     const bucketSize = (maxi - mini)/10;
 
+
+    let ave  = 0;
+
     const buckets: number[] = new Array(10);
     for (let i = 0;  i < buckets.length; i++){
       buckets[i] = Math.round(mini + (bucketSize * i));
@@ -116,35 +127,36 @@ export class GraphViewComponent implements AfterViewInit{
       const time = azRecord.rtt;
       // resolve it into ms? or just lop off the ends?
       // Bucket all the timing data into tallies
+      ave += time;
       if ((time >= buckets[0]) && (time < buckets[1])){
-        counts[0] += 1
+        counts[0] += 1;
       }
       else if ((time >= buckets[1]) && (time < buckets[2])){
-        counts[1] += 1
+        counts[1] += 1;
       }
       else if ((time >= buckets[2]) && (time < buckets[3])){
-        counts[2] += 1
+        counts[2] += 1;
       }
       else if ((time >= buckets[3]) && (time < buckets[4])){
-        counts[3] += 1
+        counts[3] += 1;
       }
       else if ((time >= buckets[4]) && (time < buckets[5])){
-        counts[4] += 1
+        counts[4] += 1;
       }
       else if ((time >= buckets[5]) && (time < buckets[6])){
-        counts[5] += 1
+        counts[5] += 1;
       }
       else if ((time >= buckets[6]) && (time < buckets[7])){
-        counts[6] += 1
+        counts[6] += 1;
       }
       else if ((time >= buckets[7]) && (time < buckets[8])){
-        counts[7] += 1
+        counts[7] += 1;
       }
       else if ((time >= buckets[8]) && (time < buckets[9])){
-        counts[8] += 1
+        counts[8] += 1;
       }
       else if (time > buckets[9]) {
-        counts[9] += 1
+        counts[9] += 1;
       }
     });
 
@@ -157,6 +169,20 @@ export class GraphViewComponent implements AfterViewInit{
     //   "name": "name the column here"
     //   "value": the data point here
     // }
+    // also format any extra statistics
+    ave = ave / total;
+
+    let medi = 0;
+    if (total%2 == 0){
+      medi = (sortedArray[total/2].rtt + sortedArray[(total/2) + 1].rtt)/2
+    }
+    else{
+      medi = sortedArray[(total+1)/2].rtt
+    }
+
+    //percentile calcs:
+
+
     const shifter = Math.pow(10, -6);
     const JSONthing = [];
     for( let i = 0; i < buckets.length; i++){
@@ -167,6 +193,10 @@ export class GraphViewComponent implements AfterViewInit{
     }
 
     Object.assign(this, {points: JSONthing});
+    this.maxd = (maxi * shifter).toFixed(2);
+    this.mind = (mini * shifter).toFixed(2);
+    this.aved = (ave * shifter).toFixed(2);
+    this.medd = (medi * shifter).toFixed(2);
 
   }
 }
