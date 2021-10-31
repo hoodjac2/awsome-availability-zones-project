@@ -5,6 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AZDataResponse, JsonObj, AZData } from "../classes-and-interfaces/az.model";
 import { HttpClientServiceComponent } from "../http-client.service/http-client.service.component";
+import { Router, ActivatedRoute, ParamMap } from "@angular/router"
 
 /**
  * Graph view created by Wynton using ngx-charts by Swimlane
@@ -20,11 +21,21 @@ export class GraphViewComponent implements AfterViewInit{
 
   dataArray: AZData[] = []; //data pulled from database
 
-  constructor(private dbService: HttpClientServiceComponent){
+  constructor(
+    private dbService: HttpClientServiceComponent,
+    private route: ActivatedRoute){
 
   }
 
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      // transfer AZ's being graphed here
+      this.AZ1 = 'USE2-AZ2';
+      this.AZ2 = 'EUW2-AZ2';
+      // transfer the dataset here
+    });
 
+  }
 
   ngAfterViewInit(): void {
     this.dbService.getFromDB('use2-az2').subscribe( data => {
@@ -60,6 +71,7 @@ export class GraphViewComponent implements AfterViewInit{
 
     });
 
+
   }
 
   // buncha testing data
@@ -83,8 +95,8 @@ export class GraphViewComponent implements AfterViewInit{
   showXAxisLabel = true;
   xAxisLabel = 'Latency by floor (ms)';
   yAxisLabel = 'Frequency (%)';
-  AZ1 = 'USE2-AZ2';
-  AZ2 = 'EUW2-AZ2';
+  AZ1 = 'TEST1';
+  AZ2 = 'TEST2';
   mind = '0';
   maxd = '0';
   aved = '0';
