@@ -20,7 +20,13 @@
         <body>Average: {{aved}} ms<br>
           Minimum: {{mind}} ms<br>
           Maximum: {{maxd}} ms<br>
-          Median: {{medd}} ms</body>
+          Median: {{medd}} ms<br>
+          Percentiles: <br>
+          50th: {{percent50}} ms<br>
+          75th: {{percent75}} ms<br>
+          90th: {{percent90}} ms<br>
+          99th: {{percent99}} ms<br>
+        </body>
       </div>
       <div class="button-container">
         <button mat-raised-button color="primary" (click)="onClick()">SHOW LATENCIES</button>

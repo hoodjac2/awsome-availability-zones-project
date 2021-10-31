@@ -181,7 +181,10 @@ export class GraphViewComponent implements AfterViewInit{
     }
 
     //percentile calcs:
-
+    const p50index = Math.round((50/100)*total);
+    const p75index = Math.round((75/100)*total);
+    const p90index = Math.round((90/100)*total);
+    const p99index = Math.round((99/100)*total);
 
     const shifter = Math.pow(10, -6);
     const JSONthing = [];
@@ -197,6 +200,10 @@ export class GraphViewComponent implements AfterViewInit{
     this.mind = (mini * shifter).toFixed(2);
     this.aved = (ave * shifter).toFixed(2);
     this.medd = (medi * shifter).toFixed(2);
+    this.percent50 = (sortedArray[p50index].rtt * shifter).toFixed(2);
+    this.percent75 = (sortedArray[p75index].rtt * shifter).toFixed(2);
+    this.percent90 = (sortedArray[p90index].rtt * shifter).toFixed(2);
+    this.percent99 = (sortedArray[p99index].rtt * shifter).toFixed(2);
 
   }
 }
