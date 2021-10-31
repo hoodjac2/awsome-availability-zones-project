@@ -143,3 +143,8 @@ mat-card {
 .space-container {
   margin-top: 85px;
 }
+
+.toggle-container {
+  display: flex;
+  justify-content: center;
+}
