@@ -21,7 +21,14 @@ export interface Task {
 })
 export class MapViewComponent implements AfterViewInit{
     title = 'capstone-test';
-    checked = true;
+    listChecked = false;
+    mapChecked = true;
+    // Testing Checkbox filtering
+    // -----------------------------------------//
+    checkBoxChecked = false;                    //
+    checkBoxMap = new Map();                    // Map that monitors status of each checkbox
+    // -----------------------------------------//
+
     dataArray: AZData[] = [];
     filteredDataArray: AZData[] = [];
 
@@ -29,8 +36,6 @@ export class MapViewComponent implements AfterViewInit{
 
     displayedColumns: string[] = ['sourceAZ', 'destinationAZ', 'rtt', 'unixTimestamp','resolveTime'];
     filterArray : string[] = [];
-
-
 
     public fastestAZRecord: AZData = {
       rtt: 0,
@@ -50,7 +55,8 @@ export class MapViewComponent implements AfterViewInit{
     }
 
     onClick(event: any): void {
-      this.checked = !this.checked;
+      this.listChecked = !this.listChecked;
+      this.mapChecked = !this.mapChecked;
     }
 
     ngAfterViewInit(): void {
@@ -592,16 +598,33 @@ export class MapViewComponent implements AfterViewInit{
   }
 
   //CHECKBOIX HANDLERS. THERE IS PROBABLY A BETTER WAY TO DO THIS....
-  bttnCheckBox(event: unknown, filterValue: string):void{
-    if (this.filterArray.includes(filterValue)) {
-      this.filterArray.splice(this.filterArray.indexOf(filterValue));
-      this.filterGrid();
-    }
-    else {
+  bttnCheckBox(event: unknown, filterValue: string):void {
+
+    // Check to see if checkbox has been checked before
+    if (!this.checkBoxMap.has(filterValue)) {
+      this.checkBoxMap.set(filterValue, 1);
       this.filterArray.push(filterValue);
       this.filterGrid();
+    } else {
+      if (this.checkBoxMap.get(filterValue) == 1) {
+        // If the checkbox is being checked off
+        this.checkBoxMap.set(filterValue, 0);
+        this.filterArray.splice(this.filterArray.indexOf(filterValue));
+        this.filterGrid();
+      } else {
+        // If the checkbox is being checked
+/*         if (this.filterArray.includes(filterValue)) {
+          this.filterArray.splice(this.filterArray.indexOf(filterValue));
+          this.filterGrid();
+        }
+        else { */
+          this.filterArray.push(filterValue);
+          this.filterGrid();
+          this.checkBoxMap.set(filterValue, 1);
+      }
+      console.log(this.checkBoxMap.get(filterValue));
+      console.log(this.checkBoxMap.size);
     }
-    console.log(event);
   }
   /*
   bttnUSEAST1Click(event: any):void{
@@ -640,22 +663,27 @@ export class MapViewComponent implements AfterViewInit{
   } */
     filterGrid():void{
       if(this.filterArray.length === 0){
-        this.filteredDataArray = this.dataArray;
+        //this.filteredDataArray = this.dataArray;
+        this.filteredDataArray = [];
       }
       else{
       this.filteredDataArray = [];
       this.filterArray.forEach(filterValue =>
         {
           this.dataArray.forEach(data =>{
+            // Separate based on only source or only destination AZs
+            // *WORK IN PROGRESS* //
+/*
             if( data.sourceAZ === filterValue || data.destinationAZ === filterValue){
               this.filteredDataArray.push(data);
             }
-
+*/
+            if (data.sourceAZ == filterValue) {
+              this.filteredDataArray.push(data);
+            }
           });
         });
-        this.table?.renderRows();
     }
+    this.table?.renderRows();
   }
-
-
 }

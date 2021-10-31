@@ -1,4 +1,4 @@
-<mat-sidenav-container [hidden]="!checked" class="example-container">
+<mat-sidenav-container [hidden]="listChecked" class="example-container">
   <mat-sidenav opened mode="side"  class="mat-elevation-z8">
     <h2>Region Selection Panel</h2>
     <mat-divider></mat-divider>
@@ -20,8 +20,9 @@
     <div class="button-container">
     <button style="margin-top: 15%;" mat-raised-button color="warn">More Info..</button>
     </div>
-    <div class="button-container" style="padding-top: 30px;">
-      <mat-slide-toggle [checked]="checked" (click)="onClick($event)">List Component</mat-slide-toggle>
+    <div class="toggle-container" style="padding-top: 30px;">
+      <mat-slide-toggle [checked]="listChecked" (click)="onClick($event)" style="padding-right: 30px;">List View</mat-slide-toggle>
+      <mat-slide-toggle [checked]="mapChecked" (click)="onClick($event)">Map View</mat-slide-toggle>
     </div>
   </mat-sidenav>
   <div class="map-container">
@@ -33,7 +34,7 @@
 
 <!--LIST-VIEW HTML STARTS HERE-->
 
-<mat-sidenav-container [hidden]="checked" class="example-container">
+<mat-sidenav-container [hidden]="mapChecked" class="example-container">
   <mat-sidenav opened mode="side"  class="mat-elevation-z8">
     <h2>Region Selection Panel</h2>
     <mat-divider></mat-divider>
@@ -83,13 +84,10 @@
       </section>
     </mat-card>
 
-<!-- <mat-form-field style="color: white; display: flex; justify-content: center;">
-      <input matInput type="text">
-      <mat-placeholder class="placeholder">Filter</mat-placeholder>
-    </mat-form-field> -->
     <div class="space-container"></div>
-    <div class="button-container" style="padding-top: 25px;">
-        <mat-slide-toggle [checked]="checked" (click)="onClick($event)">Map Component</mat-slide-toggle>
+    <div class="toggle-container" style="padding-top: 25px;">
+        <mat-slide-toggle [checked]="listChecked" (click)="onClick($event)" style="padding-right: 30px;">List View</mat-slide-toggle>
+        <mat-slide-toggle [checked]="mapChecked" (click)="onClick($event)">Map View</mat-slide-toggle>
     </div>
 
   </mat-sidenav>
