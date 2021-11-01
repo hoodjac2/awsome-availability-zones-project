@@ -1,11 +1,17 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { Component, AfterViewInit, ViewChild } from "@angular/core";
+import { Component, AfterViewInit, ElementRef, ViewChild } from "@angular/core";
 import * as L from 'leaflet';
 import { AZData, AZDataResponse, JsonObj } from "../classes-and-interfaces/az.model";
 import { MarkerService } from '../marker.service';
 import { HttpClientServiceComponent } from "../http-client.service/http-client.service.component";
 import { MatTable } from "@angular/material/table";
 import { ThemePalette } from "@angular/material/core";
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {FormControl} from '@angular/forms';
+import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
+import {MatChipInputEvent} from '@angular/material/chips';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
 
 export interface Task {
   name: string;
@@ -27,6 +33,21 @@ export class MapViewComponent implements AfterViewInit{
     checkBoxChecked = false;                    //
     checkBoxMap = new Map();                    // Map that monitors status of each checkbox
     // -----------------------------------------//
+
+    // Tesitng Chips Element
+    // -----------------------------------------//
+    selectable = true;
+    removable = true;
+    separatorKeysCodes: number[] = [ENTER, COMMA];
+    fruitCtrl = new FormControl();
+    filteredFruits: Observable<string[]>;
+    fruits: string[] = ['US-East1 AZ 1 (us-east-1-az1)'];
+    allFruits: string[] = ['US-East1 AZ 1 (us-east-1-az1)', 'US-East2 AZ 2 (us-east-2-az-1)', 'Lime', 'Orange', 'Strawberry'];
+
+    @ViewChild('fruitInput')
+  fruitInput!: ElementRef<HTMLInputElement>;
+    // -----------------------------------------//
+
 
     dataArray: AZData[] = [];
     filteredDataArray: AZData[] = [];
@@ -50,7 +71,9 @@ export class MapViewComponent implements AfterViewInit{
     public receivingAZString = 'Select the receiving AZ Region';
     receivingCirclesLayer = L.layerGroup();
     constructor(private dbService: HttpClientServiceComponent){
-
+      this.filteredFruits = this.fruitCtrl.valueChanges.pipe(
+        startWith(null),
+        map((fruit: string | null) => fruit ? this._filter(fruit) : this.allFruits.slice()));
     }
 
     onClick(event: any): void {
@@ -683,5 +706,40 @@ export class MapViewComponent implements AfterViewInit{
         });
     }
     this.table?.renderRows();
+  }
+
+  // CHIPS //
+  add(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+
+    // Add our fruit
+    if (value) {
+      this.fruits.push(value);
+    }
+
+    // Clear the input value
+    event.chipInput!.clear();
+
+    this.fruitCtrl.setValue(null);
+  }
+
+  remove(fruit: string): void {
+    const index = this.fruits.indexOf(fruit);
+
+    if (index >= 0) {
+      this.fruits.splice(index, 1);
+    }
+  }
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    this.fruits.push(event.option.viewValue);
+    this.fruitInput.nativeElement.value = '';
+    this.fruitCtrl.setValue(null);
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.allFruits.filter(fruit => fruit.toLowerCase().includes(filterValue));
   }
 }

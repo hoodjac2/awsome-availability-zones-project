@@ -154,7 +154,6 @@ export class ListViewComponent implements OnInit{
       this.filterArray.push('use2-az2');
       this.filterGrid();
     }
-
     console.log(event);
   }
   bttnEUWEST3Click(event: any):void{
@@ -166,7 +165,6 @@ export class ListViewComponent implements OnInit{
       this.filterArray.push('euw3-az2');
       this.filterGrid();
     }
-
     console.log(event);
   } */
     filterGrid():void{
@@ -188,4 +186,3 @@ export class ListViewComponent implements OnInit{
     }
   }
 }
-
