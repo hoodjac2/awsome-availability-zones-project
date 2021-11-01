@@ -43,13 +43,18 @@ export class MapViewComponent implements AfterViewInit{
     selectable = true;
     removable = true;
     separatorKeysCodes: number[] = [ENTER, COMMA];
-    fruitCtrl = new FormControl();
-    filteredFruits: Observable<string[]>;
-    fruits: string[] = ['US-East1 AZ 1 (us-east-1-az1)'];
-    allFruits: string[] = ['US-East1 AZ 1 (us-east-1-az1)', 'US-East2 AZ 2 (us-east-2-az-1)', 'Lime', 'Orange', 'Strawberry'];
+    regionCtrl = new FormControl();
+    filteredRegions: Observable<string[]>;
+    region: string[] = ['us-east-1'];
+    allRegions: string[] = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2',
+    'af-south-1', 'ap-east-1', 'ap-south-1', 'ap-northeast-3', 'ap-northeast-2',
+    'ap-southeast-2', 'ap-northeast-1', 'ca-central-1', 'eu-central-1', 'eu-west-1',
+    'eu-west-2', 'eu-south-1', 'eu-west-3', 'eu-north-1', 'me-south-1', 'sa-east-1'];
 
-    @ViewChild('fruitInput')
-  fruitInput!: ElementRef<HTMLInputElement>;
+    @ViewChild('regionInput')
+    regionInput!: ElementRef<HTMLInputElement>;
+    formControl = new FormControl(['']);
+
     // -----------------------------------------//
 
 
@@ -78,9 +83,9 @@ export class MapViewComponent implements AfterViewInit{
     constructor(private dbService: HttpClientServiceComponent,
       //public dialog: MatDialog
       ){
-      this.filteredFruits = this.fruitCtrl.valueChanges.pipe(
+      this.filteredRegions = this.regionCtrl.valueChanges.pipe(
         startWith(null),
-        map((fruit: string | null) => fruit ? this._filter(fruit) : this.allFruits.slice()));
+        map((region: string | null) => region ? this._filter(region) : this.allRegions.slice()));
     }
 
     onClick(event: any): void {
@@ -121,6 +126,7 @@ export class MapViewComponent implements AfterViewInit{
 
       });
       this.initMap();
+
      }
 
 
@@ -626,7 +632,7 @@ export class MapViewComponent implements AfterViewInit{
   }
 
   //CHECKBOIX HANDLERS. THERE IS PROBABLY A BETTER WAY TO DO THIS....
-  bttnCheckBox(event: unknown, filterValue: string):void {
+  bttnCheckBox(filterValue: string):void {
 
     // Check to see if checkbox has been checked before
     if (!this.checkBoxMap.has(filterValue)) {
@@ -721,33 +727,33 @@ export class MapViewComponent implements AfterViewInit{
 
     // Add our fruit
     if (value) {
-      this.fruits.push(value);
+      this.region.push(value);
     }
 
     // Clear the input value
     event.chipInput!.clear();
 
-    this.fruitCtrl.setValue(null);
+    this.regionCtrl.setValue(null);
   }
 
-  remove(fruit: string): void {
-    const index = this.fruits.indexOf(fruit);
+  remove(region: string): void {
+    const index = this.region.indexOf(region);
 
     if (index >= 0) {
-      this.fruits.splice(index, 1);
+      this.region.splice(index, 1);
     }
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    this.fruits.push(event.option.viewValue);
-    this.fruitInput.nativeElement.value = '';
-    this.fruitCtrl.setValue(null);
+    this.region.push(event.option.viewValue);
+    this.regionInput.nativeElement.value = '';
+    this.regionCtrl.setValue(null);
   }
 
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 
-    return this.allFruits.filter(fruit => fruit.toLowerCase().includes(filterValue));
+    return this.allRegions.filter(region => region.toLowerCase().includes(filterValue));
   }
 
   openGraph(): void {
