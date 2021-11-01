@@ -1,11 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { Component, AfterViewInit } from "@angular/core";
+import { Component, AfterViewInit, Inject } from "@angular/core";
 import { BrowserModule } from '@angular/platform-browser';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AZDataResponse, JsonObj, AZData } from "../classes-and-interfaces/az.model";
 import { HttpClientServiceComponent } from "../http-client.service/http-client.service.component";
-import { Router, ActivatedRoute, ParamMap } from "@angular/router"
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
+export interface GraphViewData {
+  dataArray: AZData[]; //data pulled from database
+  AZ1: string;
+  AZ2: string;
+}
 
 /**
  * Graph view created by Wynton using ngx-charts by Swimlane
@@ -20,22 +26,24 @@ import { Router, ActivatedRoute, ParamMap } from "@angular/router"
 export class GraphViewComponent implements AfterViewInit{
 
   dataArray: AZData[] = []; //data pulled from database
+  AZ1 = 'TEST1';
+  AZ2 = 'TEST2';
+  mind = '0';
+  maxd = '0';
+  aved = '0';
+  medd = '0';
+  percent50 = '0';
+  percent75 = '0';
+  percent90 = '0';
+  percent99 = '0';
 
   constructor(
     private dbService: HttpClientServiceComponent,
-    private route: ActivatedRoute){
+    //@Inject (MAT_DIALOG_DATA) public data: GraphViewData
+    ){
 
   }
 
-  ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
-      // transfer AZ's being graphed here
-      this.AZ1 = 'USE2-AZ2';
-      this.AZ2 = 'EUW2-AZ2';
-      // transfer the dataset here
-    });
-
-  }
 
   ngAfterViewInit(): void {
     this.dbService.getFromDB('use2-az2').subscribe( data => {
@@ -95,16 +103,7 @@ export class GraphViewComponent implements AfterViewInit{
   showXAxisLabel = true;
   xAxisLabel = 'Latency by floor (ms)';
   yAxisLabel = 'Frequency (%)';
-  AZ1 = 'TEST1';
-  AZ2 = 'TEST2';
-  mind = '0';
-  maxd = '0';
-  aved = '0';
-  medd = '0';
-  percent50 = '0';
-  percent75 = '0';
-  percent90 = '0';
-  percent99 = '0';
+
 
   onClick(): void{
     //construct graphed Dataset
