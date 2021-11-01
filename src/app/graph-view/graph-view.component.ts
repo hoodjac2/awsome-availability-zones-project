@@ -39,7 +39,7 @@ export class GraphViewComponent implements AfterViewInit{
 
   constructor(
     private dbService: HttpClientServiceComponent,
-    @Inject (MAT_DIALOG_DATA) public data: GraphViewData
+    //@Inject (MAT_DIALOG_DATA) public data: GraphViewData
     ){
 
   }

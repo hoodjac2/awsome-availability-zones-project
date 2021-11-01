@@ -14,6 +14,8 @@ import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import { GraphViewComponent } from "../graph-view/graph-view.component";
 import { MatDialog } from "@angular/material/dialog";
+//import { GraphViewComponent } from "../graph-view/graph-view.component";
+//import { MatDialog } from "@angular/material/dialog";
 
 export interface Task {
   name: string;
@@ -73,7 +75,9 @@ export class MapViewComponent implements AfterViewInit{
     public receivingAZString = 'Select the receiving AZ Region';
     receivingCirclesLayer = L.layerGroup();
 
-    constructor(private dbService: HttpClientServiceComponent, public dialog: MatDialog){
+    constructor(private dbService: HttpClientServiceComponent,
+      //public dialog: MatDialog
+      ){
       this.filteredFruits = this.fruitCtrl.valueChanges.pipe(
         startWith(null),
         map((fruit: string | null) => fruit ? this._filter(fruit) : this.allFruits.slice()));
@@ -747,6 +751,6 @@ export class MapViewComponent implements AfterViewInit{
   }
 
   openGraph(): void {
-    const dialogRef = this.dialog.open(GraphViewComponent);
+ //   const dialogRef = this.dialog.open(GraphViewComponent);
   }
 }
