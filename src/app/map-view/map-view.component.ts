@@ -12,6 +12,8 @@ import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {MatChipInputEvent} from '@angular/material/chips';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
+import { GraphViewComponent } from "../graph-view/graph-view.component";
+import { MatDialog } from "@angular/material/dialog";
 
 export interface Task {
   name: string;
@@ -70,7 +72,8 @@ export class MapViewComponent implements AfterViewInit{
     sendingCirclesLayer = L.layerGroup();
     public receivingAZString = 'Select the receiving AZ Region';
     receivingCirclesLayer = L.layerGroup();
-    constructor(private dbService: HttpClientServiceComponent){
+
+    constructor(private dbService: HttpClientServiceComponent, public dialog: MatDialog){
       this.filteredFruits = this.fruitCtrl.valueChanges.pipe(
         startWith(null),
         map((fruit: string | null) => fruit ? this._filter(fruit) : this.allFruits.slice()));
@@ -682,28 +685,28 @@ export class MapViewComponent implements AfterViewInit{
 
     console.log(event);
   } */
-    filterGrid():void{
-      if(this.filterArray.length === 0){
-        //this.filteredDataArray = this.dataArray;
-        this.filteredDataArray = [];
-      }
-      else{
+  filterGrid():void{
+    if(this.filterArray.length === 0){
+      //this.filteredDataArray = this.dataArray;
       this.filteredDataArray = [];
-      this.filterArray.forEach(filterValue =>
-        {
-          this.dataArray.forEach(data =>{
-            // Separate based on only source or only destination AZs
-            // *WORK IN PROGRESS* //
+    }
+    else{
+    this.filteredDataArray = [];
+    this.filterArray.forEach(filterValue =>
+      {
+        this.dataArray.forEach(data =>{
+          // Separate based on only source or only destination AZs
+          // *WORK IN PROGRESS* //
 /*
-            if( data.sourceAZ === filterValue || data.destinationAZ === filterValue){
-              this.filteredDataArray.push(data);
-            }
+          if( data.sourceAZ === filterValue || data.destinationAZ === filterValue){
+            this.filteredDataArray.push(data);
+          }
 */
-            if (data.sourceAZ == filterValue) {
-              this.filteredDataArray.push(data);
-            }
-          });
+          if (data.sourceAZ == filterValue) {
+            this.filteredDataArray.push(data);
+          }
         });
+      });
     }
     this.table?.renderRows();
   }
@@ -741,5 +744,9 @@ export class MapViewComponent implements AfterViewInit{
     const filterValue = value.toLowerCase();
 
     return this.allFruits.filter(fruit => fruit.toLowerCase().includes(filterValue));
+  }
+
+  openGraph(): void {
+    const dialogRef = this.dialog.open(GraphViewComponent);
   }
 }
