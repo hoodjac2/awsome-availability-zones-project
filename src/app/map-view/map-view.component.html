@@ -1,4 +1,4 @@
-<mat-sidenav-container [hidden]="listChecked" class="example-container">
+<mat-sidenav-container [hidden]="viewChecked" class="example-container">
   <mat-sidenav opened mode="side"  class="mat-elevation-z8">
     <h2>Region Selection Panel</h2>
     <mat-divider></mat-divider>
@@ -21,8 +21,8 @@
     <button style="margin-top: 15%;" mat-raised-button color="warn">More Info..</button>
     </div>
     <div class="toggle-container" style="padding-top: 30px;">
-      <mat-slide-toggle [checked]="listChecked" (click)="onClick($event)" style="padding-right: 30px;">List View</mat-slide-toggle>
-      <mat-slide-toggle [checked]="mapChecked" (click)="onClick($event)">Map View</mat-slide-toggle>
+      <span style="padding-right:7px;padding-top:2px;">Map View</span>
+      <mat-slide-toggle [checked]="viewChecked" (click)="onClick($event)" style="padding-right: 30px;">List View</mat-slide-toggle>
     </div>
   </mat-sidenav>
   <div class="map-container">
@@ -34,7 +34,7 @@
 
 <!--LIST-VIEW HTML STARTS HERE-->
 
-<mat-sidenav-container [hidden]="mapChecked" class="example-container">
+<mat-sidenav-container [hidden]="!viewChecked" class="example-container">
   <mat-sidenav opened mode="side"  class="mat-elevation-z8">
     <h2>Region Selection Panel</h2>
     <mat-divider></mat-divider>
@@ -86,8 +86,8 @@
 
     <div class="space-container"></div>
     <div class="toggle-container" style="padding-top: 25px;">
-        <mat-slide-toggle [checked]="listChecked" (click)="onClick($event)" style="padding-right: 30px;">List View</mat-slide-toggle>
-        <mat-slide-toggle [checked]="mapChecked" (click)="onClick($event)">Map View</mat-slide-toggle>
+      <span style="padding-right:7px;padding-top:2px;">Map View</span>
+      <mat-slide-toggle [checked]="viewChecked" (click)="onClick($event)" style="padding-right: 30px;">List View</mat-slide-toggle>
     </div>
 
   </mat-sidenav>
