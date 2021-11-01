@@ -27,6 +27,7 @@ import { MatIconModule} from '@angular/material/icon'
 import {MatCardModule} from '@angular/material/card';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { GraphViewComponent } from './graph-view/graph-view.component';
+import { MatDialogModule } from '@angular/material/dialog';
 @NgModule({
   imports: [
     BrowserModule,
@@ -56,6 +57,7 @@ import { GraphViewComponent } from './graph-view/graph-view.component';
     MatInputModule,
     MatDividerModule,
     MatAutocompleteModule,
+    MatDialogModule,
     MatIconModule,
     MatCardModule,
     NgxChartsModule
