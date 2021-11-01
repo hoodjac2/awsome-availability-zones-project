@@ -141,10 +141,22 @@ mat-card {
 }
 
 .space-container {
-  margin-top: 85px;
+  margin-top: 26px;
 }
 
 .toggle-container {
   display: flex;
   justify-content: center;
+}
+
+.example-chip-list {
+  width: 100%;
+}
+
+::ng-deep.mat-tab-label {
+  color: white;
+}
+
+::placeholder {
+  color: white;
 }

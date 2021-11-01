@@ -1,13 +1,21 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { Component, AfterViewInit, ViewChild } from "@angular/core";
+import { Component, AfterViewInit, ElementRef, ViewChild } from "@angular/core";
 import * as L from 'leaflet';
 import { AZData, AZDataResponse, JsonObj } from "../classes-and-interfaces/az.model";
 import { MarkerService } from '../marker.service';
 import { HttpClientServiceComponent } from "../http-client.service/http-client.service.component";
 import { MatTable } from "@angular/material/table";
 import { ThemePalette } from "@angular/material/core";
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {FormControl} from '@angular/forms';
+import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
+import {MatChipInputEvent} from '@angular/material/chips';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
 import { GraphViewComponent } from "../graph-view/graph-view.component";
 import { MatDialog } from "@angular/material/dialog";
+//import { GraphViewComponent } from "../graph-view/graph-view.component";
+//import { MatDialog } from "@angular/material/dialog";
 
 export interface Task {
   name: string;
@@ -30,6 +38,26 @@ export class MapViewComponent implements AfterViewInit{
     checkBoxMap = new Map();                    // Map that monitors status of each checkbox
     // -----------------------------------------//
 
+    // Tesitng Chips Element
+    // -----------------------------------------//
+    selectable = true;
+    removable = true;
+    separatorKeysCodes: number[] = [ENTER, COMMA];
+    regionCtrl = new FormControl();
+    filteredRegions: Observable<string[]>;
+    region: string[] = ['us-east-1'];
+    allRegions: string[] = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2',
+    'af-south-1', 'ap-east-1', 'ap-south-1', 'ap-northeast-3', 'ap-northeast-2',
+    'ap-southeast-2', 'ap-northeast-1', 'ca-central-1', 'eu-central-1', 'eu-west-1',
+    'eu-west-2', 'eu-south-1', 'eu-west-3', 'eu-north-1', 'me-south-1', 'sa-east-1'];
+
+    @ViewChild('regionInput')
+    regionInput!: ElementRef<HTMLInputElement>;
+    formControl = new FormControl(['']);
+
+    // -----------------------------------------//
+
+
     dataArray: AZData[] = [];
     filteredDataArray: AZData[] = [];
 
@@ -51,10 +79,14 @@ export class MapViewComponent implements AfterViewInit{
     sendingCirclesLayer = L.layerGroup();
     public receivingAZString = 'Select the receiving AZ Region';
     receivingCirclesLayer = L.layerGroup();
+
     constructor(private dbService: HttpClientServiceComponent,
+      //public dialog: MatDialog
       public dialog: MatDialog
       ){
-
+      this.filteredRegions = this.regionCtrl.valueChanges.pipe(
+        startWith(null),
+        map((region: string | null) => region ? this._filter(region) : this.allRegions.slice()));
     }
 
     onClick(event: any): void {
@@ -95,6 +127,7 @@ export class MapViewComponent implements AfterViewInit{
 
       });
       this.initMap();
+
      }
 
 
@@ -600,7 +633,7 @@ export class MapViewComponent implements AfterViewInit{
   }
 
   //CHECKBOIX HANDLERS. THERE IS PROBABLY A BETTER WAY TO DO THIS....
-  bttnCheckBox(event: unknown, filterValue: string):void {
+  bttnCheckBox(filterValue: string):void {
 
     // Check to see if checkbox has been checked before
     if (!this.checkBoxMap.has(filterValue)) {
@@ -687,6 +720,41 @@ export class MapViewComponent implements AfterViewInit{
       });
     }
     this.table?.renderRows();
+  }
+
+  // CHIPS //
+  add(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+
+    // Add our fruit
+    if (value) {
+      this.region.push(value);
+    }
+
+    // Clear the input value
+    event.chipInput!.clear();
+
+    this.regionCtrl.setValue(null);
+  }
+
+  remove(region: string): void {
+    const index = this.region.indexOf(region);
+
+    if (index >= 0) {
+      this.region.splice(index, 1);
+    }
+  }
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    this.region.push(event.option.viewValue);
+    this.regionInput.nativeElement.value = '';
+    this.regionCtrl.setValue(null);
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.allRegions.filter(region => region.toLowerCase().includes(filterValue));
   }
 
   openGraph(): void {

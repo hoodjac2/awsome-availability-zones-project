@@ -38,52 +38,41 @@
   <mat-sidenav opened mode="side"  class="mat-elevation-z8">
     <h2>Region Selection Panel</h2>
     <mat-divider></mat-divider>
-    <mat-card>
-    <section class="checkbox-section-list">
-        <mat-checkbox (change)="bttnCheckBox($event, 'use1-az2')" class="checkbox-margin-list">us-east-1</mat-checkbox>
-        <mat-checkbox (change)="bttnCheckBox($event, 'use2-az2')" class="checkbox-margin-list">us-east-2</mat-checkbox>
-      </section>
-      <section class="checkbox-section-list">
-        <mat-checkbox (change)="bttnClick($event)"  class="checkbox-margin-list">us-west-1</mat-checkbox>
-        <mat-checkbox (change)="bttnClick($event)"  class="checkbox-margin-list">us-west-2</mat-checkbox>
-      </section>
-      <section class="checkbox-section-list">
-        <mat-checkbox (change)="bttnClick($event)"  class="checkbox-margin-list">af-south-1</mat-checkbox>
-        <mat-checkbox (change)="bttnClick($event)"  class="checkbox-margin-list">ap-east-1</mat-checkbox>
-      </section>
-      <section class="checkbox-section-list">
-        <mat-checkbox (change)="bttnClick($event)"  class="checkbox-margin-list">ap-south-1</mat-checkbox>
-        <mat-checkbox (change)="bttnClick($event)"  class="checkbox-margin-list">ap-northeast-3</mat-checkbox>
-      </section>
-      <section class="checkbox-section-list">
-        <mat-checkbox (change)="bttnClick($event)"  class="checkbox-margin-list">ap-northeast-2</mat-checkbox>
-        <mat-checkbox (change)="bttnClick($event)"  class="checkbox-margin-list">ap-southeast-2</mat-checkbox>
-      </section>
-      <section class="checkbox-section-list">
-        <mat-checkbox (change)="bttnClick($event)"  class="checkbox-margin-list">ap-southeast-1</mat-checkbox>
-        <mat-checkbox (change)="bttnClick($event)"  class="checkbox-margin-list">ap-northeast-1</mat-checkbox>
-      </section>
-      <section class="checkbox-section-list">
-        <mat-checkbox (change)="bttnClick($event)"  class="checkbox-margin-list">ca-central-1</mat-checkbox>
-      </section>
-      <section class="checkbox-section-list">
-        <mat-checkbox (change)="bttnClick($event)"  class="checkbox-margin-list">eu-central-1</mat-checkbox>
-        <mat-checkbox (change)="bttnClick($event)"  class="checkbox-margin-list">eu-west-1</mat-checkbox>
-      </section>
-      <section class="checkbox-section-list">
-        <mat-checkbox (change)="bttnClick($event)"  class="checkbox-margin-list">eu-west-2</mat-checkbox>
-        <mat-checkbox (change)="bttnClick($event)"  class="checkbox-margin-list">eu-south-1</mat-checkbox>
-      </section>
-      <section class="checkbox-section-list">
-        <mat-checkbox (change)="bttnCheckBox($event, 'euw3-az2')" class="checkbox-margin-list">eu-west-3</mat-checkbox>
-        <mat-checkbox (change)="bttnClick($event)"  class="checkbox-margin-list">eu-north-1</mat-checkbox>
-      </section>
-      <section class="checkbox-section-list">
-        <mat-checkbox (change)="bttnClick($event)"  class="checkbox-margin-list">me-south-1</mat-checkbox>
-        <mat-checkbox (change)="bttnClick($event)"  class="checkbox-margin-list">sa-east-1</mat-checkbox>
-      </section>
-    </mat-card>
+    <mat-tab-group>
+      <mat-tab label="Chips">
 
+      <mat-form-field class="example-chip-list" appearance="fill">
+        <mat-label style="color: white;">Source AZ</mat-label>
+        <mat-chip-list #chipList aria-label="Region selection">
+          <mat-chip
+            *ngFor="let item of region"
+            [selectable]="selectable"
+            [removable]="removable"
+            (removed)="remove(item)">
+            {{item}}
+            <button matChipRemove *ngIf="removable">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip>
+          <input
+            placeholder="Add AZs..."
+            #fruitInput
+            [formControl]="regionCtrl"
+            [matAutocomplete]="auto"
+            [matChipInputFor]="chipList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            (matChipInputTokenEnd)="add($event)">
+        </mat-chip-list>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+          <mat-option *ngFor="let region of filteredRegions | async" [value]="region">
+            {{region}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      </mat-tab>
+      <mat-tab label="CheckBox">
+      </mat-tab>
+    </mat-tab-group>
     <div class="space-container"></div>
     <div class="toggle-container" style="padding-top: 25px;">
       <span style="padding-right:7px;padding-top:2px;">Map View</span>
