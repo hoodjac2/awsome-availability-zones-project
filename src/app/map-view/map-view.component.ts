@@ -21,8 +21,7 @@ export interface Task {
 })
 export class MapViewComponent implements AfterViewInit{
     title = 'capstone-test';
-    listChecked = false;
-    mapChecked = true;
+    viewChecked = false;
     // Testing Checkbox filtering
     // -----------------------------------------//
     checkBoxChecked = false;                    //
@@ -55,8 +54,7 @@ export class MapViewComponent implements AfterViewInit{
     }
 
     onClick(event: any): void {
-      this.listChecked = !this.listChecked;
-      this.mapChecked = !this.mapChecked;
+      this.viewChecked = !this.viewChecked;
     }
 
     ngAfterViewInit(): void {
