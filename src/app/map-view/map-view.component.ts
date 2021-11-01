@@ -6,8 +6,8 @@ import { MarkerService } from '../marker.service';
 import { HttpClientServiceComponent } from "../http-client.service/http-client.service.component";
 import { MatTable } from "@angular/material/table";
 import { ThemePalette } from "@angular/material/core";
-import { GraphViewComponent } from "../graph-view/graph-view.component";
-import { MatDialog } from "@angular/material/dialog";
+//import { GraphViewComponent } from "../graph-view/graph-view.component";
+//import { MatDialog } from "@angular/material/dialog";
 
 export interface Task {
   name: string;
@@ -52,7 +52,8 @@ export class MapViewComponent implements AfterViewInit{
     public receivingAZString = 'Select the receiving AZ Region';
     receivingCirclesLayer = L.layerGroup();
     constructor(private dbService: HttpClientServiceComponent,
-      public dialog: MatDialog){
+     // public dialog: MatDialog
+      ){
 
     }
 
@@ -689,6 +690,6 @@ export class MapViewComponent implements AfterViewInit{
   }
 
   openGraph(): void {
-    const dialogRef = this.dialog.open(GraphViewComponent);
+ //   const dialogRef = this.dialog.open(GraphViewComponent);
   }
 }
