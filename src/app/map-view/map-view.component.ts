@@ -6,6 +6,8 @@ import { MarkerService } from '../marker.service';
 import { HttpClientServiceComponent } from "../http-client.service/http-client.service.component";
 import { MatTable } from "@angular/material/table";
 import { ThemePalette } from "@angular/material/core";
+import { GraphViewComponent } from "../graph-view/graph-view.component";
+import { MatDialog } from "@angular/material/dialog";
 
 export interface Task {
   name: string;
@@ -49,7 +51,8 @@ export class MapViewComponent implements AfterViewInit{
     sendingCirclesLayer = L.layerGroup();
     public receivingAZString = 'Select the receiving AZ Region';
     receivingCirclesLayer = L.layerGroup();
-    constructor(private dbService: HttpClientServiceComponent){
+    constructor(private dbService: HttpClientServiceComponent,
+      public dialog: MatDialog){
 
     }
 
@@ -659,29 +662,33 @@ export class MapViewComponent implements AfterViewInit{
 
     console.log(event);
   } */
-    filterGrid():void{
-      if(this.filterArray.length === 0){
-        //this.filteredDataArray = this.dataArray;
-        this.filteredDataArray = [];
-      }
-      else{
+  filterGrid():void{
+    if(this.filterArray.length === 0){
+      //this.filteredDataArray = this.dataArray;
       this.filteredDataArray = [];
-      this.filterArray.forEach(filterValue =>
-        {
-          this.dataArray.forEach(data =>{
-            // Separate based on only source or only destination AZs
-            // *WORK IN PROGRESS* //
+    }
+    else{
+    this.filteredDataArray = [];
+    this.filterArray.forEach(filterValue =>
+      {
+        this.dataArray.forEach(data =>{
+          // Separate based on only source or only destination AZs
+          // *WORK IN PROGRESS* //
 /*
-            if( data.sourceAZ === filterValue || data.destinationAZ === filterValue){
-              this.filteredDataArray.push(data);
-            }
+          if( data.sourceAZ === filterValue || data.destinationAZ === filterValue){
+            this.filteredDataArray.push(data);
+          }
 */
-            if (data.sourceAZ == filterValue) {
-              this.filteredDataArray.push(data);
-            }
-          });
+          if (data.sourceAZ == filterValue) {
+            this.filteredDataArray.push(data);
+          }
         });
+      });
     }
     this.table?.renderRows();
+  }
+
+  openGraph(): void {
+    const dialogRef = this.dialog.open(GraphViewComponent);
   }
 }
