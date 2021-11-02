@@ -39,45 +39,50 @@ export class GraphViewComponent implements AfterViewInit{
 
   constructor(
     private dbService: HttpClientServiceComponent,
-    //@Inject (MAT_DIALOG_DATA) public data: GraphViewData
+    @Inject (MAT_DIALOG_DATA) public data: GraphViewData
     ){
-
   }
 
+  ngOnInit(): void{
+    this.AZ1 = this.data.AZ1;
+    this.AZ2 = this.data.AZ2;
+    this.dataArray = this.data.dataArray;
+  }
 
   ngAfterViewInit(): void {
-    this.dbService.getFromDB('use2-az2').subscribe( data => {
-      data.Items.forEach((azRecord: AZDataResponse) => {
-        //--------------------------------------------------------
-        //These two fields can be undefined in the alpha DB
-        if(azRecord.handshakeTime === undefined){
-          const set : JsonObj = {
-            S: '',
-            N: 0
-          };
-          azRecord.handshakeTime = set;
-        }
-        if(azRecord.resolveTime === undefined){
-          const set : JsonObj = {
-            S: '',
-            N: 0
-          };
-          azRecord.resolveTime = set;
-        }
-        // Probably remove above later
-        //-----------------------------------------
-        const azRecordReturn: AZData = {
-          destinationAZ: azRecord.destinationAZ.S,
-          rtt: Number(azRecord.rtt.N),
-          unixTimestamp: Number(azRecord.unixTimestamp.N),
-          handshakeTime: Number(azRecord.handshakeTime.N),
-          sourceAZ: azRecord.sourceAZ.S,
-          resolveTime: Number(azRecord.resolveTime.N)
-        }
-        this.dataArray.push(azRecordReturn);
-      });
+    // this.dbService.getFromDB('use2-az2').subscribe( data => {
+    //   data.Items.forEach((azRecord: AZDataResponse) => {
+    //     //--------------------------------------------------------
+    //     //These two fields can be undefined in the alpha DB
+    //     if(azRecord.handshakeTime === undefined){
+    //       const set : JsonObj = {
+    //         S: '',
+    //         N: 0
+    //       };
+    //       azRecord.handshakeTime = set;
+    //     }
+    //     if(azRecord.resolveTime === undefined){
+    //       const set : JsonObj = {
+    //         S: '',
+    //         N: 0
+    //       };
+    //       azRecord.resolveTime = set;
+    //     }
+    //     // Probably remove above later
+    //     //-----------------------------------------
+    //     const azRecordReturn: AZData = {
+    //       destinationAZ: azRecord.destinationAZ.S,
+    //       rtt: Number(azRecord.rtt.N),
+    //       unixTimestamp: Number(azRecord.unixTimestamp.N),
+    //       handshakeTime: Number(azRecord.handshakeTime.N),
+    //       sourceAZ: azRecord.sourceAZ.S,
+    //       resolveTime: Number(azRecord.resolveTime.N)
+    //     }
+    //     this.dataArray.push(azRecordReturn);
+    //   });
 
-    });
+    // });
+    this.graphDataFormatting();
 
 
   }
