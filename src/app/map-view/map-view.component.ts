@@ -597,6 +597,12 @@ export class MapViewComponent implements AfterViewInit{
       });
       this.fastestAZRecord = fastestRecord;
     }
+    toggleOverlay(): void {
+      const doc = document.getElementById("overlay");
+      if (doc){
+        doc.style.display = "none";
+      }
+    }
 
     // LIST VIEW HAPPENS BELOW! BEWARE
 
