@@ -24,6 +24,11 @@ export interface Task {
   subtasks?: Task[];
 }
 
+export interface regionObj {
+  name: string;
+  id: string;
+}
+
 @Component({
   selector: 'map-view',
   templateUrl: './map-view.component.html',
@@ -584,9 +589,6 @@ export class MapViewComponent implements AfterViewInit{
       this.fastestAZRecord = fastestRecord;
     }
 
-
-
-
     // LIST VIEW HAPPENS BELOW! BEWARE
 
   bttnClick(event: any):void{
@@ -632,70 +634,6 @@ export class MapViewComponent implements AfterViewInit{
     this.task.subtasks.forEach(t => t.completed = completed);
   }
 
-  //CHECKBOIX HANDLERS. THERE IS PROBABLY A BETTER WAY TO DO THIS....
-  bttnCheckBox(filterValue: string):void {
-
-    // Check to see if checkbox has been checked before
-    if (!this.checkBoxMap.has(filterValue)) {
-      this.checkBoxMap.set(filterValue, 1);
-      this.filterArray.push(filterValue);
-      this.filterGrid();
-    } else {
-      if (this.checkBoxMap.get(filterValue) == 1) {
-        // If the checkbox is being checked off
-        this.checkBoxMap.set(filterValue, 0);
-        this.filterArray.splice(this.filterArray.indexOf(filterValue));
-        this.filterGrid();
-      } else {
-        // If the checkbox is being checked
-/*         if (this.filterArray.includes(filterValue)) {
-          this.filterArray.splice(this.filterArray.indexOf(filterValue));
-          this.filterGrid();
-        }
-        else { */
-          this.filterArray.push(filterValue);
-          this.filterGrid();
-          this.checkBoxMap.set(filterValue, 1);
-      }
-      console.log(this.checkBoxMap.get(filterValue));
-      console.log(this.checkBoxMap.size);
-    }
-  }
-  /*
-  bttnUSEAST1Click(event: any):void{
-    if(this.filterArray.includes('use1-az2')){
-      this.filterArray.splice(this.filterArray.indexOf('use1-az2'));
-      this.filterGrid();
-    }
-    else{
-      this.filterArray.push('use1-az2');
-      this.filterGrid();
-    }
-  }
-  bttnUSEAST2Click(event: any):void{
-     if(this.filterArray.includes('use2-az2')){
-      this.filterArray.splice(this.filterArray.indexOf('use2-az2'));
-      this.filterGrid();
-    }
-    else{
-      this.filterArray.push('use2-az2');
-      this.filterGrid();
-    }
-
-    console.log(event);
-  }
-  bttnEUWEST3Click(event: any):void{
-    if(this.filterArray.includes('euw3-az2')){
-      this.filterArray.splice(this.filterArray.indexOf('euw3-az2'));
-      this.filterGrid();
-    }
-    else{
-      this.filterArray.push('euw3-az2');
-      this.filterGrid();
-    }
-
-    console.log(event);
-  } */
   filterGrid():void{
     if(this.filterArray.length === 0){
       //this.filteredDataArray = this.dataArray;
@@ -728,13 +666,14 @@ export class MapViewComponent implements AfterViewInit{
 
     // Add our fruit
     if (value) {
-      this.region.push(value);
+      this.filterArray.push(value);
     }
 
     // Clear the input value
     event.chipInput!.clear();
 
     this.regionCtrl.setValue(null);
+    this.table?.renderRows();
   }
 
   remove(region: string): void {
@@ -743,6 +682,8 @@ export class MapViewComponent implements AfterViewInit{
     if (index >= 0) {
       this.region.splice(index, 1);
     }
+
+    this.table?.renderRows();
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
