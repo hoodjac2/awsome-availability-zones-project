@@ -675,7 +675,7 @@ export class MapViewComponent implements AfterViewInit{
 
     // Add our fruit
     if (value) {
-      this.filterArray.push(value);
+      this.region.push(value);
     }
 
     // Clear the input value
