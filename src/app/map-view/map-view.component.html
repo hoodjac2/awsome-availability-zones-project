@@ -18,7 +18,7 @@
         <span *ngIf="this.fastestAZRecord.sourceAZ">{{this.fastestAZRecord.sourceAZ}} to {{this.fastestAZRecord.destinationAZ}} at {{this.fastestAZRecord.rtt}}ns</span>
     </mat-card>
     <div class="button-container">
-    <button style="margin-top: 15%;" mat-raised-button color="warn">More Info..</button>
+    <button style="margin-top: 15%;" mat-raised-button color="warn" (click)="openGraph()">More Info..</button>
     </div>
     <div class="toggle-container" style="padding-top: 30px;">
       <span style="padding-right:7px;padding-top:2px;">Map View</span>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Component, AfterViewInit, ElementRef, ViewChild } from "@angular/core";
 import * as L from 'leaflet';
@@ -50,6 +51,7 @@ export class MapViewComponent implements AfterViewInit{
     separatorKeysCodes: number[] = [ENTER, COMMA];
     regionCtrl = new FormControl();
     filteredRegions: Observable<string[]>;
+    allAZIDs : string[] = [];
     region: string[] = ['us-east-1'];
     allRegions: string[] = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2',
     'af-south-1', 'ap-east-1', 'ap-south-1', 'ap-northeast-3', 'ap-northeast-2',
@@ -94,7 +96,7 @@ export class MapViewComponent implements AfterViewInit{
         map((region: string | null) => region ? this._filter(region) : this.allRegions.slice()));
     }
 
-    onClick(event: any): void {
+    onClick(_event: any): void {
       this.viewChecked = !this.viewChecked;
     }
 
@@ -131,6 +133,13 @@ export class MapViewComponent implements AfterViewInit{
         });
 
       });
+
+      // this.dbService.loadAZNames().subscribe( result =>{
+      //   result.forEach((azCall: { body: string[]; }) => {
+      //     console.log(azCall.body);
+      //   });
+
+      // });
       this.initMap();
 
      }
@@ -150,7 +159,7 @@ export class MapViewComponent implements AfterViewInit{
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     });
 
-    this.map.on('click', (e: L.LeafletEvent) => {
+    this.map.on('click', (_e: L.LeafletEvent) => {
       this.sendingAZString = 'Select the sending AZ Region';
       this.receivingAZString = 'Select the receiving AZ Region';
       this.removeSelectionCircles();
@@ -700,10 +709,11 @@ export class MapViewComponent implements AfterViewInit{
 
   openGraph(): void {
     const dialogRef = this.dialog.open(GraphViewComponent, {
+      width: '950px',
       data: {
         dataArray: this.dataArray,
-        AZ1: 'MAPTEST',
-        AZ2: 'MAPTEST'
+        AZ1: 'MAPTEST1',
+        AZ2: 'MAPTEST2'
       }
     });
   }
