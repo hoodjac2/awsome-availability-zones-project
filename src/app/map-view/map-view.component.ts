@@ -769,6 +769,7 @@ export class MapViewComponent implements AfterViewInit{
   openGraph(): void {
     const dialogRef = this.dialog.open(GraphViewComponent, {
       width: '950px',
+      height: '725px',
       data: {
         dataArray: this.dataArray,
         AZ1: 'MAPTEST1',

@@ -23,7 +23,7 @@ export interface GraphViewData {
   templateUrl: './graph-view.component.html',
   styleUrls: ['./graph-view.component.css']
 })
-export class GraphViewComponent implements AfterViewInit{
+export class GraphViewComponent{
 
   dataArray: AZData[] = []; //data pulled from database
   AZ1 = 'TEST1';
@@ -47,45 +47,46 @@ export class GraphViewComponent implements AfterViewInit{
     this.AZ1 = this.data.AZ1;
     this.AZ2 = this.data.AZ2;
     this.dataArray = this.data.dataArray;
-  }
-
-  ngAfterViewInit(): void {
-    // this.dbService.getFromDB('use2-az2').subscribe( data => {
-    //   data.Items.forEach((azRecord: AZDataResponse) => {
-    //     //--------------------------------------------------------
-    //     //These two fields can be undefined in the alpha DB
-    //     if(azRecord.handshakeTime === undefined){
-    //       const set : JsonObj = {
-    //         S: '',
-    //         N: 0
-    //       };
-    //       azRecord.handshakeTime = set;
-    //     }
-    //     if(azRecord.resolveTime === undefined){
-    //       const set : JsonObj = {
-    //         S: '',
-    //         N: 0
-    //       };
-    //       azRecord.resolveTime = set;
-    //     }
-    //     // Probably remove above later
-    //     //-----------------------------------------
-    //     const azRecordReturn: AZData = {
-    //       destinationAZ: azRecord.destinationAZ.S,
-    //       rtt: Number(azRecord.rtt.N),
-    //       unixTimestamp: Number(azRecord.unixTimestamp.N),
-    //       handshakeTime: Number(azRecord.handshakeTime.N),
-    //       sourceAZ: azRecord.sourceAZ.S,
-    //       resolveTime: Number(azRecord.resolveTime.N)
-    //     }
-    //     this.dataArray.push(azRecordReturn);
-    //   });
-
-    // });
     this.graphDataFormatting();
-
-
   }
+
+  // ngAfterViewInit(): void {
+  //   // this.dbService.getFromDB('use2-az2').subscribe( data => {
+  //   //   data.Items.forEach((azRecord: AZDataResponse) => {
+  //   //     //--------------------------------------------------------
+  //   //     //These two fields can be undefined in the alpha DB
+  //   //     if(azRecord.handshakeTime === undefined){
+  //   //       const set : JsonObj = {
+  //   //         S: '',
+  //   //         N: 0
+  //   //       };
+  //   //       azRecord.handshakeTime = set;
+  //   //     }
+  //   //     if(azRecord.resolveTime === undefined){
+  //   //       const set : JsonObj = {
+  //   //         S: '',
+  //   //         N: 0
+  //   //       };
+  //   //       azRecord.resolveTime = set;
+  //   //     }
+  //   //     // Probably remove above later
+  //   //     //-----------------------------------------
+  //   //     const azRecordReturn: AZData = {
+  //   //       destinationAZ: azRecord.destinationAZ.S,
+  //   //       rtt: Number(azRecord.rtt.N),
+  //   //       unixTimestamp: Number(azRecord.unixTimestamp.N),
+  //   //       handshakeTime: Number(azRecord.handshakeTime.N),
+  //   //       sourceAZ: azRecord.sourceAZ.S,
+  //   //       resolveTime: Number(azRecord.resolveTime.N)
+  //   //     }
+  //   //     this.dataArray.push(azRecordReturn);
+  //   //   });
+
+  //   // });
+
+
+
+  // }
 
   // buncha testing data
   points = [
@@ -197,10 +198,10 @@ export class GraphViewComponent implements AfterViewInit{
     }
 
     //percentile calcs:
-    const p50index = Math.round((50/100)*total);
-    const p75index = Math.round((75/100)*total);
-    const p90index = Math.round((90/100)*total);
-    const p99index = Math.round((99/100)*total);
+    const p50index = Math.ceil((50/100)*total);
+    const p75index = Math.ceil((75/100)*total);
+    const p90index = Math.ceil((90/100)*total);
+    const p99index = Math.ceil((99/100)*total);
 
     const shifter = Math.pow(10, -6);
     const JSONthing = [];
