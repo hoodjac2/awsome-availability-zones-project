@@ -1,5 +1,5 @@
 <h1 mat-dialog-title>Latency of {{AZ1}} to {{AZ2}}</h1>
-<div mat-dialog-content>
+<div mat-dialog-content style="height: 100%;">
 
   <div class="graph-container">
     <div class="graph">
@@ -15,20 +15,23 @@
         [results]="points"
         >
       </ngx-charts-bar-vertical>
-      <div class="statbox">
+      <mat-card class="statbox">
         <!-- Stats that might matter to display in a text box:
         Minimum, Maximum, Median and Average-->
-        <body>Average: {{aved}} ms<br>
-          Minimum: {{mind}} ms<br>
-          Maximum: {{maxd}} ms<br>
-          Median: {{medd}} ms<br>
-          Percentiles: <br>
-          50th: {{percent50}} ms<br>
-          75th: {{percent75}} ms<br>
-          90th: {{percent90}} ms<br>
-          99th: {{percent99}} ms<br>
-        </body>
-      </div>
+        <p><b>Percentiles:</b><br>
+        50th: {{percent50}} ms<br>
+        75th: {{percent75}} ms<br>
+        90th: {{percent90}} ms<br>
+        99th: {{percent99}} ms<br></p>
+      </mat-card>
+      <mat-card class="statbox">
+        <p>
+          <b>Average:</b> {{aved}} ms<br>
+          <b>Minimum:</b> {{mind}} ms<br>
+          <b>Maximum:</b> {{maxd}} ms<br>
+          <b>Median:</b> {{medd}} ms<br>
+        </p>
+      </mat-card>
       <!-- <div class="button-container">
         <button mat-raised-button color="primary" (click)="onClick()">SHOW LATENCIES</button>
       </div> -->
