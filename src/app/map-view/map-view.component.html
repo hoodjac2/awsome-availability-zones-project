@@ -1,5 +1,26 @@
 <div class="overlay" id="overlay" (click)="this.toggleOverlay()">
-<div class="overlay-text"> Welcome to the AWSome Availibility Zones Project!</div>
+  <div class="overlay-text-background">
+    <div class="overlay-text"> Welcome to the AWSome Availibility Zones Project!
+      <div class="overlay-sub-text">
+        Our AWSome Availability Zones web application continuously
+        and automatically measures the delay between Availability Zones,
+        allowing Amazon Web Services customers to easily choose the
+        fastest Availability Zones for their application, saving them time
+        and money.
+      </div>
+      <div class="overlay-sub-text">
+        AWSome Availability Zones provides customers with an easy
+        to-understand visualization of the delay between Availability Zones
+        using an interactive map with a familiar look and feel.
+      </div>
+      <div class="overlay-sub-text">
+        Experienced Amazon Web Services customers can opt to use
+        our AWSome Availability Zones system to explore more detailed
+        views of the network latency data, allowing them to answer specific
+        questions they have, quickly and seamlessly
+      </div>
+    </div>
+  </div>
 </div>
 
 <mat-sidenav-container [hidden]="viewChecked" class="example-container">
