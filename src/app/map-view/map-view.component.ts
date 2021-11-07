@@ -119,39 +119,6 @@ export class MapViewComponent implements AfterViewInit{
     }
 
     ngAfterViewInit(): void {
-      this.dbService.getFromDB('use2-az2').subscribe( data => {
-        data.Items.forEach((azRecord: AZDataResponse) => {
-          //--------------------------------------------------------
-          //These two fields can be undefined in the alpha DB
-          if(azRecord.handshakeTime === undefined){
-            const set : JsonObj = {
-              S: '',
-              N: 0
-            };
-            azRecord.handshakeTime = set;
-          }
-          if(azRecord.resolveTime === undefined){
-            const set : JsonObj = {
-              S: '',
-              N: 0
-            };
-            azRecord.resolveTime = set;
-          }
-          // Probably remove above later
-          //-----------------------------------------
-          const azRecordReturn: AZData = {
-            destinationAZ: azRecord.destinationAZ.S,
-            rtt: Number(azRecord.rtt.N),
-            unixTimestamp: Number(azRecord.unixTimestamp.N),
-            handshakeTime: Number(azRecord.handshakeTime.N),
-            sourceAZ: azRecord.sourceAZ.S,
-            resolveTime: Number(azRecord.resolveTime.N)
-          }
-          this.dataArray.push(azRecordReturn);
-        });
-
-      });
-
       // Initialize data arrays
       this.dbService.loadAZNames().subscribe( result =>{
         result.forEach((azCall: { body: string[]; }) => {
@@ -233,6 +200,31 @@ export class MapViewComponent implements AfterViewInit{
     }
 
 
+    private regionCircleEventHandler(regionString: string, e: L.LeafletEvent, azNames: string[]){
+      if(this.sendingAZString === 'Select the sending AZ Region' ){
+        this.sendingAZString = regionString;
+        this.createSendingCircles(e.sourceTarget._latlng);
+        this.findFastestAZ();
+
+        //TODO: LOAD DATA INTO AN ARRAY
+        this.dbService.getRecordsFromDB(azNames).subscribe(
+          data => {
+            data.forEach((record: any) => {
+              console.log(record);
+            });
+          }
+        );
+      }
+      else{
+        if(this.receivingAZString !== 'Select the sending AZ Region' ){
+          this.receivingCirclesLayer.remove();
+        }
+        this.receivingAZString = regionString;
+        this.createReceivingCircles(e.sourceTarget._latlng);
+        this.findFastestAZ();
+      }
+    }
+
     private getRegionMarkers(): void{
         //Virginia
         const virginia = L.circle([38.262715, -78.205075], {
@@ -242,16 +234,7 @@ export class MapViewComponent implements AfterViewInit{
           radius: 187500
         })
         .on('click', (e) => {
-          if(this.sendingAZString === 'Select the sending AZ Region' ){
-            this.sendingAZString ='us-east-1';
-            this.createSendingCircles(e.sourceTarget._latlng);
-            this.findFastestAZ();
-          }
-          else{
-            this.receivingAZString = 'us-east-1';
-            this.createReceivingCircles(e.sourceTarget._latlng);
-            this.findFastestAZ();
-          }
+          this.regionCircleEventHandler('us-east-1', e, this.use1);
         }).bindPopup("<h5>US East 1</h5> Number of AZs: " + this.use1.length);
 
         //Ohio
@@ -262,17 +245,7 @@ export class MapViewComponent implements AfterViewInit{
           radius: 187500
         })
         .on('click', (e) => {
-          if(this.sendingAZString === 'Select the sending AZ Region' ){
-            this.sendingAZString ='us-east-2';
-            this.createSendingCircles(e.sourceTarget._latlng);
-            this.findFastestAZ();
-          }
-          else{
-            this.receivingAZString = 'us-east-2';
-            this.createReceivingCircles(e.sourceTarget._latlng);
-            this.findFastestAZ();
-          }
-
+          this.regionCircleEventHandler('us-east-2', e, this.use2);
         }).bindPopup("<h5>US East 2</h5> Number of AZs: " + this.use2.length);
 
         //North California
@@ -283,16 +256,7 @@ export class MapViewComponent implements AfterViewInit{
           radius: 187500
         })
         .on('click', (e) => {
-          if(this.sendingAZString === 'Select the sending AZ Region' ){
-            this.sendingAZString ='us-west-1';
-            this.createSendingCircles(e.sourceTarget._latlng);
-            this.findFastestAZ();
-          }
-          else{
-            this.receivingAZString = 'us-west-1';
-            this.createReceivingCircles(e.sourceTarget._latlng);
-            this.findFastestAZ();
-          }
+          this.regionCircleEventHandler('us-west-1', e, this.usw1);
         }).bindPopup("<h5>US West 1</h5> Number of AZs: " + this.usw1.length);
 
         //Oregon
@@ -303,16 +267,7 @@ export class MapViewComponent implements AfterViewInit{
           radius: 187500
         })
         .on('click', (e) => {
-          if(this.sendingAZString === 'Select the sending AZ Region' ){
-            this.sendingAZString ='us-west-2';
-            this.createSendingCircles(e.sourceTarget._latlng);
-            this.findFastestAZ();
-          }
-          else{
-            this.receivingAZString = 'us-west-2';
-            this.createReceivingCircles(e.sourceTarget._latlng);
-            this.findFastestAZ();
-          }
+          this.regionCircleEventHandler('us-west-2', e, this.usw2);
         }).bindPopup("<h5>US West 2</h5> Number of AZs: " + this.usw2.length);
 
         //Paris
@@ -323,16 +278,7 @@ export class MapViewComponent implements AfterViewInit{
           radius: 187500
         })
         .on('click', (e) => {
-          if(this.sendingAZString === 'Select the sending AZ Region' ){
-            this.sendingAZString ='eu-west-3';
-            this.createSendingCircles(e.sourceTarget._latlng);
-            this.findFastestAZ();
-          }
-          else{
-            this.receivingAZString = 'eu-west-3';
-            this.createReceivingCircles(e.sourceTarget._latlng);
-            this.findFastestAZ();
-          }
+          this.regionCircleEventHandler('eu-west-3', e, this.euw3);
         }).bindPopup("<h5>EU West 3</h5> Number of AZs: " + this.euw3.length);
 
          //South America
@@ -343,16 +289,7 @@ export class MapViewComponent implements AfterViewInit{
           radius: 187500
         })
         .on('click', (e) => {
-          if(this.sendingAZString === 'Select the sending AZ Region' ){
-            this.sendingAZString ='sa-east-1';
-            this.createSendingCircles(e.sourceTarget._latlng);
-            this.findFastestAZ();
-          }
-          else{
-            this.receivingAZString = 'sa-east-1';
-            this.createReceivingCircles(e.sourceTarget._latlng);
-            this.findFastestAZ();
-          }
+          this.regionCircleEventHandler('sa-east-1', e, this.sae1);
         }).bindPopup("<h5>SA East 1</h5> Number of AZs: "+ this.sae1.length);
 
          //Ireland
@@ -363,16 +300,7 @@ export class MapViewComponent implements AfterViewInit{
           radius: 187500
         })
         .on('click', (e) => {
-          if(this.sendingAZString === 'Select the sending AZ Region' ){
-            this.sendingAZString ='eu-west-1';
-            this.createSendingCircles(e.sourceTarget._latlng);
-            this.findFastestAZ();
-          }
-          else{
-            this.receivingAZString = 'eu-west-1';
-            this.createReceivingCircles(e.sourceTarget._latlng);
-            this.findFastestAZ();
-          }
+          this.regionCircleEventHandler('eu-west-1', e, this.euw1);
         }).bindPopup("<h5>EU West 1</h5> Number of AZs: "+ this.euw1.length);
 
         //Frankfurt
@@ -383,16 +311,7 @@ export class MapViewComponent implements AfterViewInit{
           radius: 187500
         })
         .on('click', (e) => {
-          if(this.sendingAZString === 'Select the sending AZ Region' ){
-            this.sendingAZString ='eu-central-1';
-            this.createSendingCircles(e.sourceTarget._latlng);
-            this.findFastestAZ();
-          }
-          else{
-            this.receivingAZString = 'eu-central-1';
-            this.createReceivingCircles(e.sourceTarget._latlng);
-            this.findFastestAZ();
-          }
+          this.regionCircleEventHandler('eu-central-1', e, this.euc1);
         }).bindPopup("<h5>EU Central 1</h5> Number of AZs: "+ this.euc1.length);
 
           //London
@@ -403,17 +322,9 @@ export class MapViewComponent implements AfterViewInit{
             radius: 187500
           })
           .on('click', (e) => {
-            if(this.sendingAZString === 'Select the sending AZ Region' ){
-              this.sendingAZString ='eu-west-2';
-              this.createSendingCircles(e.sourceTarget._latlng);
-              this.findFastestAZ();
-            }
-            else{
-              this.receivingAZString = 'eu-west-2';
-              this.createReceivingCircles(e.sourceTarget._latlng);
-              this.findFastestAZ();
-            }
+            this.regionCircleEventHandler('eu-west-2', e, this.euw2);
           }).bindPopup("<h5>EU West 2</h5> Number of AZs: " + this.euw2.length);
+
           //Milan
           const milan = L.circle([43.850374, 11.374745], {
             color: 'orange',
@@ -422,16 +333,7 @@ export class MapViewComponent implements AfterViewInit{
             radius: 187500
           })
           .on('click', (e) => {
-            if(this.sendingAZString === 'Select the sending AZ Region' ){
-              this.sendingAZString ='eu-south-1';
-              this.createSendingCircles(e.sourceTarget._latlng);
-              this.findFastestAZ();
-            }
-            else{
-              this.receivingAZString = 'eu-south-1';
-              this.createReceivingCircles(e.sourceTarget._latlng);
-              this.findFastestAZ();
-            }
+            this.regionCircleEventHandler('eu-south-1', e, this.eus1);
           }).bindPopup("<h5>EU South 1</h5> Number of AZs: "+ this.eus1.length);
 
           //Stockholm
@@ -442,16 +344,7 @@ export class MapViewComponent implements AfterViewInit{
             radius: 187500
           })
           .on('click', (e) => {
-            if(this.sendingAZString === 'Select the sending AZ Region' ){
-              this.sendingAZString ='eu-north-1';
-              this.createSendingCircles(e.sourceTarget._latlng);
-              this.findFastestAZ();
-            }
-            else{
-              this.receivingAZString = 'eu-north-1';
-              this.createReceivingCircles(e.sourceTarget._latlng);
-              this.findFastestAZ();
-            }
+            this.regionCircleEventHandler('eu-north-1', e, this.eun1);
           }).bindPopup("<h5>EU North 1</h5> Number of AZs: " + this.eun1.length);
       //Cape Town
       const cape_town = L.circle([-33.797409, 18.890479], {
@@ -461,16 +354,7 @@ export class MapViewComponent implements AfterViewInit{
         radius: 187500
       })
       .on('click', (e) => {
-        if(this.sendingAZString === 'Select the sending AZ Region' ){
-          this.sendingAZString ='af-south-1';
-          this.createSendingCircles(e.sourceTarget._latlng);
-          this.findFastestAZ();
-        }
-        else{
-          this.receivingAZString = 'af-south-1';
-          this.createReceivingCircles(e.sourceTarget._latlng);
-          this.findFastestAZ();
-        }
+        this.regionCircleEventHandler('af-south-1', e, this.afs1);
       }).bindPopup("<h5>AF South 1</h5> Number of AZs: " + this.afs1.length);
 
       //Sydney
@@ -481,16 +365,7 @@ export class MapViewComponent implements AfterViewInit{
         radius: 187500
       })
       .on('click', (e) => {
-        if(this.sendingAZString === 'Select the sending AZ Region' ){
-          this.sendingAZString ='ap-southeast-2';
-          this.createSendingCircles(e.sourceTarget._latlng);
-          this.findFastestAZ();
-        }
-        else{
-          this.receivingAZString = 'ap-southeast-2';
-          this.createReceivingCircles(e.sourceTarget._latlng);
-          this.findFastestAZ();
-        }
+        this.regionCircleEventHandler('ap-southeast-2', e, this.apse1);
       }).bindPopup("<h5>AP Southeast 2</h5> Number of AZs: "+ this.apse1.length);
 
       //singapore
@@ -501,17 +376,9 @@ export class MapViewComponent implements AfterViewInit{
         radius: 187500
       })
       .on('click', (e) => {
-        if(this.sendingAZString === 'Select the sending AZ Region' ){
-          this.sendingAZString ='ap-southeast-1';
-          this.createSendingCircles(e.sourceTarget._latlng);
-          this.findFastestAZ();
-        }
-        else{
-          this.receivingAZString = 'ap-southeast-1';
-          this.createReceivingCircles(e.sourceTarget._latlng);
-          this.findFastestAZ();
-        }
+        this.regionCircleEventHandler('ap-southeast-1', e, this.apse2);
       }).bindPopup("<h5>AP Southeast 1</h5> Number of AZs: " + this.apse2.length);
+
       //mumbai
       const mumbai = L.circle([18.812718, 72.976586], {
         color: 'orange',
@@ -520,17 +387,9 @@ export class MapViewComponent implements AfterViewInit{
         radius: 187500
       })
       .on('click', (e) => {
-        if(this.sendingAZString === 'Select the sending AZ Region' ){
-          this.sendingAZString ='ap-south-1';
-          this.createSendingCircles(e.sourceTarget._latlng);
-          this.findFastestAZ();
-        }
-        else{
-          this.receivingAZString = 'ap-south-1';
-          this.createReceivingCircles(e.sourceTarget._latlng);
-          this.findFastestAZ();
-        }
+        this.regionCircleEventHandler( 'ap-south-1', e, this.aps1);
       }).bindPopup("<h5>AP South 1</h5> Number of AZs: " + this.aps1.length);
+
       //seoul
       const seoul = L.circle([37.492294, 126.950256], {
         color: 'orange',
@@ -539,16 +398,7 @@ export class MapViewComponent implements AfterViewInit{
         radius: 187500
       })
       .on('click', (e) => {
-        if(this.sendingAZString === 'Select the sending AZ Region' ){
-          this.sendingAZString ='ap-northeast-2';
-          this.createSendingCircles(e.sourceTarget._latlng);
-          this.findFastestAZ();
-        }
-        else{
-          this.receivingAZString = 'ap-northeast-2';
-          this.createReceivingCircles(e.sourceTarget._latlng);
-          this.findFastestAZ();
-        }
+        this.regionCircleEventHandler('ap-northeast-2', e, this.apne1);
       }).bindPopup("<h5>AP Northeast 2</h5> Number of AZs: " + this.apne2.length);
       //Tokyo
       const tokyo = L.circle([35.639441, 139.783990], {
@@ -558,16 +408,7 @@ export class MapViewComponent implements AfterViewInit{
         radius: 187500
       })
       .on('click', (e) => {
-        if(this.sendingAZString === 'Select the sending AZ Region' ){
-          this.sendingAZString ='ap-northeast-1';
-          this.createSendingCircles(e.sourceTarget._latlng);
-          this.findFastestAZ();
-        }
-        else{
-          this.receivingAZString = 'ap-northeast-1';
-          this.createReceivingCircles(e.sourceTarget._latlng);
-          this.findFastestAZ();
-        }
+        this.regionCircleEventHandler('ap-northeast-1', e, this.apne1);
       }).bindPopup("<h5>AP Northeast 1</h5> Number of AZs: "+ this.apne1.length);
 
       //Osaka
@@ -578,19 +419,8 @@ export class MapViewComponent implements AfterViewInit{
         radius: 187500
       })
       .on('click', (e) => {
-        if(this.sendingAZString === 'Select the sending AZ Region' ){
-          this.sendingAZString ='ap-northeast-3';
-          this.createSendingCircles(e.sourceTarget._latlng);
-          this.findFastestAZ();
-        }
-        else{
-          this.receivingAZString = 'ap-northeast-3';
-          this.createReceivingCircles(e.sourceTarget._latlng);
-          this.findFastestAZ();
-        }
+        this.regionCircleEventHandler('ap-northeast-3', e, this.apne3);
       }).bindPopup("<h5>AP Northeast 3</h5> Number of AZs: " + this.apne3.length);
-
-
 
       const markers = L.layerGroup([virginia, ohio, NCalifornia, oregon, paris, south_america, frankfurt,
       london, ireland, milan, stockholm, cape_town, sydney, singapore, tokyo, seoul, osaka, mumbai]);
@@ -637,9 +467,12 @@ export class MapViewComponent implements AfterViewInit{
     }
 
     private removeSelectionCircles(): void{
+      this.dataArray = [];
       this.sendingCirclesLayer.remove();
       this.receivingCirclesLayer.remove();
     }
+
+    //TODO: DEPRECATED.  REDO THE BELOW FOR ALPHA
     private findFastestAZ():void{
       let fastestRecord: AZData= {
         rtt: 9999999999999999999999999999999999999999999999999999999999999,
@@ -660,6 +493,9 @@ export class MapViewComponent implements AfterViewInit{
       });
       this.fastestAZRecord = fastestRecord;
     }
+
+
+
     toggleOverlay(): void {
       const doc = document.getElementById("overlay");
       if (doc){
