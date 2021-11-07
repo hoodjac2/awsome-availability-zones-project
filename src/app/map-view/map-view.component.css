@@ -212,3 +212,7 @@ mat-card {
   text-align: center;
   line-height: 1;
 }
+
+.region-headers{
+  padding-top: 10px;
+}
