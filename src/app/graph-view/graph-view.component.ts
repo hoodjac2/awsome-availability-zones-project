@@ -198,10 +198,10 @@ export class GraphViewComponent{
     }
 
     //percentile calcs:
-    const p50index = Math.ceil((50/100)*total);
-    const p75index = Math.ceil((75/100)*total);
-    const p90index = Math.ceil((90/100)*total);
-    const p99index = Math.ceil((99/100)*total);
+    const p50index = Math.ceil((50/100)*total) - 1;
+    const p75index = Math.ceil((75/100)*total) - 1;
+    const p90index = Math.ceil((90/100)*total) - 1;
+    const p99index = Math.ceil((99/100)*total) - 1;
 
     const shifter = Math.pow(10, -6);
     const JSONthing = [];
