@@ -23,24 +23,23 @@
   </div>
 </div>
 
-<mat-sidenav-container [hidden]="viewChecked" class="example-container">
+<mat-sidenav-container [hidden]="viewChecked && !loading" class="example-container" >
   <mat-sidenav opened mode="side"  class="mat-elevation-z8">
     <h2>Region Selection Panel</h2>
     <mat-divider></mat-divider>
-    <mat-form-field appearance="fill" class="fields">
-        <mat-label style="color: white;">{{this.sendingAZString}}</mat-label>
-        <input matInput placeholder="Select an AZ">
-        <mat-hint style="color: white;">Sending AZ</mat-hint>
-    </mat-form-field>
+    <mat-card>
+      <span>{{this.sendingAZString}}</span>
+    </mat-card>
     <mat-icon style="padding-top: 10%; padding-left: 40%;">swap_vert</mat-icon>
-    <mat-form-field appearance="fill" class="fields" style="padding-bottom: 20%;">
-      <mat-label style="color: white;">{{this.receivingAZString}}</mat-label>
-      <input matInput placeholder="Select a second AZ">
-      <mat-hint style="color: white;">Receiving AZ</mat-hint>
-    </mat-form-field>
+    <mat-card>
+      <span>{{this.receivingAZString}}</span>
+    </mat-card>
     <h3 style="color: white; padding: 10px;">Fastest AZ pair for these regions:</h3>
     <mat-card>
         <span *ngIf="this.fastestAZRecord.sourceAZ">{{this.fastestAZRecord.sourceAZ}} to {{this.fastestAZRecord.destinationAZ}} at {{this.fastestAZRecord.rtt}}ns</span>
+    </mat-card>
+    <mat-card>
+      <span *ngIf="this.fastestAZRecord.sourceAZ">{{this.fastestAZRecord.sourceAZ}} to {{this.fastestAZRecord.destinationAZ}} at {{this.fastestAZRecord.rtt}}ns</span>
     </mat-card>
     <div class="button-container">
     <button style="margin-top: 15%;" mat-raised-button color="warn" (click)="openGraph()">More Info..</button>
