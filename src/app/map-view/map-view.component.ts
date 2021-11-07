@@ -7,7 +7,7 @@ import { MarkerService } from '../marker.service';
 import { HttpClientServiceComponent } from "../http-client.service/http-client.service.component";
 import { MatTable } from "@angular/material/table";
 import { ThemePalette } from "@angular/material/core";
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
+import {COMMA, ENTER, SPACE} from '@angular/cdk/keycodes';
 import {FormControl} from '@angular/forms';
 import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {MatChipInputEvent} from '@angular/material/chips';
@@ -48,7 +48,7 @@ export class MapViewComponent implements AfterViewInit{
     // -----------------------------------------//
     selectable = true;
     removable = true;
-    separatorKeysCodes: number[] = [ENTER, COMMA];
+    separatorKeysCodes: number[] = [SPACE, COMMA];
     regionCtrl = new FormControl();
     filteredRegions: Observable<string[]>;
     allAZIDs : string[] = [];
@@ -62,8 +62,26 @@ export class MapViewComponent implements AfterViewInit{
     regionInput!: ElementRef<HTMLInputElement>;
     formControl = new FormControl(['']);
 
+    //------ 19 empty region arrays from DB -----//
+    afs1: string[] = [];
+    apne1: string[] = [];
+    apne2: string[] = [];
+    apne3: string[] = [];
+    aps1: string[] = [];
+    apse1: string[] = [];
+    apse2: string[] = [];
+    cac1: string[] = [];
+    euc1: string[] = [];
+    eun1: string[] = [];
+    eus1: string[] = [];
+    euw1: string[] = [];
+    euw2: string[] = [];
+    euw3: string[] = [];
+    sae1: string[] = [];
+    use1: string[] = [];
+    use2: string[] = [];
+    usw2: string[] = [];
     // -----------------------------------------//
-
 
     dataArray: AZData[] = [];
     filteredDataArray: AZData[] = [];
@@ -72,7 +90,6 @@ export class MapViewComponent implements AfterViewInit{
 
     displayedColumns: string[] = ['sourceAZ', 'destinationAZ', 'rtt', 'unixTimestamp','resolveTime'];
     filterArray : string[] = [];
-
     public fastestAZRecord: AZData = {
       rtt: 0,
       destinationAZ: "",
@@ -134,14 +151,56 @@ export class MapViewComponent implements AfterViewInit{
 
       });
 
-      // this.dbService.loadAZNames().subscribe( result =>{
-      //   result.forEach((azCall: { body: string[]; }) => {
-      //     console.log(azCall.body);
-      //   });
-
-      // });
+      // Initialize data arrays
+      this.dbService.loadAZNames().subscribe( result =>{
+        result.forEach((azCall: { body: string[]; }) => {
+          //console.log(azCall.body);
+          const arrayName = azCall.body[0].substring(0,4);
+          const arrayNum = azCall.body[0].charAt(4);
+          if (arrayName == "afs1") {
+            this.afs1 = azCall.body;
+          } else if (arrayName == "apne") {
+            if (arrayNum == "1") {
+              this.apne1 = azCall.body;
+            } else if (arrayNum == "2") {
+              this.apne2 = azCall.body;
+            } else if (arrayNum == "3") {
+              this.apne3 = azCall.body;
+            }
+          }  else if (arrayName == "aps1") {
+            this.aps1 = azCall.body;
+          } else if (arrayName == "apse") {
+            if (arrayNum == "1") {
+              this.apse1 = azCall.body;
+            } else if (arrayNum == "2") {
+              this.apse2 = azCall.body;
+            }
+          } else if (arrayName == "cac1") {
+            this.cac1 = azCall.body;
+          } else if (arrayName == "euc1") {
+            this.euc1 = azCall.body;
+          } else if (arrayName == "eun1") {
+            this.eun1 = azCall.body;
+          } else if (arrayName == "eus1") {
+            this.eus1 = azCall.body;
+          } else if (arrayName == "euw1") {
+            this.euw1 = azCall.body;
+          } else if (arrayName == "euw2") {
+            this.euw2 = azCall.body;
+          } else if (arrayName == "euw3") {
+            this.euw3 = azCall.body;
+          } else if (arrayName == "sae1") {
+            this.sae1 = azCall.body;
+          } else if (arrayName == "use1") {
+            this.use1 = azCall.body;
+          } else if (arrayName == "use2") {
+            this.use2 = azCall.body;
+          } else if (arrayName == "usw2") {
+            this.usw2 = azCall.body;
+          }
+        });
+      });
       this.initMap();
-
      }
 
 
