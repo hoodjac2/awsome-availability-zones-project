@@ -95,6 +95,8 @@ export class MapViewComponent implements AfterViewInit{
     percent75 = 345678;
     percent90 = 345678;
     percent99 = 345678;
+    CurrAZA = 'MAPTEST1';
+    CurrAZB = 'MAPTEST2';
 
 
     dataArray: AZData[] = [];
@@ -632,8 +634,8 @@ export class MapViewComponent implements AfterViewInit{
       height: '725px',
       data: {
         dataArray: graphData,
-        AZ1: 'MAPTEST1',
-        AZ2: 'MAPTEST2',
+        AZ1: this.CurrAZA,
+        AZ2: this.CurrAZB,
         mind: this.mind,
         maxd: this.maxd,
         aved: this.aved,
