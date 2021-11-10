@@ -40,39 +40,6 @@ export class ListViewComponent implements OnInit{
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   ngOnInit(): void{
-    this.dbService.getFromDB('use2-az2').subscribe( data => {
-      data.Items.forEach((azRecord: AZDataResponse) => {
-        //--------------------------------------------------------
-        //These two fields can be undefined in the alpha DB
-        if(azRecord.handshakeTime === undefined){
-          const set : JsonObj = {
-            S: '',
-            N: 0
-          };
-          azRecord.handshakeTime = set;
-        }
-        if(azRecord.resolveTime === undefined){
-          const set : JsonObj = {
-            S: '',
-            N: 0
-          };
-          azRecord.resolveTime = set;
-        }
-        // Probably remove above later
-        //-----------------------------------------
-        const azRecordReturn: AZData = {
-          destinationAZ: azRecord.destinationAZ.S,
-          rtt: Number(azRecord.rtt.N),
-          unixTimestamp: Number(azRecord.unixTimestamp.N),
-          handshakeTime: Number(azRecord.handshakeTime.N),
-          sourceAZ: azRecord.sourceAZ.S,
-          resolveTime: Number(azRecord.resolveTime.N)
-        }
-        this.dataArray.push(azRecordReturn);
-        this.filteredDataArray.push(azRecordReturn);
-        this.table?.renderRows();
-      });
-    });
   }
 
   isTrue():void {
@@ -86,7 +53,7 @@ export class ListViewComponent implements OnInit{
 
   applyFilter(filterValue: string):void {
     this.filterArray.splice(this.filterArray.indexOf(filterValue));
-    this.filterGrid();
+ //   this.filterGrid();
   }
 
   //Checkbox
@@ -126,11 +93,11 @@ export class ListViewComponent implements OnInit{
   bttnCheckBox(event: unknown, filterValue: string):void{
     if (this.filterArray.includes(filterValue)) {
       this.filterArray.splice(this.filterArray.indexOf(filterValue));
-      this.filterGrid();
+  //    this.filterGrid();
     }
     else {
       this.filterArray.push(filterValue);
-      this.filterGrid();
+  //    this.filterGrid();
     }
     console.log(event);
   }
@@ -167,22 +134,22 @@ export class ListViewComponent implements OnInit{
     }
     console.log(event);
   } */
-    filterGrid():void{
-      if(this.filterArray.length === 0){
-        this.filteredDataArray = this.dataArray;
-      }
-      else{
-      this.filteredDataArray = [];
-      this.filterArray.forEach(filterValue =>
-        {
-          this.dataArray.forEach(data =>{
-            if( data.sourceAZ === filterValue || data.destinationAZ === filterValue){
-              this.filteredDataArray.push(data);
-            }
+    // filterGrid():void{
+    //   if(this.filterArray.length === 0){
+    //     this.filteredDataArray = this.dataArray;
+    //   }
+    //   else{
+    //   this.filteredDataArray = [];
+    //   this.filterArray.forEach(filterValue =>
+    //     {
+    //       this.dataArray.forEach(data =>{
+    //         if( data.sourceAZ === filterValue || data.destinationAZ === filterValue){
+    //           this.filteredDataArray.push(data);
+    //         }
 
-          });
-        });
-        this.table?.renderRows();
-    }
-  }
+    //       });
+    //     });
+    //     this.table?.renderRows();
+    // }
+  //}
 }

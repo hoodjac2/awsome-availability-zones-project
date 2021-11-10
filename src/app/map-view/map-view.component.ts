@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Component, AfterViewInit, ElementRef, ViewChild } from "@angular/core";
 import * as L from 'leaflet';
-import { AZData, AZDataResponse, JsonObj } from "../classes-and-interfaces/az.model";
+import { AZData, AZDataResponse, JsonObj, ResponseFromDB } from "../classes-and-interfaces/az.model";
 import { MarkerService } from '../marker.service';
 import { HttpClientServiceComponent } from "../http-client.service/http-client.service.component";
 import { MatTable } from "@angular/material/table";
@@ -107,12 +107,20 @@ export class MapViewComponent implements AfterViewInit{
     displayedColumns: string[] = ['sourceAZ', 'destinationAZ', 'rtt', 'unixTimestamp','resolveTime'];
     filterArray : string[] = [];
     public fastestAZRecord: AZData = {
-      rtt: 0,
-      destinationAZ: "",
-      unixTimestamp: 0,
-      handshakeTime: 0,
-      sourceAZ: "",
-      resolveTime: 0
+      Percentile75: 0,
+      Percentile99: 0,
+      Percentile50: 0,
+      Res_time: 0,
+      Max_UTC: 0,
+      MinRTT: 0,
+      Percentile90: 0,
+      GraphDataString: "",
+      MedRTT: 0,
+      MaxRTT: 0,
+      Handshake_time: 0,
+      AveRTT: 0,
+      Min_UTC: 0,
+      AZPair: ""
     };
     private map : any;
     public sendingAZString = 'Select the sending AZ Region';
@@ -187,6 +195,31 @@ export class MapViewComponent implements AfterViewInit{
         this.loading = false;
         this.initMap();
       });
+
+      this.dbService.getRecordsFromDB(['sae1-az3use1-az5', 'sae1-az1apne3-az1']).subscribe(
+        result =>{
+          result.forEach((azPairData: ResponseFromDB) => {
+            const serialized = azPairData.Items[0];
+            const azRecordReturn: AZData = {
+              Percentile75: Number(serialized.Percentile75.N),
+              Percentile99: Number(serialized.Percentile99.N),
+              Percentile50: Number(serialized.Percentile50.N),
+              Res_time: Number(serialized.Res_time.N),
+              Max_UTC: Number(serialized.Max_UTC.N),
+              MinRTT: Number(serialized.MinRTT.N),
+              Percentile90: Number(serialized.Percentile90.N),
+              GraphDataString: serialized.GraphDataString.S,
+              MedRTT: Number(serialized.MedRTT.N),
+              MaxRTT: Number(serialized.MaxRTT.N),
+              Handshake_time: Number(serialized.Handshake_time.N),
+              AveRTT: Number(serialized.AveRTT.N),
+              Min_UTC: Number(serialized.Min_UTC.N),
+              AZPair: serialized.AZPair.S
+            }
+            this.dataArray.push(azRecordReturn);
+          })
+        }
+      );
      }
 
 
@@ -208,7 +241,7 @@ export class MapViewComponent implements AfterViewInit{
       this.sendingAZString = 'Select the sending AZ Region';
       this.receivingAZString = 'Select the receiving AZ Region';
       this.removeSelectionCircles();
-      this.findFastestAZ();
+      //this.findFastestAZ();
     });
 
     tiles.addTo(this.map);
@@ -219,7 +252,7 @@ export class MapViewComponent implements AfterViewInit{
       if(this.sendingAZString === 'Select the sending AZ Region' ){
         this.sendingAZString = regionString;
         this.createSendingCircles(e.sourceTarget._latlng);
-        this.findFastestAZ();
+       // this.findFastestAZ();
 
         //TODO: LOAD DATA INTO AN ARRAY
         this.dbService.getRecordsFromDB(azNames).subscribe(
@@ -236,7 +269,7 @@ export class MapViewComponent implements AfterViewInit{
         }
         this.receivingAZString = regionString;
         this.createReceivingCircles(e.sourceTarget._latlng);
-        this.findFastestAZ();
+      //  this.findFastestAZ();
       }
     }
 
@@ -488,26 +521,26 @@ export class MapViewComponent implements AfterViewInit{
     }
 
     //TODO: DEPRECATED.  REDO THE BELOW FOR ALPHA
-    private findFastestAZ():void{
-      let fastestRecord: AZData= {
-        rtt: 9999999999999999999999999999999999999999999999999999999999999,
-        destinationAZ: "",
-        unixTimestamp: 0,
-        handshakeTime: 0,
-        sourceAZ: "",
-        resolveTime: 0
-      };
-      this.dataArray.forEach(azRecord => {
-        if(azRecord.rtt < fastestRecord.rtt &&
-         azRecord.sourceAZ === this.sendingAZString.toLocaleLowerCase() && azRecord.destinationAZ === this.receivingAZString.toLocaleLowerCase()){
-          fastestRecord = azRecord;
-        }
-        else if(this.receivingAZString === 'Select the receiving AZ Region' && azRecord.rtt < fastestRecord.rtt && azRecord.sourceAZ === this.sendingAZString.toLocaleLowerCase()){
-          fastestRecord = azRecord;
-        }
-      });
-      this.fastestAZRecord = fastestRecord;
-    }
+    // private findFastestAZ():void{
+    //   let fastestRecord: AZData= {
+    //     rtt: 9999999999999999999999999999999999999999999999999999999999999,
+    //     destinationAZ: "",
+    //     unixTimestamp: 0,
+    //     handshakeTime: 0,
+    //     sourceAZ: "",
+    //     resolveTime: 0
+    //   };
+    //   this.dataArray.forEach(azRecord => {
+    //     if(azRecord.rtt < fastestRecord.rtt &&
+    //      azRecord.sourceAZ === this.sendingAZString.toLocaleLowerCase() && azRecord.destinationAZ === this.receivingAZString.toLocaleLowerCase()){
+    //       fastestRecord = azRecord;
+    //     }
+    //     else if(this.receivingAZString === 'Select the receiving AZ Region' && azRecord.rtt < fastestRecord.rtt && azRecord.sourceAZ === this.sendingAZString.toLocaleLowerCase()){
+    //       fastestRecord = azRecord;
+    //     }
+    //   });
+    //   this.fastestAZRecord = fastestRecord;
+    // }
 
 
 
@@ -580,9 +613,9 @@ export class MapViewComponent implements AfterViewInit{
             this.filteredDataArray.push(data);
           }
 */
-          if (data.sourceAZ == filterValue) {
-            this.filteredDataArray.push(data);
-          }
+          // if (data.sourceAZ == filterValue) {
+          //   this.filteredDataArray.push(data);
+          // }
         });
       });
     }

@@ -13,8 +13,7 @@ import { NONE_TYPE } from '@angular/compiler';
 })
 export class HttpClientServiceComponent {
 
-    //TODO: Alpha DB Change the dataAPI to the real api
-  private dataAPI = 'https://0ni6948i68.execute-api.us-east-2.amazonaws.com/ReadAlphaDB/'
+  private dataAPI = 'https://0ni6948i68.execute-api.us-east-2.amazonaws.com/ReadFromCrunchTable/'
 
   private getAZNamesAPI = 'https://42tx4az34d.execute-api.us-east-2.amazonaws.com/GetAZsByRegion/'
   private getAZNamesAPIEndpoints: string[] = ['getafs1azs', 'getapn1azs', 'getapn2azs', 'getapn3azs',
@@ -37,9 +36,9 @@ export class HttpClientServiceComponent {
   }
 
   //Not fully working new DB needs to be targeted correctly
-  public getRecordsFromDB(azNames: string[]): Observable<any> {
+  public getRecordsFromDB(srcDestPair: string[]): Observable<any> {
     const responseArray: any[] = [];
-    azNames.forEach( name => {
+    srcDestPair.forEach( name => {
       const response = this.httpClient.get<JsonResponseModel>(this.dataAPI + name);
       responseArray.push(response);
     });

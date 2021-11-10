@@ -27,21 +27,21 @@
   <mat-sidenav opened mode="side"  class="mat-elevation-z8">
     <h2>Region Selection Panel</h2>
     <mat-divider></mat-divider>
-    <h4 class="region-headers">&nbsp; First AZ Region</h4>
+    <h4 class="region-headers">&nbsp; First Region</h4>
     <mat-card>
       <span>{{this.sendingAZString}}</span>
     </mat-card>
     <mat-icon style="padding-top: 10px; padding-left: 40%;">swap_vert</mat-icon>
-    <h4 class="region-headers">&nbsp; Second AZ Region</h4>
+    <h4 class="region-headers">&nbsp; Second Region</h4>
     <mat-card>
       <span>{{this.receivingAZString}}</span>
     </mat-card>
     <h3 style="color: white; padding: 10px;">Fastest AZ pair for these regions:</h3>
     <mat-card>
-        <span *ngIf="this.fastestAZRecord.sourceAZ">{{this.fastestAZRecord.sourceAZ}} to {{this.fastestAZRecord.destinationAZ}} at {{this.fastestAZRecord.rtt}}ns</span>
+        <span *ngIf="this.fastestAZRecord">{{this.fastestAZRecord}} to {{this.fastestAZRecord}} at {{this.fastestAZRecord}}ns</span>
     </mat-card>
     <mat-card>
-      <span *ngIf="this.fastestAZRecord.sourceAZ">{{this.fastestAZRecord.sourceAZ}} to {{this.fastestAZRecord.destinationAZ}} at {{this.fastestAZRecord.rtt}}ns</span>
+      <span *ngIf="this.fastestAZRecord">{{this.fastestAZRecord}} to {{this.fastestAZRecord}} at {{this.fastestAZRecord}}ns</span>
     </mat-card>
     <div class="button-container">
     <button style="margin-top: 15%;" mat-raised-button color="warn" (click)="openGraph()">More Info..</button>
