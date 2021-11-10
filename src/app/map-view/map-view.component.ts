@@ -649,14 +649,14 @@ export class MapViewComponent implements AfterViewInit{
   parseGraph(dataString: string): { name: string; value: number; }[] {
     const buckets = dataString.trim().split('\n');
     const JSONthing: { name: string; value: number; }[] = [];
-    console.log("we split the main string");
+    //console.log("we split the main string");
     buckets.forEach( bucket => {
       const splitted = bucket.split(', ')
-      console.log("we split the bucket");
+      //console.log("we split the bucket");
       const name = splitted[0].split(':')[1];
-      console.log("we split the name");
+      //console.log("we split the name");
       const value = Number(splitted[1].split(':')[1]);
-      console.log("we split the number");
+      //console.log("we split the number");
       JSONthing.push({
         "name": name,
         "value": value
