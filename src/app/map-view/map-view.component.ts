@@ -15,6 +15,7 @@ import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import { GraphViewComponent } from "../graph-view/graph-view.component";
 import { MatDialog } from "@angular/material/dialog";
+import { name } from "aws-sdk/clients/importexport";
 //import { GraphViewComponent } from "../graph-view/graph-view.component";
 //import { MatDialog } from "@angular/material/dialog";
 
@@ -83,6 +84,18 @@ export class MapViewComponent implements AfterViewInit{
     usw1: string[] = [];
     usw2: string[] = [];
     // -----------------------------------------//
+
+    //---------GRAPH DATA FIELDS----------------//
+    graphDataString = "name:173.05, value:18.0\nname:173.7, value:20.0\nname:174.35, value:22.0\nname:175.01, value:0.0\nname:175.66, value:20.0\nname:176.31, value:0.0\nname:176.96, value:0.0\nname:177.62, value:0.0\nname:178.27, value:0.0\nname:178.92, value:20.0\n";
+    mind = 12345768;
+    maxd = 12345768;
+    aved = 12345768;
+    medd = 12345768;
+    percent50 = 345678;
+    percent75 = 345678;
+    percent90 = 345678;
+    percent99 = 345678;
+
 
     dataArray: AZData[] = [];
     filteredDataArray: AZData[] = [];
@@ -613,14 +626,43 @@ export class MapViewComponent implements AfterViewInit{
   }
 
   openGraph(): void {
+    const graphData = this.parseGraph(this.graphDataString);
     const dialogRef = this.dialog.open(GraphViewComponent, {
       width: '950px',
       height: '725px',
       data: {
-        dataArray: this.dataArray,
+        dataArray: graphData,
         AZ1: 'MAPTEST1',
-        AZ2: 'MAPTEST2'
+        AZ2: 'MAPTEST2',
+        mind: this.mind,
+        maxd: this.maxd,
+        aved: this.aved,
+        medd: this.medd,
+        percent50: this.percent50,
+        percent75: this.percent75,
+        percent90: this.percent90,
+        percent99: this.percent99
       }
     });
+  }
+
+  parseGraph(dataString: string): { name: string; value: number; }[] {
+    const buckets = dataString.trim().split('\n');
+    const JSONthing: { name: string; value: number; }[] = [];
+    console.log("we split the main string");
+    buckets.forEach( bucket => {
+      const splitted = bucket.split(', ')
+      console.log("we split the bucket");
+      const name = splitted[0].split(':')[1];
+      console.log("we split the name");
+      const value = Number(splitted[1].split(':')[1]);
+      console.log("we split the number");
+      JSONthing.push({
+        "name": name,
+        "value": value
+      });
+
+    });
+    return JSONthing;
   }
 }

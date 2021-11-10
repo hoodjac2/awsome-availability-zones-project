@@ -8,9 +8,17 @@ import { HttpClientServiceComponent } from "../http-client.service/http-client.s
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 export interface GraphViewData {
-  dataArray: AZData[]; //data pulled from database
+  dataArray: { name: string; value: number; }[]; //data pulled from database
   AZ1: string;
   AZ2: string;
+  mind : '0';
+  maxd : '0';
+  aved : '0';
+  medd : '0';
+  percent50 : '0';
+  percent75 : '0';
+  percent90 : '0';
+  percent99 : '0';
 }
 
 /**
@@ -46,8 +54,16 @@ export class GraphViewComponent{
   ngOnInit(): void{
     this.AZ1 = this.data.AZ1;
     this.AZ2 = this.data.AZ2;
-    this.dataArray = this.data.dataArray;
-    this.graphDataFormatting();
+    Object.assign(this, {points: this.data.dataArray});
+    this.mind = this.data.mind;
+    this.maxd = this.data.maxd;
+    this.aved = this.data.aved;
+    this.medd = this.data.medd;
+    this.percent50 = this.data.percent50;
+    this.percent75 = this.data.percent75;
+    this.percent90 = this.data.percent90;
+    this.percent99 = this.data.percent99;
+    // this.graphDataFormatting();
   }
 
   // ngAfterViewInit(): void {
