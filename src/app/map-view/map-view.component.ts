@@ -16,6 +16,7 @@ import {map, startWith} from 'rxjs/operators';
 import { GraphViewComponent } from "../graph-view/graph-view.component";
 import { MatDialog } from "@angular/material/dialog";
 import { name } from "aws-sdk/clients/importexport";
+import { Console } from "console";
 //import { GraphViewComponent } from "../graph-view/graph-view.component";
 //import { MatDialog } from "@angular/material/dialog";
 
@@ -84,7 +85,8 @@ export class MapViewComponent implements AfterViewInit{
     usw1: string[] = [];
     usw2: string[] = [];
     // -----------------------------------------//
-
+    //Used so we can determine what the destination AZ names are
+    src: string[] = [];
     //---------GRAPH DATA FIELDS----------------//
     graphDataString = "name:173.05, value:18.0\nname:173.7, value:20.0\nname:174.35, value:22.0\nname:175.01, value:0.0\nname:175.66, value:20.0\nname:176.31, value:0.0\nname:176.96, value:0.0\nname:177.62, value:0.0\nname:178.27, value:0.0\nname:178.92, value:20.0\n";
     mind = 12345768;
@@ -122,6 +124,8 @@ export class MapViewComponent implements AfterViewInit{
       Min_UTC: 0,
       AZPair: ""
     };
+    public fastestFirstAZ ='';
+    public fastestSecondAZ = '';
     private map : any;
     public sendingAZString = 'Select the sending AZ Region';
     sendingCirclesLayer = L.layerGroup();
@@ -195,31 +199,6 @@ export class MapViewComponent implements AfterViewInit{
         this.loading = false;
         this.initMap();
       });
-
-      this.dbService.getRecordsFromDB(['sae1-az3use1-az5', 'sae1-az1apne3-az1']).subscribe(
-        result =>{
-          result.forEach((azPairData: ResponseFromDB) => {
-            const serialized = azPairData.Items[0];
-            const azRecordReturn: AZData = {
-              Percentile75: Number(serialized.Percentile75.N),
-              Percentile99: Number(serialized.Percentile99.N),
-              Percentile50: Number(serialized.Percentile50.N),
-              Res_time: Number(serialized.Res_time.N),
-              Max_UTC: Number(serialized.Max_UTC.N),
-              MinRTT: Number(serialized.MinRTT.N),
-              Percentile90: Number(serialized.Percentile90.N),
-              GraphDataString: serialized.GraphDataString.S,
-              MedRTT: Number(serialized.MedRTT.N),
-              MaxRTT: Number(serialized.MaxRTT.N),
-              Handshake_time: Number(serialized.Handshake_time.N),
-              AveRTT: Number(serialized.AveRTT.N),
-              Min_UTC: Number(serialized.Min_UTC.N),
-              AZPair: serialized.AZPair.S
-            }
-            this.dataArray.push(azRecordReturn);
-          })
-        }
-      );
      }
 
 
@@ -252,24 +231,86 @@ export class MapViewComponent implements AfterViewInit{
       if(this.sendingAZString === 'Select the sending AZ Region' ){
         this.sendingAZString = regionString;
         this.createSendingCircles(e.sourceTarget._latlng);
-       // this.findFastestAZ();
+        const callouts : string[] = [];
+        azNames.forEach( srcName => {
+          azNames.forEach( destName =>{
+            callouts.push(srcName +','+ destName)
+          });
 
-        //TODO: LOAD DATA INTO AN ARRAY
-        this.dbService.getRecordsFromDB(azNames).subscribe(
-          data => {
-            data.forEach((record: any) => {
-              console.log(record);
+        });
+        this.src = azNames;
+        this.dbService.getRecordsFromDB(callouts).subscribe(
+          result =>{
+            result.forEach((azPairData: ResponseFromDB) => {
+              const serialized = azPairData.Items[0];
+              if(serialized !== undefined){
+                const azRecordReturn: AZData = {
+                  Percentile75: Number(serialized.Percentile75.N),
+                  Percentile99: Number(serialized.Percentile99.N),
+                  Percentile50: Number(serialized.Percentile50.N),
+                  Res_time: Number(serialized.Res_time.N),
+                  Max_UTC: Number(serialized.Max_UTC.N),
+                  MinRTT: Number(serialized.MinRTT.N),
+                  Percentile90: Number(serialized.Percentile90.N),
+                  GraphDataString: serialized.GraphDataString.S,
+                  MedRTT: Number(serialized.MedRTT.N),
+                  MaxRTT: Number(serialized.MaxRTT.N),
+                  Handshake_time: Number(serialized.Handshake_time.N),
+                  AveRTT: Number(serialized.AveRTT.N),
+                  Min_UTC: Number(serialized.Min_UTC.N),
+                  AZPair: serialized.AZPair.S
+                }
+                this.dataArray.push(azRecordReturn);
+              }
             });
+            this.findFastestAZ();
           }
         );
       }
       else{
+
+        this.dataArray = [];
+
         if(this.receivingAZString !== 'Select the sending AZ Region' ){
           this.receivingCirclesLayer.remove();
         }
         this.receivingAZString = regionString;
         this.createReceivingCircles(e.sourceTarget._latlng);
-      //  this.findFastestAZ();
+
+        const callouts : string[] = [];
+        this.src.forEach( srcName => {
+          azNames.forEach( destName =>{
+            callouts.push(srcName +','+ destName)
+          });
+        });
+        this.dbService.getRecordsFromDB(callouts).subscribe(
+          result =>{
+            result.forEach((azPairData: ResponseFromDB) => {
+              const serialized = azPairData.Items[0];
+              if(serialized !== undefined){
+                const azRecordReturn: AZData = {
+                  Percentile75: Number(serialized.Percentile75.N),
+                  Percentile99: Number(serialized.Percentile99.N),
+                  Percentile50: Number(serialized.Percentile50.N),
+                  Res_time: Number(serialized.Res_time.N),
+                  Max_UTC: Number(serialized.Max_UTC.N),
+                  MinRTT: Number(serialized.MinRTT.N),
+                  Percentile90: Number(serialized.Percentile90.N),
+                  GraphDataString: serialized.GraphDataString.S,
+                  MedRTT: Number(serialized.MedRTT.N),
+                  MaxRTT: Number(serialized.MaxRTT.N),
+                  Handshake_time: Number(serialized.Handshake_time.N),
+                  AveRTT: Number(serialized.AveRTT.N),
+                  Min_UTC: Number(serialized.Min_UTC.N),
+                  AZPair: serialized.AZPair.S
+                }
+                this.dataArray.push(azRecordReturn);
+              }
+            });
+            this.findFastestAZ();
+          }
+        );
+
       }
     }
 
@@ -520,29 +561,39 @@ export class MapViewComponent implements AfterViewInit{
       this.receivingCirclesLayer.remove();
     }
 
-    //TODO: DEPRECATED.  REDO THE BELOW FOR ALPHA
-    // private findFastestAZ():void{
-    //   let fastestRecord: AZData= {
-    //     rtt: 9999999999999999999999999999999999999999999999999999999999999,
-    //     destinationAZ: "",
-    //     unixTimestamp: 0,
-    //     handshakeTime: 0,
-    //     sourceAZ: "",
-    //     resolveTime: 0
-    //   };
-    //   this.dataArray.forEach(azRecord => {
-    //     if(azRecord.rtt < fastestRecord.rtt &&
-    //      azRecord.sourceAZ === this.sendingAZString.toLocaleLowerCase() && azRecord.destinationAZ === this.receivingAZString.toLocaleLowerCase()){
-    //       fastestRecord = azRecord;
-    //     }
-    //     else if(this.receivingAZString === 'Select the receiving AZ Region' && azRecord.rtt < fastestRecord.rtt && azRecord.sourceAZ === this.sendingAZString.toLocaleLowerCase()){
-    //       fastestRecord = azRecord;
-    //     }
-    //   });
-    //   this.fastestAZRecord = fastestRecord;
-    // }
+    private findFastestAZ():void{
+      let fastestRecord: AZData= {
+        Percentile75: 0,
+        Percentile99: 0,
+        Percentile50: 0,
+        Res_time: 0,
+        Max_UTC: 0,
+        MinRTT: 0,
+        Percentile90: 0,
+        GraphDataString: "",
+        MedRTT: 0,
+        MaxRTT: 0,
+        Handshake_time: 0,
+        AveRTT: 99999999999999999999999999999999999999999999,
+        Min_UTC: 0,
+        AZPair: ""
+      };
+      this.dataArray.forEach(azRecord => {
+        if(azRecord.AveRTT < fastestRecord.AveRTT){
+          fastestRecord = azRecord;
+        }
+      });
+      this.fastestAZRecord = fastestRecord;
+      this.fastestAZNamesSplitter(fastestRecord);
+    }
 
+    fastestAZNamesSplitter(fastestRecord: AZData) : void{
+      const pair = fastestRecord.AZPair;
+      const split = pair.split(',');
+      this.fastestFirstAZ = split[0];
+      this.fastestSecondAZ = split[1];
 
+    }
 
     toggleOverlay(): void {
       const doc = document.getElementById("overlay");
