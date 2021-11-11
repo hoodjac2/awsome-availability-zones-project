@@ -149,7 +149,11 @@ mat-card {
   justify-content: center;
 }
 
-.example-chip-list {
+.chip-list-one {
+  width: 100%;
+}
+
+.chip-list-two {
   width: 100%;
 }
 
@@ -215,4 +219,8 @@ mat-card {
 
 .region-headers{
   padding-top: 10px;
+}
+
+.lab {
+  color: white;
 }

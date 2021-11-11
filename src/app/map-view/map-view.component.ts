@@ -7,7 +7,7 @@ import { MarkerService } from '../marker.service';
 import { HttpClientServiceComponent } from "../http-client.service/http-client.service.component";
 import { MatTable } from "@angular/material/table";
 import { ThemePalette } from "@angular/material/core";
-import {COMMA, ENTER, SPACE} from '@angular/cdk/keycodes';
+import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {FormControl} from '@angular/forms';
 import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {MatChipInputEvent} from '@angular/material/chips';
@@ -48,21 +48,35 @@ export class MapViewComponent implements AfterViewInit{
 
     // Tesitng Chips Element
     // -----------------------------------------//
-    selectable = true;
-    removable = true;
-    separatorKeysCodes: number[] = [SPACE, COMMA];
-    regionCtrl = new FormControl();
-    filteredRegions: Observable<string[]>;
-    allAZIDs : string[] = [];
-    region: string[] = ['us-east-1'];
-    allRegions: string[] = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2',
+    selectableOne = true;
+    removableOne = true;
+    separatorKeysCodesOne: number[] = [ENTER, COMMA];
+    regionCtrlOne = new FormControl();
+    filteredRegionOne: Observable<string[]>;
+    regionsOne: string[] = [];
+    allRegionsOne: string[] = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2',
     'af-south-1', 'ap-south-1', 'ap-northeast-3', 'ap-northeast-2',
     'ap-southeast-2', 'ap-northeast-1', 'ca-central-1', 'eu-central-1', 'eu-west-1',
     'eu-west-2', 'eu-south-1', 'eu-west-3', 'eu-north-1', 'sa-east-1'];
 
-    @ViewChild('regionInput')
-    regionInput!: ElementRef<HTMLInputElement>;
-    formControl = new FormControl(['']);
+    @ViewChild('regionOneInput')
+  regionOneInput!: ElementRef<HTMLInputElement>;
+
+    selectableTwo = false;
+    removableTwo = true;
+    separatorKeysCodesTwo: number[] = [ENTER, COMMA];
+    regionCtrlTwo = new FormControl();
+    filteredRegionTwo: Observable<string[]>;
+    regionsTwo: string[] = [];
+    allRegionsTwo: string[] = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2',
+    'af-south-1', 'ap-south-1', 'ap-northeast-3', 'ap-northeast-2',
+    'ap-southeast-2', 'ap-northeast-1', 'ca-central-1', 'eu-central-1', 'eu-west-1',
+    'eu-west-2', 'eu-south-1', 'eu-west-3', 'eu-north-1', 'sa-east-1',
+    'ap-southeast-1'];
+
+    @ViewChild('regionTwoInput')
+  regionTwoInput!: ElementRef<HTMLInputElement>;
+
 
     //------ 19 empty region arrays from DB -----//
     afs1: string[] = [];
@@ -87,6 +101,7 @@ export class MapViewComponent implements AfterViewInit{
     // -----------------------------------------//
     //Used so we can determine what the destination AZ names are
     src: string[] = [];
+    des: string[] = [];
     //---------GRAPH DATA FIELDS----------------//
     graphDataString = "name:173.05, value:18.0\nname:173.7, value:20.0\nname:174.35, value:22.0\nname:175.01, value:0.0\nname:175.66, value:20.0\nname:176.31, value:0.0\nname:176.96, value:0.0\nname:177.62, value:0.0\nname:178.27, value:0.0\nname:178.92, value:20.0\n";
     mind = 12345768;
@@ -106,7 +121,7 @@ export class MapViewComponent implements AfterViewInit{
 
     @ViewChild(MatTable) table: MatTable<any> | undefined;
 
-    displayedColumns: string[] = ['sourceAZ', 'destinationAZ', 'rtt', 'unixTimestamp','resolveTime'];
+    displayedColumns: string[] = ['AZPair', 'AveRTT'];
     filterArray : string[] = [];
     public fastestAZRecord: AZData = {
       Percentile75: 0,
@@ -133,12 +148,16 @@ export class MapViewComponent implements AfterViewInit{
     receivingCirclesLayer = L.layerGroup();
 
     constructor(private dbService: HttpClientServiceComponent,
-      //public dialog: MatDialog
       public dialog: MatDialog
       ){
-      this.filteredRegions = this.regionCtrl.valueChanges.pipe(
-        startWith(null),
-        map((region: string | null) => region ? this._filter(region) : this.allRegions.slice()));
+        this.filteredRegionOne = this.regionCtrlOne.valueChanges.pipe(
+          startWith(null),
+          map((region: string | null) => (region ? this._filterChipOne(region) : this.allRegionsOne.slice())),
+        );
+        this.filteredRegionTwo = this.regionCtrlTwo.valueChanges.pipe(
+          startWith(null),
+          map((region: string | null) => (region ? this._filterChipTwo(region) : this.allRegionsTwo.slice())),
+        );
     }
 
     onClick(_event: any): void {
@@ -602,7 +621,261 @@ export class MapViewComponent implements AfterViewInit{
       }
     }
 
-    // LIST VIEW HAPPENS BELOW! BEWARE
+    // ------------------------ LIST VIEW HAPPENS BELOW! BEWARE ------------------------- //
+
+    // *************** CHIP ELEMENTS ***************** //
+
+  callDB() : void {
+
+    const callouts : string[] = [];
+    this.src.forEach( srcName => {
+      this.des.forEach( destName =>{
+        callouts.push(srcName +','+ destName)
+      });
+    });
+
+    this.dbService.getRecordsFromDB(callouts).subscribe(
+      result =>{
+        result.forEach((azPairData: ResponseFromDB) => {
+          const serialized = azPairData.Items[0];
+          if(serialized !== undefined){
+            const azRecordReturn: AZData = {
+              Percentile75: Number(serialized.Percentile75.N),
+              Percentile99: Number(serialized.Percentile99.N),
+              Percentile50: Number(serialized.Percentile50.N),
+              Res_time: Number(serialized.Res_time.N),
+              Max_UTC: Number(serialized.Max_UTC.N),
+              MinRTT: Number(serialized.MinRTT.N),
+              Percentile90: Number(serialized.Percentile90.N),
+              GraphDataString: serialized.GraphDataString.S,
+              MedRTT: Number(serialized.MedRTT.N),
+              MaxRTT: Number(serialized.MaxRTT.N),
+              Handshake_time: Number(serialized.Handshake_time.N),
+              AveRTT: Number(serialized.AveRTT.N),
+              Min_UTC: Number(serialized.Min_UTC.N),
+              AZPair: serialized.AZPair.S
+            }
+            this.dataArray.push(azRecordReturn);
+            this.refresh();
+          }
+        });
+      }
+    );
+  }
+
+
+
+  addChipOne(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+
+    // Add our region
+    if (value) {
+      this.regionsOne.push(value);
+    }
+
+    // Clear the input value
+    event.chipInput!.clear();
+
+    this.regionCtrlOne.setValue(null);
+  }
+
+  removeChipOne(region: string): void {
+    const index = this.regionsOne.indexOf(region);
+
+    if (index >= 0) {
+      this.regionsOne.splice(index, 1);
+    }
+  }
+
+  selectedChipOne(event: MatAutocompleteSelectedEvent): void {
+    this.regionsOne.push(event.option.viewValue);
+    this.regionOneInput.nativeElement.value = '';
+
+    const arrayRegionName = event.option.viewValue;
+    let arrayAZs : string[] = [];
+    switch(arrayRegionName) {
+      case "us-east-1":
+        arrayAZs = this.use1;
+        break;
+      case "us-east-2":
+        arrayAZs = this.use2;
+        break;
+      case "us-west-1":
+        arrayAZs = this.usw1;
+        break;
+      case "us-west-2":
+        arrayAZs = this.usw2;
+        break;
+      case "af-south-1":
+        arrayAZs = this.afs1;
+        break;
+      case "ap-south-1":
+        arrayAZs = this.aps1;
+        break;
+      case "ap-northeast-3":
+        arrayAZs = this.apne3;
+        break;
+      case "ap-northeast-2":
+        arrayAZs = this.apne2;
+        break;
+      case "ap-northeast-1":
+        arrayAZs = this.apne1;
+        break;
+      case "ap-southeast-2":
+        arrayAZs = this.apse1;
+        break;
+      case "ca-central-1":
+        arrayAZs = this.cac1;
+        break;
+      case "eu-central-1":
+        arrayAZs = this.euc1;
+        break;
+      case "eu-west-1":
+        arrayAZs = this.euw1;
+        break;
+      case "eu-west-2":
+        arrayAZs = this.euw2;
+        break;
+      case "eu-south-1":
+        arrayAZs = this.eus1;
+        break;
+      case "eu-west-3":
+        arrayAZs = this.euw3;
+        break;
+      case "eu-north-1":
+        arrayAZs = this.eun1;
+        break;
+      case "sa-east-1":
+        arrayAZs = this.sae1;
+        break;
+      case "ap-southeast-1":
+        arrayAZs = this.apse1;
+        break;
+    }
+
+    arrayAZs.forEach(
+      arrayAZ => {
+        this.src.push(arrayAZ);
+      }
+    );
+    this.callDB();
+
+    this.regionCtrlOne.setValue(null);
+  }
+
+  refresh(): void {
+    this.table?.renderRows();
+  }
+
+
+  private _filterChipOne(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.allRegionsOne.filter(region => region.toLowerCase().includes(filterValue));
+  }
+
+  addChipTwo(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+
+    // Add our region
+    if (value) {
+      this.regionsTwo.push(value);
+    }
+
+    // Clear the input value
+    event.chipInput!.clear();
+
+    this.regionCtrlTwo.setValue(null);
+  }
+
+  removeChipTwo(region: string): void {
+    const index = this.regionsTwo.indexOf(region);
+
+    if (index >= 0) {
+      this.regionsTwo.splice(index, 1);
+    }
+  }
+
+  selectedChipTwo(event: MatAutocompleteSelectedEvent): void {
+    this.regionsTwo.push(event.option.viewValue);
+    this.regionTwoInput.nativeElement.value = '';
+
+    const arrayRegionName = event.option.viewValue;
+    let arrayAZs : string[] = [];
+    switch(arrayRegionName) {
+      case "us-east-1":
+        arrayAZs = this.use1;
+        break;
+      case "us-east-2":
+        arrayAZs = this.use2;
+        break;
+      case "us-west-1":
+        arrayAZs = this.usw1;
+        break;
+      case "us-west-2":
+        arrayAZs = this.usw2;
+        break;
+      case "af-south-1":
+        arrayAZs = this.afs1;
+        break;
+      case "ap-south-1":
+        arrayAZs = this.aps1;
+        break;
+      case "ap-northeast-3":
+        arrayAZs = this.apne3;
+        break;
+      case "ap-northeast-2":
+        arrayAZs = this.apne2;
+        break;
+      case "ap-northeast-1":
+        arrayAZs = this.apne1;
+        break;
+      case "ap-southeast-2":
+        arrayAZs = this.apse1;
+        break;
+      case "ca-central-1":
+        arrayAZs = this.cac1;
+        break;
+      case "eu-central-1":
+        arrayAZs = this.euc1;
+        break;
+      case "eu-west-1":
+        arrayAZs = this.euw1;
+        break;
+      case "eu-west-2":
+        arrayAZs = this.euw2;
+        break;
+      case "eu-south-1":
+        arrayAZs = this.eus1;
+        break;
+      case "eu-west-3":
+        arrayAZs = this.euw3;
+        break;
+      case "eu-north-1":
+        arrayAZs = this.eun1;
+        break;
+      case "sa-east-1":
+        arrayAZs = this.sae1;
+        break;
+      case "ap-southeast-1":
+        arrayAZs = this.apse1;
+        break;
+    }
+
+    arrayAZs.forEach(
+      arrayAZ => {
+        this.des.push(arrayAZ);
+      }
+    );
+    this.callDB();
+    this.regionCtrlTwo.setValue(null);
+  }
+
+  private _filterChipTwo(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.allRegionsTwo.filter(region => region.toLowerCase().includes(filterValue));
+  }
 
   bttnClick(event: any):void{
     //const val = document.querySelector('input').value;
@@ -673,43 +946,6 @@ export class MapViewComponent implements AfterViewInit{
     this.table?.renderRows();
   }
 
-  // CHIPS //
-  add(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
-
-    // Add our fruit
-    if (value) {
-      this.region.push(value);
-    }
-
-    // Clear the input value
-    event.chipInput!.clear();
-
-    this.regionCtrl.setValue(null);
-    this.table?.renderRows();
-  }
-
-  remove(region: string): void {
-    const index = this.region.indexOf(region);
-
-    if (index >= 0) {
-      this.region.splice(index, 1);
-    }
-
-    this.table?.renderRows();
-  }
-
-  selected(event: MatAutocompleteSelectedEvent): void {
-    this.region.push(event.option.viewValue);
-    this.regionInput.nativeElement.value = '';
-    this.regionCtrl.setValue(null);
-  }
-
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-
-    return this.allRegions.filter(region => region.toLowerCase().includes(filterValue));
-  }
 
   openGraph(): void {
     const graphData = this.parseGraph(this.graphDataString);
