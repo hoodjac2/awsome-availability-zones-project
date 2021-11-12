@@ -143,9 +143,9 @@ export class MapViewComponent implements AfterViewInit{
     public fastestFirstAZ ='';
     public fastestSecondAZ = '';
     private map : any;
-    public sendingAZString = 'Select the sending AZ Region';
+    public sendingAZString = 'Select the first Region';
     sendingCirclesLayer = L.layerGroup();
-    public receivingAZString = 'Select the receiving AZ Region';
+    public receivingAZString = 'Select the second Region';
     receivingCirclesLayer = L.layerGroup();
 
     constructor(private dbService: HttpClientServiceComponent,
@@ -237,9 +237,11 @@ export class MapViewComponent implements AfterViewInit{
     });
 
     this.map.on('click', (_e: L.LeafletEvent) => {
-      this.sendingAZString = 'Select the sending AZ Region';
-      this.receivingAZString = 'Select the receiving AZ Region';
+      this.sendingAZString = 'Select the first Region';
+      this.receivingAZString = 'Select the second Region';
       this.removeSelectionCircles();
+      this.fastestFirstAZ = '';
+      this.fastestSecondAZ = '';
       //this.findFastestAZ();
     });
 
@@ -248,7 +250,7 @@ export class MapViewComponent implements AfterViewInit{
 
 
     private regionCircleEventHandler(regionString: string, e: L.LeafletEvent, azNames: string[]){
-      if(this.sendingAZString === 'Select the sending AZ Region' ){
+      if(this.sendingAZString === 'Select the first Region' ){
         this.sendingAZString = regionString;
         this.createSendingCircles(e.sourceTarget._latlng);
         const callouts : string[] = [];
@@ -256,7 +258,6 @@ export class MapViewComponent implements AfterViewInit{
           azNames.forEach( destName =>{
             callouts.push(srcName +','+ destName)
           });
-
         });
         this.src = azNames;
         this.dbService.getRecordsFromDB(callouts).subscribe(
@@ -284,6 +285,7 @@ export class MapViewComponent implements AfterViewInit{
                 this.dataArray.push(azRecordReturn);
               }
             });
+            this.coAverage();
             this.findFastestAZ();
           }
         );
@@ -292,7 +294,7 @@ export class MapViewComponent implements AfterViewInit{
 
         this.dataArray = [];
 
-        if(this.receivingAZString !== 'Select the sending AZ Region' ){
+        if(this.receivingAZString !== 'Select the second Region' ){
           this.receivingCirclesLayer.remove();
         }
         this.receivingAZString = regionString;
@@ -301,6 +303,12 @@ export class MapViewComponent implements AfterViewInit{
         const callouts : string[] = [];
         this.src.forEach( srcName => {
           azNames.forEach( destName =>{
+            callouts.push(srcName +','+ destName)
+          });
+        });
+        //REVERSE CALLS
+        azNames.forEach( srcName => {
+          this.src.forEach( destName =>{
             callouts.push(srcName +','+ destName)
           });
         });
@@ -330,6 +338,7 @@ export class MapViewComponent implements AfterViewInit{
               }
             });
             this.findFastestAZ();
+            this.coAverage();
           }
         );
 
