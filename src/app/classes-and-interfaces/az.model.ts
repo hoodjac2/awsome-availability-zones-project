@@ -17,7 +17,8 @@ export interface AZDataResponse {
   Handshake_time: JsonObj,
   AveRTT: JsonObj,
   Min_UTC: JsonObj,
-  AZPair: JsonObj
+  AZPair: JsonObj,
+  Items: JsonObj
 }
 export interface JsonObj{
   S: string;
@@ -37,7 +38,8 @@ export interface AZData {
   Handshake_time: number,
   AveRTT: number,
   Min_UTC: number,
-  AZPair: string
+  AZPair: string,
+  Items: number
 }
 
 

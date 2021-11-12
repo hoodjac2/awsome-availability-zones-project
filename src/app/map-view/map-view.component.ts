@@ -137,7 +137,8 @@ export class MapViewComponent implements AfterViewInit{
       Handshake_time: 0,
       AveRTT: 0,
       Min_UTC: 0,
-      AZPair: ""
+      AZPair: "",
+      Items: 0
     };
     public fastestFirstAZ ='';
     public fastestSecondAZ = '';
@@ -277,7 +278,8 @@ export class MapViewComponent implements AfterViewInit{
                   Handshake_time: Number(serialized.Handshake_time.N),
                   AveRTT: Number(serialized.AveRTT.N),
                   Min_UTC: Number(serialized.Min_UTC.N),
-                  AZPair: serialized.AZPair.S
+                  AZPair: serialized.AZPair.S,
+                  Items: Number(serialized.Items.N)
                 }
                 this.dataArray.push(azRecordReturn);
               }
@@ -321,7 +323,8 @@ export class MapViewComponent implements AfterViewInit{
                   Handshake_time: Number(serialized.Handshake_time.N),
                   AveRTT: Number(serialized.AveRTT.N),
                   Min_UTC: Number(serialized.Min_UTC.N),
-                  AZPair: serialized.AZPair.S
+                  AZPair: serialized.AZPair.S,
+                  Items: Number(serialized.Items.N)
                 }
                 this.dataArray.push(azRecordReturn);
               }
@@ -595,7 +598,8 @@ export class MapViewComponent implements AfterViewInit{
         Handshake_time: 0,
         AveRTT: 99999999999999999999999999999999999999999999,
         Min_UTC: 0,
-        AZPair: ""
+        AZPair: "",
+        Items: 0
       };
       this.dataArray.forEach(azRecord => {
         if(azRecord.AveRTT < fastestRecord.AveRTT){
@@ -653,7 +657,8 @@ export class MapViewComponent implements AfterViewInit{
               Handshake_time: Number(serialized.Handshake_time.N),
               AveRTT: Number(serialized.AveRTT.N),
               Min_UTC: Number(serialized.Min_UTC.N),
-              AZPair: serialized.AZPair.S
+              AZPair: serialized.AZPair.S,
+              Items: Number(serialized.Items.N)
             }
             this.dataArray.push(azRecordReturn);
             this.refresh();
