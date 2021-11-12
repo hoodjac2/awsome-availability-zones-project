@@ -951,19 +951,19 @@ export class MapViewComponent implements AfterViewInit{
     const graphData = this.parseGraph(this.fastestAZRecord.GraphDataString);
     const dialogRef = this.dialog.open(GraphViewComponent, {
       width: '950px',
-      height: '725px',
+      height: '745px',
       data: {
         dataArray: graphData,
         AZ1: this.fastestFirstAZ,
         AZ2: this.fastestSecondAZ,
-        mind: this.fastestAZRecord.MinRTT,
-        maxd: this.fastestAZRecord.MaxRTT,
-        aved: this.fastestAZRecord.AveRTT,
-        medd: this.fastestAZRecord.MedRTT,
-        percent50: this.fastestAZRecord.Percentile50,
-        percent75: this.fastestAZRecord.Percentile75,
-        percent90: this.fastestAZRecord.Percentile90,
-        percent99: this.fastestAZRecord.Percentile99
+        mind: this.fastestAZRecord.MinRTT.toFixed(2),
+        maxd: this.fastestAZRecord.MaxRTT.toFixed(2),
+        aved: this.fastestAZRecord.AveRTT.toFixed(2),
+        medd: this.fastestAZRecord.MedRTT.toFixed(2),
+        percent50: this.fastestAZRecord.Percentile50.toFixed(2),
+        percent75: this.fastestAZRecord.Percentile75.toFixed(2),
+        percent90: this.fastestAZRecord.Percentile90.toFixed(2),
+        percent99: this.fastestAZRecord.Percentile99.toFixed(2)
       }
     });
   }
