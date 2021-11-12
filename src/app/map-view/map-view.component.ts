@@ -14,6 +14,7 @@ import {MatChipInputEvent} from '@angular/material/chips';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import { GraphViewComponent } from "../graph-view/graph-view.component";
+import { AzNameLookupServiceComponent } from "../az-name-lookup.service/az-name-lookup.service";
 import { MatDialog } from "@angular/material/dialog";
 import { name } from "aws-sdk/clients/importexport";
 import { Console } from "console";
@@ -57,7 +58,8 @@ export class MapViewComponent implements AfterViewInit{
     allRegionsOne: string[] = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2',
     'af-south-1', 'ap-south-1', 'ap-northeast-3', 'ap-northeast-2',
     'ap-southeast-2', 'ap-northeast-1', 'ca-central-1', 'eu-central-1', 'eu-west-1',
-    'eu-west-2', 'eu-south-1', 'eu-west-3', 'eu-north-1', 'sa-east-1'];
+    'eu-west-2', 'eu-south-1', 'eu-west-3', 'eu-north-1', 'sa-east-1',
+    'ap-southeast-1'];
 
     @ViewChild('regionOneInput')
   regionOneInput!: ElementRef<HTMLInputElement>;
@@ -681,9 +683,20 @@ export class MapViewComponent implements AfterViewInit{
 
   removeChipOne(region: string): void {
     const index = this.regionsOne.indexOf(region);
-
     if (index >= 0) {
       this.regionsOne.splice(index, 1);
+
+      const regionTranslated = AzNameLookupServiceComponent.LookupbyAZ(region);
+
+      this.dataArray.forEach(
+        arrayAZ => {
+          if (regionTranslated == arrayAZ.AZPair.substring(0,4)) {
+            this.dataArray.splice(this.dataArray.indexOf(arrayAZ));
+          }
+        }
+      );
+
+      this.refresh();
     }
   }
 
@@ -792,6 +805,8 @@ export class MapViewComponent implements AfterViewInit{
     const index = this.regionsTwo.indexOf(region);
 
     if (index >= 0) {
+      this.des.splice(this.des.indexOf(region));
+      this.refresh();
       this.regionsTwo.splice(index, 1);
     }
   }

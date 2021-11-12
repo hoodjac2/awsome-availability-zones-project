@@ -27,6 +27,7 @@ import { MatIconModule} from '@angular/material/icon'
 import {MatCardModule} from '@angular/material/card';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { GraphViewComponent } from './graph-view/graph-view.component';
+import { AzNameLookupServiceComponent } from './az-name-lookup.service/az-name-lookup.service';
 import { MatDialogModule } from '@angular/material/dialog';
 @NgModule({
   imports: [
@@ -35,6 +36,7 @@ import { MatDialogModule } from '@angular/material/dialog';
       {path: 'map-view', component: MapViewComponent},
       {path: 'list-view', component: ListViewComponent},
       {path: 'graph-view', component: GraphViewComponent},
+      {path: 'az-name-lookup.service', component: AzNameLookupServiceComponent},
       {path: '', redirectTo: '/map-view', pathMatch: 'full'},
       {path: '**', component: NotFoundPageComponent}
     ]),
@@ -67,7 +69,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     ListViewComponent,
     NotFoundPageComponent,
     MapViewComponent,
-    GraphViewComponent
+    GraphViewComponent,
+    AzNameLookupServiceComponent
   ],
   providers: [
     MarkerService
