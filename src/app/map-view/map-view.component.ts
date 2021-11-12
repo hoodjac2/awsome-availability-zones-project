@@ -987,4 +987,29 @@ export class MapViewComponent implements AfterViewInit{
     });
     return JSONthing;
   }
+
+  averageify(entryA: AZData, entryB: AZData): number{
+    const avgA = entryA.AveRTT;
+    const totalA = 210; //entryA.total;
+    const avgB = entryB.AveRTT;
+    const totalB = 210; //entryB.total;
+
+    const fullAverage = (avgA*totalA + avgB*totalB) / (totalA+totalB);
+
+    return fullAverage;
+  }
+
+  coAverage(): void{
+    this.dataArray.forEach( entryA => {
+      const pairA = entryA.AZPair.split(',');
+      this.dataArray.forEach( entryB => {
+        const pairB = entryB.AZPair.split(',');
+        if (pairA[0] == pairB[1] && pairA[1] == pairB[0]){
+          const avg = this.averageify(entryA, entryB);
+          entryA.AveRTT = avg;
+          entryB.AveRTT = avg;
+        }
+      });
+    });
+  }
 }
