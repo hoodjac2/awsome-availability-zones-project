@@ -995,9 +995,9 @@ export class MapViewComponent implements AfterViewInit{
 
   averageify(entryA: AZData, entryB: AZData): number{
     const avgA = entryA.AveRTT;
-    const totalA = 210; //entryA.total;
+    const totalA = entryA.Items;
     const avgB = entryB.AveRTT;
-    const totalB = 210; //entryB.total;
+    const totalB = entryB.Items;
 
     const fullAverage = (avgA*totalA + avgB*totalB) / (totalA+totalB);
 
