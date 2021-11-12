@@ -14,10 +14,10 @@ import {MatChipInputEvent} from '@angular/material/chips';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import { GraphViewComponent } from "../graph-view/graph-view.component";
-import { AzNameLookupServiceComponent } from "../az-name-lookup.service/az-name-lookup.service";
 import { MatDialog } from "@angular/material/dialog";
 import { name } from "aws-sdk/clients/importexport";
 import { Console } from "console";
+import { AzNameLookupServiceComponent } from "../az-name-lookup.service/az-name-lookup.service/az-name-lookup.service.component";
 //import { GraphViewComponent } from "../graph-view/graph-view.component";
 //import { MatDialog } from "@angular/material/dialog";
 
@@ -685,8 +685,8 @@ export class MapViewComponent implements AfterViewInit{
     const index = this.regionsOne.indexOf(region);
     if (index >= 0) {
       this.regionsOne.splice(index, 1);
-
-      const regionTranslated = AzNameLookupServiceComponent.LookupbyAZ(region);
+      const dict = new AzNameLookupServiceComponent();
+      const regionTranslated = dict.LookupbyAZ(region);
 
       this.dataArray.forEach(
         arrayAZ => {

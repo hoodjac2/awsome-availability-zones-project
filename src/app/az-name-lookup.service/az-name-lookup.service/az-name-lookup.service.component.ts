@@ -4,12 +4,10 @@ import {NgModule} from '@angular/core';
 @NgModule ({
   exports: []
 })
-export class AzNameLookupServiceComponent implements OnInit {
+export class AzNameLookupServiceComponent{
 
+  public dictionaryAZNames = new Map<string, string>();
   constructor() {
-  dictionaryAZNames = new Map<string, string>();
-
-  
     this.dictionaryAZNames.set('eu-north-1','eun1');
     this.dictionaryAZNames.set('ap-south-1','aps1');
     this.dictionaryAZNames.set('eu-west-3','euw3');
