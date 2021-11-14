@@ -123,7 +123,7 @@ export class GraphViewComponent{
   yAxis = true;
   showYAxisLabel = true;
   showXAxisLabel = true;
-  xAxisLabel = 'Latency by floor (ms)';
+  xAxisLabel = 'Latency (ms)';
   yAxisLabel = 'Frequency (%)';
 
 

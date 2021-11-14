@@ -106,17 +106,17 @@ export class MapViewComponent implements AfterViewInit{
     src: string[] = [];
     des: string[] = [];
     //---------GRAPH DATA FIELDS----------------//
-    graphDataString = "name:173.05, value:18.0\nname:173.7, value:20.0\nname:174.35, value:22.0\nname:175.01, value:0.0\nname:175.66, value:20.0\nname:176.31, value:0.0\nname:176.96, value:0.0\nname:177.62, value:0.0\nname:178.27, value:0.0\nname:178.92, value:20.0\n";
-    mind = 12345768;
-    maxd = 12345768;
-    aved = 12345768;
-    medd = 12345768;
-    percent50 = 345678;
-    percent75 = 345678;
-    percent90 = 345678;
-    percent99 = 345678;
-    CurrAZA = 'MAPTEST1';
-    CurrAZB = 'MAPTEST2';
+    // graphDataString = "name:173.05, value:18.0\nname:173.7, value:20.0\nname:174.35, value:22.0\nname:175.01, value:0.0\nname:175.66, value:20.0\nname:176.31, value:0.0\nname:176.96, value:0.0\nname:177.62, value:0.0\nname:178.27, value:0.0\nname:178.92, value:20.0\n";
+    // mind = 12345768;
+    // maxd = 12345768;
+    // aved = 12345768;
+    // medd = 12345768;
+    // percent50 = 345678;
+    // percent75 = 345678;
+    // percent90 = 345678;
+    // percent99 = 345678;
+    // CurrAZA = 'MAPTEST1';
+    // CurrAZB = 'MAPTEST2';
 
 
     dataArray: AZData[] = [];
@@ -142,7 +142,8 @@ export class MapViewComponent implements AfterViewInit{
       Handshake_time: 0,
       AveRTT: 0,
       Min_UTC: 0,
-      AZPair: ""
+      AZPair: "",
+      Items: 0
     };
 
     sortedData: AZData[] = [];
@@ -150,9 +151,9 @@ export class MapViewComponent implements AfterViewInit{
     public fastestFirstAZ ='';
     public fastestSecondAZ = '';
     private map : any;
-    public sendingAZString = 'Select the sending AZ Region';
+    public sendingAZString = 'Select the first Region';
     sendingCirclesLayer = L.layerGroup();
-    public receivingAZString = 'Select the receiving AZ Region';
+    public receivingAZString = 'Select the second Region';
     receivingCirclesLayer = L.layerGroup();
 
     constructor(private dbService: HttpClientServiceComponent,
@@ -246,9 +247,11 @@ export class MapViewComponent implements AfterViewInit{
     });
 
     this.map.on('click', (_e: L.LeafletEvent) => {
-      this.sendingAZString = 'Select the sending AZ Region';
-      this.receivingAZString = 'Select the receiving AZ Region';
+      this.sendingAZString = 'Select the first Region';
+      this.receivingAZString = 'Select the second Region';
       this.removeSelectionCircles();
+      this.fastestFirstAZ = '';
+      this.fastestSecondAZ = '';
       //this.findFastestAZ();
     });
 
@@ -257,7 +260,7 @@ export class MapViewComponent implements AfterViewInit{
 
 
     private regionCircleEventHandler(regionString: string, e: L.LeafletEvent, azNames: string[]){
-      if(this.sendingAZString === 'Select the sending AZ Region' ){
+      if(this.sendingAZString === 'Select the first Region' ){
         this.sendingAZString = regionString;
         this.createSendingCircles(e.sourceTarget._latlng);
         const callouts : string[] = [];
@@ -265,7 +268,6 @@ export class MapViewComponent implements AfterViewInit{
           azNames.forEach( destName =>{
             callouts.push(srcName +','+ destName)
           });
-
         });
         this.src = azNames;
         this.dbService.getRecordsFromDB(callouts).subscribe(
@@ -287,11 +289,13 @@ export class MapViewComponent implements AfterViewInit{
                   Handshake_time: Number(serialized.Handshake_time.N),
                   AveRTT: Number(serialized.AveRTT.N),
                   Min_UTC: Number(serialized.Min_UTC.N),
-                  AZPair: serialized.AZPair.S
+                  AZPair: serialized.AZPair.S,
+                  Items: Number(serialized.Items.N)
                 }
                 this.dataArray.push(azRecordReturn);
               }
             });
+            this.coAverage();
             this.findFastestAZ();
           }
         );
@@ -300,7 +304,7 @@ export class MapViewComponent implements AfterViewInit{
 
         this.dataArray = [];
 
-        if(this.receivingAZString !== 'Select the sending AZ Region' ){
+        if(this.receivingAZString !== 'Select the second Region' ){
           this.receivingCirclesLayer.remove();
         }
         this.receivingAZString = regionString;
@@ -309,6 +313,12 @@ export class MapViewComponent implements AfterViewInit{
         const callouts : string[] = [];
         this.src.forEach( srcName => {
           azNames.forEach( destName =>{
+            callouts.push(srcName +','+ destName)
+          });
+        });
+        //REVERSE CALLS
+        azNames.forEach( srcName => {
+          this.src.forEach( destName =>{
             callouts.push(srcName +','+ destName)
           });
         });
@@ -331,12 +341,14 @@ export class MapViewComponent implements AfterViewInit{
                   Handshake_time: Number(serialized.Handshake_time.N),
                   AveRTT: Number(serialized.AveRTT.N),
                   Min_UTC: Number(serialized.Min_UTC.N),
-                  AZPair: serialized.AZPair.S
+                  AZPair: serialized.AZPair.S,
+                  Items: Number(serialized.Items.N)
                 }
                 this.dataArray.push(azRecordReturn);
               }
             });
             this.findFastestAZ();
+            this.coAverage();
           }
         );
 
@@ -605,7 +617,8 @@ export class MapViewComponent implements AfterViewInit{
         Handshake_time: 0,
         AveRTT: 99999999999999999999999999999999999999999999,
         Min_UTC: 0,
-        AZPair: ""
+        AZPair: "",
+        Items: 0
       };
       this.dataArray.forEach(azRecord => {
         if(azRecord.AveRTT < fastestRecord.AveRTT){
@@ -663,7 +676,8 @@ export class MapViewComponent implements AfterViewInit{
               Handshake_time: Number(serialized.Handshake_time.N),
               AveRTT: Number(serialized.AveRTT.N),
               Min_UTC: Number(serialized.Min_UTC.N),
-              AZPair: serialized.AZPair.S
+              AZPair: serialized.AZPair.S,
+              Items: Number(serialized.Items.N)
             }
             // record.AZPair = ...
             this.dataArray.push(azRecordReturn);
@@ -1066,22 +1080,22 @@ export class MapViewComponent implements AfterViewInit{
 
 
   openGraph(): void {
-    const graphData = this.parseGraph(this.graphDataString);
+    const graphData = this.parseGraph(this.fastestAZRecord.GraphDataString);
     const dialogRef = this.dialog.open(GraphViewComponent, {
       width: '950px',
-      height: '725px',
+      height: '745px',
       data: {
         dataArray: graphData,
-        AZ1: this.CurrAZA,
-        AZ2: this.CurrAZB,
-        mind: this.mind,
-        maxd: this.maxd,
-        aved: this.aved,
-        medd: this.medd,
-        percent50: this.percent50,
-        percent75: this.percent75,
-        percent90: this.percent90,
-        percent99: this.percent99
+        AZ1: this.fastestFirstAZ,
+        AZ2: this.fastestSecondAZ,
+        mind: this.fastestAZRecord.MinRTT.toFixed(2),
+        maxd: this.fastestAZRecord.MaxRTT.toFixed(2),
+        aved: this.fastestAZRecord.AveRTT.toFixed(2),
+        medd: this.fastestAZRecord.MedRTT.toFixed(2),
+        percent50: this.fastestAZRecord.Percentile50.toFixed(2),
+        percent75: this.fastestAZRecord.Percentile75.toFixed(2),
+        percent90: this.fastestAZRecord.Percentile90.toFixed(2),
+        percent99: this.fastestAZRecord.Percentile99.toFixed(2)
       }
     });
   }
@@ -1104,5 +1118,42 @@ export class MapViewComponent implements AfterViewInit{
 
     });
     return JSONthing;
+  }
+
+  averageify(entryA: AZData, entryB: AZData): number{
+    const avgA = entryA.AveRTT;
+    const totalA = entryA.Items;
+    const avgB = entryB.AveRTT;
+    const totalB = entryB.Items;
+
+    const fullAverage = (avgA*totalA + avgB*totalB) / (totalA+totalB);
+
+    return fullAverage;
+  }
+
+  coAverage(): void{
+    this.dataArray.forEach( entryA => {
+      const pairA = entryA.AZPair.split(',');
+      this.dataArray.forEach( entryB => {
+        const pairB = entryB.AZPair.split(',');
+        if (pairA[0] == pairB[1] && pairA[1] == pairB[0]){
+          const avg = this.averageify(entryA, entryB);
+          entryA.AveRTT = avg;
+          entryB.AveRTT = avg;
+          if (entryA.MinRTT < entryB.MinRTT){
+            entryB.MinRTT = entryA.MinRTT;
+          }
+          else {
+            entryA.MinRTT = entryB.MinRTT;
+          }
+          if (entryA.MaxRTT > entryB.MaxRTT){
+            entryB.MaxRTT = entryA.MaxRTT;
+          }
+          else {
+            entryA.MaxRTT = entryB.MaxRTT;
+          }
+        }
+      });
+    });
   }
 }

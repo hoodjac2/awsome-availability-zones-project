@@ -22,7 +22,6 @@
     </div>
   </div>
 </div>
-
 <mat-sidenav-container [hidden]="viewChecked && !loading" class="example-container" >
   <mat-sidenav opened mode="side"  class="mat-elevation-z8">
     <h2>Region Selection Panel</h2>
@@ -40,15 +39,15 @@
     <mat-card>
       <span>{{this.receivingAZString}}</span>
     </mat-card>
-    <h3 style="color: white; padding: 10px;">Fastest AZ pair for these regions:</h3>
+    <h3 style="color: white; padding: 10px;">Fastest AZ pair for these regions on average:</h3>
     <mat-card>
-        <span *ngIf="this.fastestFirstAZ != ''">{{this.fastestFirstAZ}} to {{this.fastestSecondAZ }} at {{this.fastestAZRecord.AveRTT}}ms</span>
+        <span *ngIf="this.fastestFirstAZ != ''">{{this.fastestFirstAZ}} to {{this.fastestSecondAZ }} at {{this.fastestAZRecord.AveRTT | number:'1.2'}}ms</span>
     </mat-card>
     <mat-card>
-      <span *ngIf="this.fastestFirstAZ != ''">Max: {{this.fastestAZRecord.MaxRTT}}ms Min: {{this.fastestAZRecord.MinRTT}}ms</span>
+      <span *ngIf="this.fastestSecondAZ != ''">Max: {{this.fastestAZRecord.MaxRTT}}ms Min: {{this.fastestAZRecord.MinRTT}}ms</span>
     </mat-card>
     <div class="button-container">
-    <button style="margin-top: 15%;" mat-raised-button color="warn" (click)="openGraph()">More Info..</button>
+    <button style="margin-top: 10%;" mat-raised-button color="warn" (click)="openGraph()">More Info..</button>
     </div>
 
   </mat-sidenav>
