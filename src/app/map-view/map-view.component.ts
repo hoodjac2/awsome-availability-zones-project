@@ -361,7 +361,7 @@ export class MapViewComponent implements AfterViewInit{
           color: 'orange',
           fillColor: '#FFA500',
           fillOpacity: 0.5,
-          radius: 187500
+          radius: 220000
         })
         .on('click', (e) => {
           this.regionCircleEventHandler('us-east-1', e, this.use1);
@@ -372,7 +372,7 @@ export class MapViewComponent implements AfterViewInit{
           color: 'orange',
           fillColor: '#FFA500',
           fillOpacity: 0.5,
-          radius: 187500
+          radius: 220000
         })
         .on('click', (e) => {
           this.regionCircleEventHandler('us-east-2', e, this.use2);
@@ -383,7 +383,7 @@ export class MapViewComponent implements AfterViewInit{
           color: 'orange',
           fillColor: '#FFA500',
           fillOpacity: 0.5,
-          radius: 187500
+          radius: 220000
         })
         .on('click', (e) => {
           this.regionCircleEventHandler('us-west-1', e, this.usw1);
@@ -394,7 +394,7 @@ export class MapViewComponent implements AfterViewInit{
           color: 'orange',
           fillColor: '#FFA500',
           fillOpacity: 0.5,
-          radius: 187500
+          radius: 220000
         })
         .on('click', (e) => {
           this.regionCircleEventHandler('us-west-2', e, this.usw2);
@@ -416,7 +416,7 @@ export class MapViewComponent implements AfterViewInit{
           color: 'orange',
           fillColor: '#FFA500',
           fillOpacity: 0.5,
-          radius: 187500
+          radius: 230000
         })
         .on('click', (e) => {
           this.regionCircleEventHandler('sa-east-1', e, this.sae1);
@@ -460,7 +460,7 @@ export class MapViewComponent implements AfterViewInit{
             color: 'orange',
             fillColor: '#FFA500',
             fillOpacity: 0.5,
-            radius: 187500
+            radius: 210000
           })
           .on('click', (e) => {
             this.regionCircleEventHandler('eu-south-1', e, this.eus1);
@@ -471,7 +471,7 @@ export class MapViewComponent implements AfterViewInit{
             color: 'orange',
             fillColor: '#FFA500',
             fillOpacity: 0.5,
-            radius: 187500
+            radius: 150000
           })
           .on('click', (e) => {
             this.regionCircleEventHandler('eu-north-1', e, this.eun1);
@@ -481,7 +481,7 @@ export class MapViewComponent implements AfterViewInit{
         color: 'orange',
         fillColor: '#FFA500',
         fillOpacity: 0.5,
-        radius: 187500
+        radius: 220000
       })
       .on('click', (e) => {
         this.regionCircleEventHandler('af-south-1', e, this.afs1);
@@ -492,7 +492,7 @@ export class MapViewComponent implements AfterViewInit{
         color: 'orange',
         fillColor: '#FFA500',
         fillOpacity: 0.5,
-        radius: 187500
+        radius: 220000
       })
       .on('click', (e) => {
         this.regionCircleEventHandler('ap-southeast-2', e, this.apse1);
@@ -503,7 +503,7 @@ export class MapViewComponent implements AfterViewInit{
         color: 'orange',
         fillColor: '#FFA500',
         fillOpacity: 0.5,
-        radius: 187500
+        radius: 250000
       })
       .on('click', (e) => {
         this.regionCircleEventHandler('ap-southeast-1', e, this.apse2);
@@ -514,7 +514,7 @@ export class MapViewComponent implements AfterViewInit{
         color: 'orange',
         fillColor: '#FFA500',
         fillOpacity: 0.5,
-        radius: 187500
+        radius: 240000
       })
       .on('click', (e) => {
         this.regionCircleEventHandler( 'ap-south-1', e, this.aps1);
@@ -525,7 +525,7 @@ export class MapViewComponent implements AfterViewInit{
         color: 'orange',
         fillColor: '#FFA500',
         fillOpacity: 0.5,
-        radius: 187500
+        radius: 220000
       })
       .on('click', (e) => {
         this.regionCircleEventHandler('ap-northeast-2', e, this.apne1);
@@ -535,7 +535,7 @@ export class MapViewComponent implements AfterViewInit{
         color: 'orange',
         fillColor: '#FFA500',
         fillOpacity: 0.5,
-        radius: 187500
+        radius: 220000
       })
       .on('click', (e) => {
         this.regionCircleEventHandler('ap-northeast-1', e, this.apne1);
@@ -546,7 +546,7 @@ export class MapViewComponent implements AfterViewInit{
         color: 'orange',
         fillColor: '#FFA500',
         fillOpacity: 0.5,
-        radius: 187500
+        radius: 220000
       })
       .on('click', (e) => {
         this.regionCircleEventHandler('ap-northeast-3', e, this.apne3);
