@@ -28,6 +28,8 @@ import {MatCardModule} from '@angular/material/card';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { GraphViewComponent } from './graph-view/graph-view.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import {MatSortModule} from '@angular/material/sort';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -60,14 +62,15 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatDialogModule,
     MatIconModule,
     MatCardModule,
-    NgxChartsModule
+    NgxChartsModule,
+    MatSortModule
   ],
   declarations: [
     AppComponent,
     ListViewComponent,
     NotFoundPageComponent,
     MapViewComponent,
-    GraphViewComponent
+    GraphViewComponent,
   ],
   providers: [
     MarkerService

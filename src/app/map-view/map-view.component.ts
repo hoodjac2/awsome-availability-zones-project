@@ -5,7 +5,7 @@ import * as L from 'leaflet';
 import { AZData, AZDataResponse, JsonObj, ResponseFromDB } from "../classes-and-interfaces/az.model";
 import { MarkerService } from '../marker.service';
 import { HttpClientServiceComponent } from "../http-client.service/http-client.service.component";
-import { MatTable } from "@angular/material/table";
+import { MatTable, MatTableDataSource } from "@angular/material/table";
 import { ThemePalette } from "@angular/material/core";
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {FormControl} from '@angular/forms';
@@ -17,6 +17,8 @@ import { GraphViewComponent } from "../graph-view/graph-view.component";
 import { MatDialog } from "@angular/material/dialog";
 import { name } from "aws-sdk/clients/importexport";
 import { Console } from "console";
+import { AzNameLookupServiceComponent } from "../az-name-lookup.service/az-name-lookup.service/az-name-lookup.service.component";
+import { MatSort, Sort } from '@angular/material/sort';
 //import { GraphViewComponent } from "../graph-view/graph-view.component";
 //import { MatDialog } from "@angular/material/dialog";
 
@@ -57,7 +59,8 @@ export class MapViewComponent implements AfterViewInit{
     allRegionsOne: string[] = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2',
     'af-south-1', 'ap-south-1', 'ap-northeast-3', 'ap-northeast-2',
     'ap-southeast-2', 'ap-northeast-1', 'ca-central-1', 'eu-central-1', 'eu-west-1',
-    'eu-west-2', 'eu-south-1', 'eu-west-3', 'eu-north-1', 'sa-east-1'];
+    'eu-west-2', 'eu-south-1', 'eu-west-3', 'eu-north-1', 'sa-east-1',
+    'ap-southeast-1'];
 
     @ViewChild('regionOneInput')
   regionOneInput!: ElementRef<HTMLInputElement>;
@@ -118,10 +121,12 @@ export class MapViewComponent implements AfterViewInit{
 
     dataArray: AZData[] = [];
     filteredDataArray: AZData[] = [];
+    dataSource = new MatTableDataSource(this.dataArray);
+    @ViewChild(MatSort) sort: MatSort | any;
 
     @ViewChild(MatTable) table: MatTable<any> | undefined;
 
-    displayedColumns: string[] = ['AZPair', 'AveRTT'];
+    displayedColumns: string[] = ['AZPair', 'AveRTT', 'MinRTT', 'MaxRTT', 'Res_time', 'Handshake_time', 'Percentile50', 'Percentile90'];
     filterArray : string[] = [];
     public fastestAZRecord: AZData = {
       Percentile75: 0,
@@ -140,6 +145,9 @@ export class MapViewComponent implements AfterViewInit{
       AZPair: "",
       Items: 0
     };
+
+    sortedData: AZData[] = [];
+
     public fastestFirstAZ ='';
     public fastestSecondAZ = '';
     private map : any;
@@ -159,6 +167,7 @@ export class MapViewComponent implements AfterViewInit{
           startWith(null),
           map((region: string | null) => (region ? this._filterChipTwo(region) : this.allRegionsTwo.slice())),
         );
+
     }
 
     onClick(_event: any): void {
@@ -219,6 +228,7 @@ export class MapViewComponent implements AfterViewInit{
         this.loading = false;
         this.initMap();
       });
+      this.dataSource.sort = this.sort;
      }
 
 
@@ -669,6 +679,7 @@ export class MapViewComponent implements AfterViewInit{
               AZPair: serialized.AZPair.S,
               Items: Number(serialized.Items.N)
             }
+            // record.AZPair = ...
             this.dataArray.push(azRecordReturn);
             this.refresh();
           }
@@ -677,6 +688,40 @@ export class MapViewComponent implements AfterViewInit{
     );
   }
 
+  /** Announce the change in sort state for assistive technology. */
+  sortData(sort: Sort) {
+    const data = this.dataArray.slice();
+    if (!sort.active || sort.direction === '') {
+      this.sortedData = data;
+      return;
+    }
+
+    this.sortedData = data.sort((a, b) => {
+      const isAsc = sort.direction === 'asc';
+      switch (sort.active) {
+        case 'AZPair':
+          return this.compare(a.AZPair, b.AZPair, isAsc);
+        case 'AveRTT':
+          return this.compare(a.AveRTT, b.AveRTT, isAsc);
+        case 'MinRTT':
+          return this.compare(a.MinRTT, b.MinRTT, isAsc);
+        case 'MaxRTT':
+          return this.compare(a.MaxRTT, b.MaxRTT, isAsc);
+        case 'Res_time':
+          return this.compare(a.Res_time, b.Res_time, isAsc);
+        default:
+          return 0;
+      }
+    });
+
+    this.dataArray = this.sortedData;
+    this.refresh();
+  }
+
+
+  compare(a: number | string, b: number | string, isAsc: boolean) {
+    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  }
 
 
   addChipOne(event: MatChipInputEvent): void {
@@ -695,9 +740,45 @@ export class MapViewComponent implements AfterViewInit{
 
   removeChipOne(region: string): void {
     const index = this.regionsOne.indexOf(region);
-
     if (index >= 0) {
       this.regionsOne.splice(index, 1);
+      const dict = new AzNameLookupServiceComponent();
+      const regionTranslated = dict.LookupbyAZ(region);
+
+      if (regionTranslated?.length == 4) {
+        this.dataArray.forEach(
+          arrayAZ => {
+            if (regionTranslated == arrayAZ.AZPair.substring(0,4)) {
+              this.dataArray.splice(this.dataArray.indexOf(arrayAZ));
+            }
+          }
+        );
+        this.src.forEach(
+          element => {
+            if (regionTranslated == element.substring(0,4)) {
+              this.src.splice(this.src.indexOf(element));
+            }
+          }
+        );
+      } else {
+        this.dataArray.forEach(
+          arrayAZ => {
+            if (regionTranslated == arrayAZ.AZPair.substring(0,5)) {
+              this.dataArray.splice(this.dataArray.indexOf(arrayAZ));
+            }
+          }
+        );
+        this.src.forEach(
+          element => {
+            if (regionTranslated == element.substring(0,5)) {
+              this.src.splice(this.src.indexOf(element));
+            }
+          }
+        );
+      }
+
+
+      this.refresh();
     }
   }
 
@@ -806,6 +887,43 @@ export class MapViewComponent implements AfterViewInit{
     const index = this.regionsTwo.indexOf(region);
 
     if (index >= 0) {
+      this.regionsTwo.splice(index, 1);
+      const dict = new AzNameLookupServiceComponent();
+      const regionTranslated = dict.LookupbyAZ(region);
+
+      if (regionTranslated?.length == 4) {
+        this.dataArray.forEach(
+          arrayAZ => {
+            if (regionTranslated == arrayAZ.AZPair.substring(9,13)) {
+              this.dataArray.splice(this.dataArray.indexOf(arrayAZ));
+            }
+          }
+        );
+        this.des.forEach(
+          element => {
+            if (regionTranslated == element.substring(0,4)) {
+              this.des.splice(this.des.indexOf(element));
+            }
+          }
+        );
+      } else {
+        this.dataArray.forEach(
+          arrayAZ => {
+            const i = arrayAZ.AZPair.substring(9,14);
+            if (regionTranslated == arrayAZ.AZPair.substring(9,14)) {
+              this.dataArray.splice(this.dataArray.indexOf(arrayAZ));
+            }
+          }
+        );
+        this.des.forEach(
+          element => {
+            if (regionTranslated == element.substring(0,5)) {
+              this.des.splice(this.des.indexOf(element));
+            }
+          }
+        );
+      }
+      this.refresh();
       this.regionsTwo.splice(index, 1);
     }
   }
