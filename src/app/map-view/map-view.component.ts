@@ -1022,6 +1022,18 @@ export class MapViewComponent implements AfterViewInit{
           const avg = this.averageify(entryA, entryB);
           entryA.AveRTT = avg;
           entryB.AveRTT = avg;
+          if (entryA.MinRTT < entryB.MinRTT){
+            entryB.MinRTT = entryA.MinRTT;
+          }
+          else {
+            entryA.MinRTT = entryB.MinRTT;
+          }
+          if (entryA.MaxRTT > entryB.MaxRTT){
+            entryB.MaxRTT = entryA.MaxRTT;
+          }
+          else {
+            entryA.MaxRTT = entryB.MaxRTT;
+          }
         }
       });
     });
