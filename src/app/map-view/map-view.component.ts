@@ -120,6 +120,7 @@ export class MapViewComponent implements AfterViewInit{
 
 
     dataArray: AZData[] = [];
+    emptyArray: AZData[] = [];
     filteredDataArray: AZData[] = [];
     dataSource = new MatTableDataSource(this.dataArray);
     @ViewChild(MatSort) sort: MatSort | any;
@@ -650,7 +651,7 @@ export class MapViewComponent implements AfterViewInit{
     // *************** CHIP ELEMENTS ***************** //
 
   callDB() : void {
-
+    this.dataArray = [];
     const callouts : string[] = [];
     this.src.forEach( srcName => {
       this.des.forEach( destName =>{
