@@ -688,7 +688,6 @@ export class MapViewComponent implements AfterViewInit{
     );
   }
 
-  /** Announce the change in sort state for assistive technology. */
   sortData(sort: Sort) {
     const data = this.dataArray.slice();
     if (!sort.active || sort.direction === '') {
@@ -709,6 +708,12 @@ export class MapViewComponent implements AfterViewInit{
           return this.compare(a.MaxRTT, b.MaxRTT, isAsc);
         case 'Res_time':
           return this.compare(a.Res_time, b.Res_time, isAsc);
+        case 'Handshake_time':
+          return this.compare(a.Handshake_time, b.Handshake_time, isAsc);
+        case 'Percentile50':
+          return this.compare(a.Percentile50, b.Percentile50, isAsc);
+        case 'Percentile90':
+          return this.compare(a.Percentile90, b.Percentile90, isAsc);
         default:
           return 0;
       }
