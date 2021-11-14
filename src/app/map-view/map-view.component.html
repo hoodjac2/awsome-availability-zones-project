@@ -40,10 +40,10 @@
       <span>{{this.receivingAZString}}</span>
     </mat-card>
     <h3 style="color: white; padding: 10px;">Fastest AZ pair for these regions on average:</h3>
-    <mat-card>
+    <mat-card style="height: 20px;">
         <span *ngIf="this.fastestFirstAZ != ''">{{this.fastestFirstAZ}} to {{this.fastestSecondAZ }} at {{this.fastestAZRecord.AveRTT | number:'1.2'}}ms</span>
     </mat-card>
-    <mat-card>
+    <mat-card style="height: 20px;">
       <span *ngIf="this.fastestSecondAZ != ''">Max: {{this.fastestAZRecord.MaxRTT}}ms Min: {{this.fastestAZRecord.MinRTT}}ms</span>
     </mat-card>
     <div class="button-container">
