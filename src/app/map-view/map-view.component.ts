@@ -263,7 +263,7 @@ export class MapViewComponent implements AfterViewInit{
     private regionCircleEventHandler(regionString: string, e: L.LeafletEvent, azNames: string[]){
       if(this.sendingAZString === 'Select the first Region' ){
         this.sendingAZString = regionString;
-        this.createSendingCircles(e.sourceTarget._latlng);
+        this.createSendingCircles(e.sourceTarget._latlng, e.sourceTarget._mRadius);
         const callouts : string[] = [];
         azNames.forEach( srcName => {
           azNames.forEach( destName =>{
@@ -558,19 +558,19 @@ export class MapViewComponent implements AfterViewInit{
       markers.addTo(this.map);
     }
 
-    private createSendingCircles(latlng: any): void{
+    private createSendingCircles(latlng: any, radius: number): void{
 
       const sendingCircle = L.circle([latlng.lat, latlng.lng], {
         color: 'green',
         fillColor: '#2EE718',
         fillOpacity: 1,
-        radius: 187500
+        radius: radius + 5000
       });
       const sendingCircle2 = L.circle([latlng.lat, latlng.lng], {
         color: 'dark green',
         fillColor: '#2ABF19',
         fillOpacity: 1,
-        radius: 150000
+        radius: radius - 30000
       });
 
       const markers = L.layerGroup([sendingCircle, sendingCircle2]);
