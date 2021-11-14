@@ -29,6 +29,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { GraphViewComponent } from './graph-view/graph-view.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import {MatSortModule} from '@angular/material/sort';
+import { DisplayAZPairPipe } from './az-name-lookup.service/az-name-lookup.service/display-azpair.pipe';
 
 @NgModule({
   imports: [
@@ -68,6 +69,7 @@ import {MatSortModule} from '@angular/material/sort';
   declarations: [
     AppComponent,
     ListViewComponent,
+    DisplayAZPairPipe,
     NotFoundPageComponent,
     MapViewComponent,
     GraphViewComponent,
