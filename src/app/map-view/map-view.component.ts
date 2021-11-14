@@ -172,6 +172,7 @@ export class MapViewComponent implements AfterViewInit{
 
     onClick(_event: any): void {
       this.viewChecked = !this.viewChecked;
+      this.refresh();
     }
 
     ngAfterViewInit(): void {
