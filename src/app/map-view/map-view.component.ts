@@ -126,7 +126,7 @@ export class MapViewComponent implements AfterViewInit{
 
     @ViewChild(MatTable) table: MatTable<any> | undefined;
 
-    displayedColumns: string[] = ['AZPair', 'AveRTT', 'MinRTT', 'MaxRTT', 'Res_time', 'Handshake_time', 'Percentile50', 'Percentile90','GraphButton'];
+    displayedColumns: string[] = ['AZPair','GraphButton', 'AveRTT', 'MinRTT', 'MaxRTT', 'Res_time', 'Handshake_time', 'Percentile50', 'Percentile90'];
     filterArray : string[] = [];
     public fastestAZRecord: AZData = {
       Percentile75: 0,
