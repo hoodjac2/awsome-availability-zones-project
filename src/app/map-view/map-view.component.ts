@@ -126,7 +126,7 @@ export class MapViewComponent implements AfterViewInit{
 
     @ViewChild(MatTable) table: MatTable<any> | undefined;
 
-    displayedColumns: string[] = ['AZPair', 'AveRTT', 'MinRTT', 'MaxRTT', 'Res_time', 'Handshake_time', 'Percentile50', 'Percentile90'];
+    displayedColumns: string[] = ['AZPair', 'AveRTT', 'MinRTT', 'MaxRTT', 'Res_time', 'Handshake_time', 'Percentile50', 'Percentile90','GraphButton'];
     filterArray : string[] = [];
     public fastestAZRecord: AZData = {
       Percentile75: 0,
@@ -1096,6 +1096,27 @@ export class MapViewComponent implements AfterViewInit{
         percent75: this.fastestAZRecord.Percentile75.toFixed(2),
         percent90: this.fastestAZRecord.Percentile90.toFixed(2),
         percent99: this.fastestAZRecord.Percentile99.toFixed(2)
+      }
+    });
+  }
+
+  openGraphFromList(Element: any): void {
+    const graphData = this.parseGraph(Element.GraphDataString);
+    const dialogRef = this.dialog.open(GraphViewComponent, {
+      width: '950px',
+      height: '745px',
+      data: {
+        dataArray: graphData,
+        AZ1: Element.AZPair.split(',')[0],
+        AZ2: Element.AZPair.split(',')[1],
+        mind: Element.MinRTT.toFixed(2),
+        maxd: Element.MaxRTT.toFixed(2),
+        aved: Element.AveRTT.toFixed(2),
+        medd: Element.MedRTT.toFixed(2),
+        percent50: Element.Percentile50.toFixed(2),
+        percent75: Element.Percentile75.toFixed(2),
+        percent90: Element.Percentile90.toFixed(2),
+        percent99: Element.Percentile99.toFixed(2)
       }
     });
   }
