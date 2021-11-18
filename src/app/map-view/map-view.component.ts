@@ -509,8 +509,8 @@ export class MapViewComponent implements AfterViewInit{
         radius: 250000
       })
       .on('click', (e) => {
-        this.regionCircleEventHandler('ap-southeast-1', e, this.apse2);
-      }).bindPopup("<h5>AP Southeast 1</h5> Number of AZs: " + this.apse2.length);
+        this.regionCircleEventHandler('ap-southeast-1', e, this.apse1);
+      }).bindPopup("<h5>AP Southeast 1</h5> Number of AZs: " + this.apse1.length);
 
       //mumbai
       const mumbai = L.circle([18.812718, 72.976586], {
