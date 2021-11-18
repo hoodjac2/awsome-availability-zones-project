@@ -126,6 +126,7 @@ export class GraphViewComponent{
   showXAxisLabel = true;
   xAxisLabel = 'Latency (ms)';
   yAxisLabel = 'Frequency (%)';
+  yScaleMax = 100;
 
 
   onClick(): void{
