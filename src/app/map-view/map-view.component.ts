@@ -751,40 +751,58 @@ export class MapViewComponent implements AfterViewInit{
       this.regionsOne.splice(index, 1);
       const dict = new AzNameLookupServiceComponent();
       const regionTranslated = dict.LookupbyAZ(region);
-
+      let check1 = false;
+      let check2 = false;
       if (regionTranslated?.length == 4) {
-        this.dataArray.forEach(
-          arrayAZ => {
+        if (this.dataArray.length == 0) {
+          check1 = true;
+        }
+        while (check1 == false) {
+          for (const arrayAZ of this.dataArray) {
+            if (this.dataArray.indexOf(arrayAZ) == this.dataArray.length-1) {
+              check1 = true;
+            }
             if (regionTranslated == arrayAZ.AZPair.substring(0,4)) {
-              this.dataArray.splice(this.dataArray.indexOf(arrayAZ));
+              this.dataArray.splice(this.dataArray.indexOf(arrayAZ),1);
+              break;
             }
           }
-        );
-        this.src.forEach(
-          element => {
-            if (regionTranslated == element.substring(0,4)) {
-              this.src.splice(this.src.indexOf(element));
+        }
+        while (check2 == false) {
+          for (const elem of this.src) {
+            if (this.src.indexOf(elem) == this.src.length-1) {
+              check2 = true;
+            }
+            if (regionTranslated == elem.substring(0,4)) {
+              this.src.splice(this.src.indexOf(elem),1);
+              break;
             }
           }
-        );
+        }
       } else {
-        this.dataArray.forEach(
-          arrayAZ => {
+        while (check1 == false) {
+          for (const arrayAZ of this.dataArray) {
+            if (this.dataArray.indexOf(arrayAZ) == this.dataArray.length-1) {
+              check1 = true;
+            }
             if (regionTranslated == arrayAZ.AZPair.substring(0,5)) {
-              this.dataArray.splice(this.dataArray.indexOf(arrayAZ));
+              this.dataArray.splice(this.dataArray.indexOf(arrayAZ),1);
+              break;
             }
           }
-        );
-        this.src.forEach(
-          element => {
-            if (regionTranslated == element.substring(0,5)) {
-              this.src.splice(this.src.indexOf(element));
+        }
+        while (check2 == false) {
+          for (const elem of this.src) {
+            if (this.src.indexOf(elem) == this.src.length-1) {
+              check2 = true;
+            }
+            if (regionTranslated == elem.substring(0,5)) {
+              this.src.splice(this.des.indexOf(elem),1);
+              break;
             }
           }
-        );
+        }
       }
-
-
       this.refresh();
     }
   }
@@ -891,47 +909,61 @@ export class MapViewComponent implements AfterViewInit{
   }
 
   removeChipTwo(region: string): void {
-    const index = this.regionsTwo.indexOf(region);
-
-    if (index >= 0) {
-      this.regionsTwo.splice(index, 1);
-      const dict = new AzNameLookupServiceComponent();
-      const regionTranslated = dict.LookupbyAZ(region);
-
-      if (regionTranslated?.length == 4) {
-        this.dataArray.forEach(
-          arrayAZ => {
-            if (regionTranslated == arrayAZ.AZPair.substring(9,13)) {
-              this.dataArray.splice(this.dataArray.indexOf(arrayAZ));
+    const index2 = this.regionsTwo.indexOf(region);
+    if (index2 >= 0) {
+      this.regionsTwo.splice(index2, 1);
+      const dict2 = new AzNameLookupServiceComponent();
+      const regionTranslated2 = dict2.LookupbyAZ(region);
+      let check1 = false;
+      let check2 = false;
+      if (regionTranslated2?.length == 4) {
+        while (check1 == false) {
+          for (const arrayAZ of this.dataArray) {
+            if (this.dataArray.indexOf(arrayAZ) == this.dataArray.length-1) {
+              check1 = true;
+            }
+            if (regionTranslated2 == arrayAZ.AZPair.substring(9,13)) {
+              this.dataArray.splice(this.dataArray.indexOf(arrayAZ),1);
+              break;
             }
           }
-        );
-        this.des.forEach(
-          element => {
-            if (regionTranslated == element.substring(0,4)) {
-              this.des.splice(this.des.indexOf(element));
+        }
+        while (check2 == false) {
+          for (const elem of this.des) {
+            if (this.des.indexOf(elem) == this.des.length-1) {
+              check2 = true;
+            }
+            if (regionTranslated2 == elem.substring(0,4)) {
+              this.des.splice(this.des.indexOf(elem),1);
+              break;
             }
           }
-        );
+        }
       } else {
-        this.dataArray.forEach(
-          arrayAZ => {
-            const i = arrayAZ.AZPair.substring(9,14);
-            if (regionTranslated == arrayAZ.AZPair.substring(9,14)) {
-              this.dataArray.splice(this.dataArray.indexOf(arrayAZ));
+        while (check1 == false) {
+          for (const arrayAZ of this.dataArray) {
+            if (this.dataArray.indexOf(arrayAZ) == this.dataArray.length-1) {
+              check1 = true;
+            }
+            if (regionTranslated2 == arrayAZ.AZPair.substring(9,14)) {
+              this.dataArray.splice(this.dataArray.indexOf(arrayAZ),1);
+              break;
             }
           }
-        );
-        this.des.forEach(
-          element => {
-            if (regionTranslated == element.substring(0,5)) {
-              this.des.splice(this.des.indexOf(element));
+        }
+        while (check2 == false) {
+          for (const elem of this.des) {
+            if (this.des.indexOf(elem) == this.des.length-1) {
+              check2 = true;
+            }
+            if (regionTranslated2 == elem.substring(0,5)) {
+              this.des.splice(this.des.indexOf(elem),1);
+              break;
             }
           }
-        );
+        }
       }
       this.refresh();
-      this.regionsTwo.splice(index, 1);
     }
   }
 
