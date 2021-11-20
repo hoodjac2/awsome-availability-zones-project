@@ -934,6 +934,9 @@ export class MapViewComponent implements AfterViewInit{
       let check1 = false;
       let check2 = false;
       if (regionTranslated2?.length == 4) {
+        if (this.dataArray.length == 0) {
+          check1 = true;
+        }
         while (check1 == false) {
           for (const arrayAZ of this.dataArray) {
             if (this.dataArray.indexOf(arrayAZ) == this.dataArray.length-1) {
