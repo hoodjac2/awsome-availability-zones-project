@@ -98,7 +98,12 @@ h2 {
 }
 
 table {
-  width: 250%;
+  width: 103%;
+  text-align: center;
+}
+
+::ng-deep .mat-sort-header-container {
+  padding-left: 21px;
 }
 
 .checkbox-section-list {
