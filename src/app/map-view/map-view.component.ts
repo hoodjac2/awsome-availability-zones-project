@@ -178,7 +178,7 @@ export class MapViewComponent implements AfterViewInit{
       this.src = [];
       this.regionsOne = [];
       this.regionsTwo = [];
-      this.dataArray = this.emptyArray;
+      this.dataArray = [];
       this.refresh();
     }
 
