@@ -173,9 +173,12 @@ export class MapViewComponent implements AfterViewInit{
 
     onClick(_event: any): void {
       this.viewChecked = !this.viewChecked;
-      this.dataArray = [];
-      this.src = [];
+
       this.des = [];
+      this.src = [];
+      this.regionsOne = [];
+      this.regionsTwo = [];
+      this.dataArray = this.emptyArray;
       this.refresh();
     }
 
