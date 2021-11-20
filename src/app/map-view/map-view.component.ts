@@ -57,7 +57,7 @@ export class MapViewComponent implements AfterViewInit{
     filteredRegionOne: Observable<string[]>;
     regionsOne: string[] = [];
     allRegionsOne: string[] = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2',
-    'af-south-1', 'ap-south-1', 'ap-northeast-3', 'ap-northeast-2',
+    'af-south-1', 'ap-south-1', 'ap-northeast-3', 'ap-northeast-2','ap-southeast-1',
     'ap-southeast-2', 'ap-northeast-1', 'ca-central-1', 'eu-central-1', 'eu-west-1',
     'eu-west-2', 'eu-south-1', 'eu-west-3', 'eu-north-1', 'sa-east-1',
     'ap-southeast-1'];
@@ -72,7 +72,7 @@ export class MapViewComponent implements AfterViewInit{
     filteredRegionTwo: Observable<string[]>;
     regionsTwo: string[] = [];
     allRegionsTwo: string[] = ['us-east-1', 'us-east-2', 'us-west-1', 'us-west-2',
-    'af-south-1', 'ap-south-1', 'ap-northeast-3', 'ap-northeast-2',
+    'af-south-1', 'ap-south-1', 'ap-northeast-3', 'ap-northeast-2', 'ap-southeast-1',
     'ap-southeast-2', 'ap-northeast-1', 'ca-central-1', 'eu-central-1', 'eu-west-1',
     'eu-west-2', 'eu-south-1', 'eu-west-3', 'eu-north-1', 'sa-east-1',
     'ap-southeast-1'];
@@ -179,7 +179,6 @@ export class MapViewComponent implements AfterViewInit{
       this.regionsOne = [];
       this.regionsTwo = [];
       this.dataArray = this.emptyArray;
-
       this.refresh();
     }
 
@@ -504,8 +503,8 @@ export class MapViewComponent implements AfterViewInit{
         radius: 220000
       })
       .on('click', (e) => {
-        this.regionCircleEventHandler('ap-southeast-2', e, this.apse1);
-      }).bindPopup("<h5>AP Southeast 2</h5> Number of AZs: "+ this.apse1.length);
+        this.regionCircleEventHandler('ap-southeast-2', e, this.apse2);
+      }).bindPopup("<h5>AP Southeast 2</h5> Number of AZs: "+ this.apse2.length);
 
       //singapore
       const singapore = L.circle([1.318243, 103.758844], {
@@ -515,8 +514,8 @@ export class MapViewComponent implements AfterViewInit{
         radius: 250000
       })
       .on('click', (e) => {
-        this.regionCircleEventHandler('ap-southeast-1', e, this.apse2);
-      }).bindPopup("<h5>AP Southeast 1</h5> Number of AZs: " + this.apse2.length);
+        this.regionCircleEventHandler('ap-southeast-1', e, this.apse1);
+      }).bindPopup("<h5>AP Southeast 1</h5> Number of AZs: " + this.apse1.length);
 
       //mumbai
       const mumbai = L.circle([18.812718, 72.976586], {
@@ -561,7 +560,18 @@ export class MapViewComponent implements AfterViewInit{
         this.regionCircleEventHandler('ap-northeast-3', e, this.apne3);
       }).bindPopup("<h5>AP Northeast 3</h5> Number of AZs: " + this.apne3.length);
 
-      const markers = L.layerGroup([virginia, ohio, NCalifornia, oregon, paris, south_america, frankfurt,
+      //Canada
+      const canada = L.circle([45.841716, -72.833238], {
+        color: 'orange',
+        fillColor: '#FFA500',
+        fillOpacity: 0.5,
+        radius: 220000
+      })
+      .on('click', (e) => {
+        this.regionCircleEventHandler('ca-central-1', e, this.cac1);
+      }).bindPopup("<h5>CA Central 1</h5> Number of AZs: " + this.cac1.length);
+
+      const markers = L.layerGroup([canada, virginia, ohio, NCalifornia, oregon, paris, south_america, frankfurt,
       london, ireland, milan, stockholm, cape_town, sydney, singapore, tokyo, seoul, osaka, mumbai]);
       markers.addTo(this.map);
     }

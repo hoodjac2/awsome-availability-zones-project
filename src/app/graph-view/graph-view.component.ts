@@ -115,7 +115,8 @@ export class GraphViewComponent{
 
   // options/settings
   // there's no title setting on this so we gotta DIY
-  legend = true;
+  view: [number, number] = [600, 550]
+  legend = false;
   legendTitle = "Legend"
   showLabels = true;
   animations = true;
@@ -125,6 +126,7 @@ export class GraphViewComponent{
   showXAxisLabel = true;
   xAxisLabel = 'Latency (ms)';
   yAxisLabel = 'Frequency (%)';
+  yScaleMax = 100;
 
 
   onClick(): void{
