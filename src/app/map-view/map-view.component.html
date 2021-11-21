@@ -22,6 +22,7 @@
     </div>
   </div>
 </div>
+
 <mat-sidenav-container [hidden]="viewChecked && !loading" class="example-container" >
   <mat-sidenav opened mode="side"  class="mat-elevation-z8">
     <h2>Region Selection Panel</h2>
@@ -52,6 +53,7 @@
 
   </mat-sidenav>
   <div class="map-container">
+    <mat-spinner class="spinner"></mat-spinner>
     <div class="map-frame">
       <div id="map"></div>
     </div>

@@ -30,7 +30,7 @@ import { GraphViewComponent } from './graph-view/graph-view.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import {MatSortModule} from '@angular/material/sort';
 import { DisplayAZPairPipe } from './az-name-lookup.service/az-name-lookup.service/display-azpair.pipe';
-
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 @NgModule({
   imports: [
     BrowserModule,
@@ -46,6 +46,7 @@ import { DisplayAZPairPipe } from './az-name-lookup.service/az-name-lookup.servi
     HttpClientModule,
     MatButtonModule,
     MatTableModule,
+    MatProgressSpinnerModule,
     HttpClientJsonpModule,
     HttpClientModule,
     MatCheckboxModule,
