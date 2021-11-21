@@ -115,7 +115,7 @@ export class GraphViewComponent{
 
   // options/settings
   // there's no title setting on this so we gotta DIY
-  view: [number, number] = [600, 550]
+  view: [number, number] = [700, 600]
   legend = false;
   legendTitle = "Legend"
   showLabels = true;
@@ -127,7 +127,7 @@ export class GraphViewComponent{
   xAxisLabel = 'Latency (ms)';
   yAxisLabel = 'Frequency (%)';
   yScaleMax = 100;
-
+  rotateXAxis = true;
 
   onClick(): void{
     //construct graphed Dataset

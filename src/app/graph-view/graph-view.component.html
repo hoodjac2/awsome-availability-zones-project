@@ -1,5 +1,5 @@
 <h1 mat-dialog-title>Latency between {{AZ1}} and {{AZ2}}</h1>
-<div mat-dialog-content style="height: 600px;">
+<div mat-dialog-content style="height: 740px;">
 
   <div class="graph-container">
     <div class="graph">
@@ -15,6 +15,7 @@
         [yAxisLabel]="yAxisLabel"
         [yScaleMax]="yScaleMax"
         [results]="points"
+        [rotateXAxisTicks]="rotateXAxis"
         >
       </ngx-charts-bar-vertical>
       <mat-card class="statbox">
