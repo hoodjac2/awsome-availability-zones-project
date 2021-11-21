@@ -115,7 +115,7 @@ export class GraphViewComponent{
 
   // options/settings
   // there's no title setting on this so we gotta DIY
-  view: [number, number] = [700, 600]
+  view: [number, number] = [700, 580]
   legend = false;
   legendTitle = "Legend"
   showLabels = true;
