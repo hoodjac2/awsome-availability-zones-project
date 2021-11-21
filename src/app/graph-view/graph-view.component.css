@@ -30,3 +30,7 @@ div.graph{
   padding: 5px;
   background-color: rgb(185 184 184 / 20%);
 }
+
+.label{
+  padding-left: 38.5%;
+}
