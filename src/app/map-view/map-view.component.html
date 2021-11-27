@@ -137,7 +137,7 @@
       <table mat-table [dataSource]="dataArray" class="table" matSort (matSortChange)="sortData($event)">
         <ng-container matColumnDef="AZPair">
           <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">AZPair</th>
-          <td mat-cell *matCellDef="let element"> {{element.AZPair | displayAZPair}} </td>
+          <td mat-cell *matCellDef="let element" style="text-align: left;"> {{element.AZPair | displayAZPair}} </td>
         </ng-container>
         <ng-container matColumnDef="AveRTT">
           <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number">Ave Round Trip Time</th>

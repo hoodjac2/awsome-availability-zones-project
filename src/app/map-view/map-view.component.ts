@@ -536,7 +536,7 @@ export class MapViewComponent implements AfterViewInit{
         radius: 220000
       })
       .on('click', (e) => {
-        this.regionCircleEventHandler('ap-northeast-2', e, this.apne1);
+        this.regionCircleEventHandler('ap-northeast-2', e, this.apne2);
       }).bindPopup("<h5>AP Northeast 2</h5> Number of AZs: " + this.apne2.length);
       //Tokyo
       const tokyo = L.circle([35.639441, 139.783990], {
