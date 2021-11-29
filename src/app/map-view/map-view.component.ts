@@ -19,6 +19,7 @@ import { name } from "aws-sdk/clients/importexport";
 import { Console } from "console";
 import { AzNameLookupServiceComponent } from "../az-name-lookup.service/az-name-lookup.service/az-name-lookup.service.component";
 import { MatSort, Sort } from '@angular/material/sort';
+import { DisplayAZPairPipe } from '../az-name-lookup.service/az-name-lookup.service/display-azpair.pipe';
 //import { GraphViewComponent } from "../graph-view/graph-view.component";
 //import { MatDialog } from "@angular/material/dialog";
 
@@ -1140,13 +1141,15 @@ export class MapViewComponent implements AfterViewInit{
 
   openGraph(): void {
     const graphData = this.parseGraph(this.fastestAZRecord.GraphDataString);
+    const pipe = new DisplayAZPairPipe();
+    const AZname = pipe.transform(this.fastestFirstAZ + ',' + this.fastestSecondAZ);
     const dialogRef = this.dialog.open(GraphViewComponent, {
       width: '950px',
       height: '745px',
       data: {
         dataArray: graphData,
-        AZ1: this.fastestFirstAZ,
-        AZ2: this.fastestSecondAZ,
+        AZ1: AZname.split(' => ')[0],
+        AZ2: AZname.split(' => ')[1],
         mind: this.fastestAZRecord.MinRTT.toFixed(2),
         maxd: this.fastestAZRecord.MaxRTT.toFixed(2),
         aved: this.fastestAZRecord.AveRTT.toFixed(2),
@@ -1161,13 +1164,15 @@ export class MapViewComponent implements AfterViewInit{
 
   openGraphFromList(Element: any): void {
     const graphData = this.parseGraph(Element.GraphDataString);
+    const pipe = new DisplayAZPairPipe();
+    const AZname = pipe.transform(Element.AZPair);
     const dialogRef = this.dialog.open(GraphViewComponent, {
       width: '950px',
       height: '745px',
       data: {
         dataArray: graphData,
-        AZ1: Element.AZPair.split(',')[0],
-        AZ2: Element.AZPair.split(',')[1],
+        AZ1: AZname.split(' => ')[0],
+        AZ2: AZname.split(' => ')[1],
         mind: Element.MinRTT.toFixed(2),
         maxd: Element.MaxRTT.toFixed(2),
         aved: Element.AveRTT.toFixed(2),
