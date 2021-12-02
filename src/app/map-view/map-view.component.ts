@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Component, AfterViewInit, ElementRef, ViewChild } from "@angular/core";
 import * as L from 'leaflet';
-import { AZData, AZDataResponse, JsonObj, ResponseFromDB } from "../classes-and-interfaces/az.model";
+import { AZData, AZDataResponse, DBRecord, JsonObj, ResponseFromDB } from "../classes-and-interfaces/az.model";
 import { MarkerService } from '../marker.service';
 import { HttpClientServiceComponent } from "../http-client.service/http-client.service.component";
 import { MatTable, MatTableDataSource } from "@angular/material/table";
@@ -20,6 +20,7 @@ import { Console } from "console";
 import { AzNameLookupServiceComponent } from "../az-name-lookup.service/az-name-lookup.service/az-name-lookup.service.component";
 import { MatSort, Sort } from '@angular/material/sort';
 import { DisplayAZPairPipe } from '../az-name-lookup.service/az-name-lookup.service/display-azpair.pipe';
+import { List } from "aws-sdk/lib/model";
 //import { GraphViewComponent } from "../graph-view/graph-view.component";
 //import { MatDialog } from "@angular/material/dialog";
 
@@ -123,6 +124,7 @@ export class MapViewComponent implements AfterViewInit{
     dataArray: AZData[] = [];
     emptyArray: AZData[] = [];
     filteredDataArray: AZData[] = [];
+    localdb: Map<string, DBRecord>;
     dataSource = new MatTableDataSource(this.dataArray);
     @ViewChild(MatSort) sort: MatSort | any;
 
@@ -135,17 +137,14 @@ export class MapViewComponent implements AfterViewInit{
       Percentile99: 0,
       Percentile50: 0,
       Res_time: 0,
-      Max_UTC: 0,
       MinRTT: 0,
       Percentile90: 0,
-      GraphDataString: "",
       MedRTT: 0,
       MaxRTT: 0,
       Handshake_time: 0,
       AveRTT: 0,
-      Min_UTC: 0,
       AZPair: "",
-      Items: 0
+      BucketCountArray: []
     };
 
     sortedData: AZData[] = [];
@@ -169,6 +168,7 @@ export class MapViewComponent implements AfterViewInit{
           startWith(null),
           map((region: string | null) => (region ? this._filterChipTwo(region) : this.allRegionsTwo.slice())),
         );
+        this.localdb = new Map<string, DBRecord>();
 
     }
 
@@ -184,6 +184,14 @@ export class MapViewComponent implements AfterViewInit{
     }
 
     ngAfterViewInit(): void {
+      this.dbService.getAllRecordsFromDB().subscribe(result =>{
+        const keys = Object.keys(result);
+        keys.forEach( key=> {
+          this.localdb.set(key, result[key]);
+        });
+
+    });
+
       // Initialize data arrays
       this.dbService.loadAZNames().subscribe( result =>{
         result.forEach((azCall: { body: string[]; }) => {
@@ -267,7 +275,27 @@ export class MapViewComponent implements AfterViewInit{
     tiles.addTo(this.map);
     }
 
+    private insertFromLocalDBToDataArray(AZPair: string): void{
+      const record  = this.localdb.get(AZPair);
+      if(record){
 
+      const dataArrayCompatibleRecord: AZData = {
+        Percentile75: record.RTTPS[2],
+        Percentile99: record.RTTPS[4],
+        Percentile50: record.RTTPS[1],
+        Res_time: record.AvgRES,
+        MinRTT: record.MinRTT,
+        Percentile90: record.RTTPS[3],
+        MedRTT: record.RTTPS[0],
+        MaxRTT: record.MaxRTT,
+        Handshake_time: record.AvgHDS,
+        AveRTT: record.AvgRTT,
+        AZPair: AZPair,
+        BucketCountArray: record.RTTBC
+      }
+      this.dataArray.push(dataArrayCompatibleRecord);
+    }
+    }
     private regionCircleEventHandler(regionString: string, e: L.LeafletEvent, azNames: string[]){
       if(this.sendingAZString === 'Select the first Region' ){
         this.sendingAZString = regionString;
@@ -279,35 +307,11 @@ export class MapViewComponent implements AfterViewInit{
           });
         });
         this.src = azNames;
-        this.dbService.getRecordsFromDB(callouts).subscribe(
-          result =>{
-            result.forEach((azPairData: ResponseFromDB) => {
-              const serialized = azPairData.Items[0];
-              if(serialized !== undefined){
-                const azRecordReturn: AZData = {
-                  Percentile75: Number(serialized.Percentile75.N),
-                  Percentile99: Number(serialized.Percentile99.N),
-                  Percentile50: Number(serialized.Percentile50.N),
-                  Res_time: Number(serialized.Res_time.N),
-                  Max_UTC: Number(serialized.Max_UTC.N),
-                  MinRTT: Number(serialized.MinRTT.N),
-                  Percentile90: Number(serialized.Percentile90.N),
-                  GraphDataString: serialized.GraphDataString.S,
-                  MedRTT: Number(serialized.MedRTT.N),
-                  MaxRTT: Number(serialized.MaxRTT.N),
-                  Handshake_time: Number(serialized.Handshake_time.N),
-                  AveRTT: Number(serialized.AveRTT.N),
-                  Min_UTC: Number(serialized.Min_UTC.N),
-                  AZPair: serialized.AZPair.S,
-                  Items: Number(serialized.Items.N)
-                }
-                this.dataArray.push(azRecordReturn);
-              }
-            });
-            this.coAverage();
-            this.findFastestAZ();
-          }
-        );
+        callouts.forEach( azPair =>
+          this.insertFromLocalDBToDataArray(azPair)
+          );
+        this.coAverage();
+        this.findFastestAZ();
       }
       else{
 
@@ -331,35 +335,12 @@ export class MapViewComponent implements AfterViewInit{
             callouts.push(srcName +','+ destName)
           });
         });
-        this.dbService.getRecordsFromDB(callouts).subscribe(
-          result =>{
-            result.forEach((azPairData: ResponseFromDB) => {
-              const serialized = azPairData.Items[0];
-              if(serialized !== undefined){
-                const azRecordReturn: AZData = {
-                  Percentile75: Number(serialized.Percentile75.N),
-                  Percentile99: Number(serialized.Percentile99.N),
-                  Percentile50: Number(serialized.Percentile50.N),
-                  Res_time: Number(serialized.Res_time.N),
-                  Max_UTC: Number(serialized.Max_UTC.N),
-                  MinRTT: Number(serialized.MinRTT.N),
-                  Percentile90: Number(serialized.Percentile90.N),
-                  GraphDataString: serialized.GraphDataString.S,
-                  MedRTT: Number(serialized.MedRTT.N),
-                  MaxRTT: Number(serialized.MaxRTT.N),
-                  Handshake_time: Number(serialized.Handshake_time.N),
-                  AveRTT: Number(serialized.AveRTT.N),
-                  Min_UTC: Number(serialized.Min_UTC.N),
-                  AZPair: serialized.AZPair.S,
-                  Items: Number(serialized.Items.N)
-                }
-                this.dataArray.push(azRecordReturn);
-              }
-            });
-            this.findFastestAZ();
-            this.coAverage();
-          }
-        );
+
+        callouts.forEach( azPair =>
+          this.insertFromLocalDBToDataArray(azPair)
+          );
+        this.coAverage();
+        this.findFastestAZ();
 
       }
     }
@@ -628,17 +609,14 @@ export class MapViewComponent implements AfterViewInit{
         Percentile99: 0,
         Percentile50: 0,
         Res_time: 0,
-        Max_UTC: 0,
         MinRTT: 0,
         Percentile90: 0,
-        GraphDataString: "",
         MedRTT: 0,
         MaxRTT: 0,
         Handshake_time: 0,
         AveRTT: 99999999999999999999999999999999999999999999,
-        Min_UTC: 0,
         AZPair: "",
-        Items: 0
+        BucketCountArray: []
       };
       this.dataArray.forEach(azRecord => {
         if(azRecord.AveRTT < fastestRecord.AveRTT){
@@ -676,36 +654,10 @@ export class MapViewComponent implements AfterViewInit{
         callouts.push(srcName +','+ destName)
       });
     });
-
-    this.dbService.getRecordsFromDB(callouts).subscribe(
-      result =>{
-        result.forEach((azPairData: ResponseFromDB) => {
-          const serialized = azPairData.Items[0];
-          if(serialized !== undefined){
-            const azRecordReturn: AZData = {
-              Percentile75: Number(serialized.Percentile75.N),
-              Percentile99: Number(serialized.Percentile99.N),
-              Percentile50: Number(serialized.Percentile50.N),
-              Res_time: Number(serialized.Res_time.N),
-              Max_UTC: Number(serialized.Max_UTC.N),
-              MinRTT: Number(serialized.MinRTT.N),
-              Percentile90: Number(serialized.Percentile90.N),
-              GraphDataString: serialized.GraphDataString.S,
-              MedRTT: Number(serialized.MedRTT.N),
-              MaxRTT: Number(serialized.MaxRTT.N),
-              Handshake_time: Number(serialized.Handshake_time.N),
-              AveRTT: Number(serialized.AveRTT.N),
-              Min_UTC: Number(serialized.Min_UTC.N),
-              AZPair: serialized.AZPair.S,
-              Items: Number(serialized.Items.N)
-            }
-            // record.AZPair = ...
-            this.dataArray.push(azRecordReturn);
-            this.refresh();
-          }
-        });
-      }
-    );
+    callouts.forEach( azPair =>
+      this.insertFromLocalDBToDataArray(azPair)
+      );
+      this.refresh();
   }
 
   sortData(sort: Sort) {
@@ -1140,7 +1092,8 @@ export class MapViewComponent implements AfterViewInit{
 
 
   openGraph(): void {
-    const graphData = this.parseGraph(this.fastestAZRecord.GraphDataString);
+    //COMENTED OUT LINES NEED TO BE FIXED
+    const graphData = this.parseList(this.fastestAZRecord.BucketCountArray);
     const pipe = new DisplayAZPairPipe();
     const AZname = pipe.transform(this.fastestFirstAZ + ',' + this.fastestSecondAZ);
     const dialogRef = this.dialog.open(GraphViewComponent, {
@@ -1163,7 +1116,7 @@ export class MapViewComponent implements AfterViewInit{
   }
 
   openGraphFromList(Element: any): void {
-    const graphData = this.parseGraph(Element.GraphDataString);
+    const graphData = this.parseList(Element.BucketCountArray);
     const pipe = new DisplayAZPairPipe();
     const AZname = pipe.transform(Element.AZPair);
     const dialogRef = this.dialog.open(GraphViewComponent, {
@@ -1205,13 +1158,24 @@ export class MapViewComponent implements AfterViewInit{
     return JSONthing;
   }
 
+  parseList(dataList:  Array<Array<number>>): { name: string; value: number; }[] {
+    const JSONthing: { name: string; value: number; }[] = [];
+    dataList.forEach( lizst => {
+      const name = String(lizst[0]) + " - " + String(lizst[1]);
+      const value = lizst[2];
+      JSONthing.push({
+        "name": name,
+        "value": value
+      })
+    });
+    return JSONthing;
+  }
+
   averageify(entryA: AZData, entryB: AZData): number{
     const avgA = entryA.AveRTT;
-    const totalA = entryA.Items;
     const avgB = entryB.AveRTT;
-    const totalB = entryB.Items;
 
-    const fullAverage = (avgA*totalA + avgB*totalB) / (totalA+totalB);
+    const fullAverage = (avgA + avgB) / 2;
 
     return fullAverage;
   }

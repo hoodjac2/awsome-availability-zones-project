@@ -29,20 +29,28 @@ export interface AZData {
   Percentile99: number,
   Percentile50: number,
   Res_time: number,
-  Max_UTC: number,
   MinRTT: number,
   Percentile90: number,
-  GraphDataString: string,
+  BucketCountArray: Array<Array<number>>,
   MedRTT: number,
   MaxRTT: number,
   Handshake_time: number,
   AveRTT: number,
-  Min_UTC: number,
-  AZPair: string,
-  Items: number
+  AZPair: string
 }
 
 
+export interface DBRecord {
+  AvgRTT: number,
+  SRC: string,
+  MaxRTT: number,
+  DST: string,
+  MinRTT: number,
+  RTTPS: Array<number>,
+  RTTBC: Array<Array<number>>,
+  AvgRES: number,
+  AvgHDS: number
+}
 // {"Count":1,
 // "Items":[{"Percentile75":{"N":"116137920"},
 // "Percentile99":{"N":"118588139"},

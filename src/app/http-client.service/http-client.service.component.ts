@@ -2,7 +2,7 @@
 /* eslint-disable prefer-const */
 import { DynamoDB, Config} from 'aws-sdk';
 import { Injectable } from '@angular/core';
-import { AZData, AZDataResponse, JsonObj} from '../classes-and-interfaces/az.model';
+import { AZData, AZDataResponse, DBRecord, JsonObj} from '../classes-and-interfaces/az.model';
 import { HttpClient } from '@angular/common/http';
 import { JsonResponseModel } from '../classes-and-interfaces/jsonResponse.model';
 import { forkJoin, Observable } from 'rxjs';
@@ -35,7 +35,7 @@ export class HttpClientServiceComponent {
     return forkJoin(responseArray);
   }
 
-  //Not fully working new DB needs to be targeted correctly
+  //deprecated
   public getRecordsFromDB(srcDestPair: string[]): Observable<any> {
     const responseArray: any[] = [];
     srcDestPair.forEach( name => {
@@ -43,6 +43,11 @@ export class HttpClientServiceComponent {
       responseArray.push(response);
     });
     return forkJoin(responseArray);
+  }
+
+  public getAllRecordsFromDB(): Observable<any>{
+    const response = this.httpClient.get<any>('https://1koslob371.execute-api.us-east-2.amazonaws.com/frontend-translation');
+    return response;
   }
 
   /*
