@@ -20,6 +20,7 @@ import { Console } from "console";
 import { AzNameLookupServiceComponent } from "../az-name-lookup.service/az-name-lookup.service/az-name-lookup.service.component";
 import { MatSort, Sort } from '@angular/material/sort';
 import { DisplayAZPairPipe } from '../az-name-lookup.service/az-name-lookup.service/display-azpair.pipe';
+import { List } from "aws-sdk/lib/model";
 //import { GraphViewComponent } from "../graph-view/graph-view.component";
 //import { MatDialog } from "@angular/material/dialog";
 
@@ -1092,14 +1093,14 @@ export class MapViewComponent implements AfterViewInit{
 
   openGraph(): void {
     //COMENTED OUT LINES NEED TO BE FIXED
-    //const graphData = this.parseGraph(this.fastestAZRecord);
+    const graphData = this.parseList(this.fastestAZRecord.BucketCountArray);
     const pipe = new DisplayAZPairPipe();
     const AZname = pipe.transform(this.fastestFirstAZ + ',' + this.fastestSecondAZ);
     const dialogRef = this.dialog.open(GraphViewComponent, {
       width: '950px',
       height: '745px',
       data: {
-        //dataArray: graphData,
+        dataArray: graphData,
         AZ1: AZname.split(' => ')[0],
         AZ2: AZname.split(' => ')[1],
         mind: this.fastestAZRecord.MinRTT.toFixed(2),
@@ -1115,7 +1116,7 @@ export class MapViewComponent implements AfterViewInit{
   }
 
   openGraphFromList(Element: any): void {
-    const graphData = this.parseGraph(Element.GraphDataString);
+    const graphData = this.parseList(Element.BucketCountArray);
     const pipe = new DisplayAZPairPipe();
     const AZname = pipe.transform(Element.AZPair);
     const dialogRef = this.dialog.open(GraphViewComponent, {
@@ -1153,6 +1154,19 @@ export class MapViewComponent implements AfterViewInit{
         "value": value
       });
 
+    });
+    return JSONthing;
+  }
+
+  parseList(dataList:  Array<Array<number>>): { name: string; value: number; }[] {
+    const JSONthing: { name: string; value: number; }[] = [];
+    dataList.forEach( lizst => {
+      const name = String(lizst[0]) + " - " + String(lizst[1]);
+      const value = lizst[2];
+      JSONthing.push({
+        "name": name,
+        "value": value
+      })
     });
     return JSONthing;
   }
