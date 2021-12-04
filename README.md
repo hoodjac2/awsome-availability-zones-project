@@ -25,3 +25,7 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+--- ABOVE IS AUTO GENERATED ------
+
+This project was done by five Michigan State University students in the fall of 2021. The purpose of this front end is to display latency data between regions by using Leaflet and OpenStreetMap and AngularMaterials. To get this project to work correctly, please follow the instructions for the back-end to setup the data collection algorithms before using this front end. In the AWS console, a API will need to be created to retrieve data from a DynamoDB. As long as the api address is up and running the front end should function as intended.
