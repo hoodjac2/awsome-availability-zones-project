@@ -1090,9 +1090,10 @@ export class MapViewComponent implements AfterViewInit{
     this.table?.renderRows();
   }
 
-
+  /*
+   Function to open graph view in a dialogue box from Map view
+   */
   openGraph(): void {
-    //COMENTED OUT LINES NEED TO BE FIXED
     const graphData = this.parseList(this.fastestAZRecord.BucketCountArray);
     const pipe = new DisplayAZPairPipe();
     const AZname = pipe.transform(this.fastestFirstAZ + ',' + this.fastestSecondAZ);
@@ -1115,6 +1116,10 @@ export class MapViewComponent implements AfterViewInit{
     });
   }
 
+  /*
+   Function to open graph view in a dialogue box from list view
+   Element is the selected row in the list
+   */
   openGraphFromList(Element: any): void {
     const graphData = this.parseList(Element.BucketCountArray);
     const pipe = new DisplayAZPairPipe();
@@ -1138,6 +1143,11 @@ export class MapViewComponent implements AfterViewInit{
     });
   }
 
+  /*
+    Function to parse a string into proper formatting for the graph view
+    *DEPRECATED*
+    Keep it around if databases change format through
+   */
   parseGraph(dataString: string): { name: string; value: number; }[] {
     const buckets = dataString.trim().split('\n');
     const JSONthing: { name: string; value: number; }[] = [];
@@ -1158,6 +1168,9 @@ export class MapViewComponent implements AfterViewInit{
     return JSONthing;
   }
 
+  /*
+    Function to parse an array of [bucketmin, bucketmax, bucketcount] into proper formatting for the graph
+   */
   parseList(dataList:  Array<Array<number>>): { name: string; value: number; }[] {
     const JSONthing: { name: string; value: number; }[] = [];
     dataList.forEach( lizst => {
@@ -1171,6 +1184,9 @@ export class MapViewComponent implements AfterViewInit{
     return JSONthing;
   }
 
+  /*
+   some math to find the average between 2 averages
+   */
   averageify(entryA: AZData, entryB: AZData): number{
     const avgA = entryA.AveRTT;
     const avgB = entryB.AveRTT;
@@ -1180,6 +1196,9 @@ export class MapViewComponent implements AfterViewInit{
     return fullAverage;
   }
 
+  /*
+    Find average for bidirectional dataset
+   */
   coAverage(): void{
     this.dataArray.forEach( entryA => {
       const pairA = entryA.AZPair.split(',');
