@@ -18,6 +18,10 @@ export class HttpClientServiceComponent {
   'getsae1azs', 'getuse1azs', 'getuse2azs', 'getusw1azs', 'getusw2azs'];
   constructor(private httpClient: HttpClient){
   }
+  /*
+  Gets all of the AZ names for each of the regions. This was previously used to
+  get records from the dynamoDB, now it is used to get the number of AZs per region.
+  */
   public loadAZNames(): Observable<any>{
     const responseArray: any[] = [];
     this.getAZNamesAPIEndpoints.forEach( name => {
@@ -26,6 +30,9 @@ export class HttpClientServiceComponent {
     });
     return forkJoin(responseArray);
   }
+  /*
+  Gets all of the records from the dynamoDB so that it can be displayed
+  */
   public getAllRecordsFromDB(): Observable<any>{
     const response = this.httpClient.get<any>(this.dataAPI);
     return response;

@@ -2,6 +2,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({ name: 'displayAZPair' })
 export class DisplayAZPairPipe implements PipeTransform{
+  /*
+  Both functions are a pipe that is designed to show AZs in a more
+  human readable format. Simple string manipulation.
+  */
   transform(AZPair: string): string{
     const array = AZPair.split(',');
     const az1 = this.decryptAZName(array[0]);

@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NotFoundPageComponent implements OnInit {
 
+  //This was meant to be a not found screen. It still functions as such but was never filled out.
   constructor() { }
 
   ngOnInit(): void {

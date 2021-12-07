@@ -18,6 +18,8 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { DisplayAZPairPipe } from '../az-name-lookup.service/az-name-lookup.service/display-azpair.pipe';
 import { GraphViewComponent } from "../graph-view/graph-view.component";
 
+//This file is the main file for the webpage. All action happens in this typescript file.
+
 export interface Task {
   name: string;
   completed: boolean;
@@ -59,7 +61,7 @@ export class MapViewComponent implements AfterViewInit{
     'ap-southeast-1'];
 
     @ViewChild('regionOneInput')
-  regionOneInput!: ElementRef<HTMLInputElement>;
+    regionOneInput!: ElementRef<HTMLInputElement>;
 
     selectableTwo = false;
     removableTwo = true;
@@ -74,7 +76,7 @@ export class MapViewComponent implements AfterViewInit{
     'ap-southeast-1'];
 
     @ViewChild('regionTwoInput')
-  regionTwoInput!: ElementRef<HTMLInputElement>;
+    regionTwoInput!: ElementRef<HTMLInputElement>;
 
 
     //------ 19 empty region arrays from DB -----//
@@ -153,9 +155,11 @@ export class MapViewComponent implements AfterViewInit{
 
     }
 
+    /*
+    Handles the slider between map-view and list-view
+    */
     onClick(_event: any): void {
       this.viewChecked = !this.viewChecked;
-
       this.des = [];
       this.src = [];
       this.regionsOne = [];
@@ -164,16 +168,16 @@ export class MapViewComponent implements AfterViewInit{
       this.refresh();
     }
 
+    //This handles loading the data in upon loading the webpage
     ngAfterViewInit(): void {
       this.dbService.getAllRecordsFromDB().subscribe(result =>{
         const keys = Object.keys(result);
         keys.forEach( key=> {
           this.localdb.set(key, result[key]);
         });
-
     });
 
-      // Initialize data arrays
+      // Retrieve AZ names from DB
       this.dbService.loadAZNames().subscribe( result =>{
         result.forEach((azCall: { body: string[]; }) => {
           const arrayName = azCall.body[0].substring(0,4);
@@ -220,7 +224,7 @@ export class MapViewComponent implements AfterViewInit{
             this.usw2 = azCall.body;
           } else if (arrayName == "usw1") {
             this.usw1 = azCall.body;
-        }
+          }
         });
         this.loading = false;
         this.initMap();
@@ -228,7 +232,9 @@ export class MapViewComponent implements AfterViewInit{
       this.dataSource.sort = this.sort;
      }
 
-
+     /*
+     Initializes the map from leaflet and adds all regions
+     */
      private initMap(): void {
       this.map = L.map('map', {
         center: [26.115986, -32.827080],
@@ -242,7 +248,7 @@ export class MapViewComponent implements AfterViewInit{
       minZoom: 3,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     });
-
+    //Handles deselection of the circles
     this.map.on('click', (_e: L.LeafletEvent) => {
       this.sendingAZString = 'Select the first Region';
       this.receivingAZString = 'Select the second Region';
@@ -250,35 +256,42 @@ export class MapViewComponent implements AfterViewInit{
       this.fastestFirstAZ = '';
       this.fastestSecondAZ = '';
     });
-
     tiles.addTo(this.map);
     }
 
+    /**
+     * Function below is designed to splice down the incoming data into usable data.
+     * The localdb is where all records from the db will be
+     */
     private insertFromLocalDBToDataArray(AZPair: string): void{
       const record  = this.localdb.get(AZPair);
       if(record){
-
-      const dataArrayCompatibleRecord: AZData = {
-        Percentile75: record.RTTPS[2],
-        Percentile99: record.RTTPS[4],
-        Percentile50: record.RTTPS[1],
-        Res_time: record.AvgRES,
-        MinRTT: record.MinRTT,
-        Percentile90: record.RTTPS[3],
-        MedRTT: record.RTTPS[0],
-        MaxRTT: record.MaxRTT,
-        Handshake_time: record.AvgHDS,
-        AveRTT: record.AvgRTT,
-        AZPair: AZPair,
-        BucketCountArray: record.RTTBC
+        const dataArrayCompatibleRecord: AZData = {
+          Percentile75: record.RTTPS[2],
+          Percentile99: record.RTTPS[4],
+          Percentile50: record.RTTPS[1],
+          Res_time: record.AvgRES,
+          MinRTT: record.MinRTT,
+          Percentile90: record.RTTPS[3],
+          MedRTT: record.RTTPS[0],
+          MaxRTT: record.MaxRTT,
+          Handshake_time: record.AvgHDS,
+          AveRTT: record.AvgRTT,
+          AZPair: AZPair,
+          BucketCountArray: record.RTTBC
+        }
+        this.dataArray.push(dataArrayCompatibleRecord);
       }
-      this.dataArray.push(dataArrayCompatibleRecord);
     }
-    }
+    /*
+    The region circle event handler is where the onclick happens for each of the region bubbles.
+    */
     private regionCircleEventHandler(regionString: string, e: L.LeafletEvent, azNames: string[]){
       if(this.sendingAZString === 'Select the first Region' ){
+        //This is the case where we only have one bubble selected
         this.sendingAZString = regionString;
         this.createSendingCircles(e.sourceTarget._latlng, e.sourceTarget._mRadius);
+        // Here we are going to build the keys for the local DB dictionary
         const callouts : string[] = [];
         azNames.forEach( srcName => {
           azNames.forEach( destName =>{
@@ -287,9 +300,12 @@ export class MapViewComponent implements AfterViewInit{
         });
         this.src = azNames;
         callouts.forEach( azPair =>
+          //Inserts data into the data array to be used
           this.insertFromLocalDBToDataArray(azPair)
           );
+        //Averages the data for source=>destination and destination=>source
         this.coAverage();
+        //Finds the fastest AZ in the data array
         this.findFastestAZ();
       }
       else{
@@ -299,28 +315,32 @@ export class MapViewComponent implements AfterViewInit{
         }
         this.receivingAZString = regionString;
         this.createReceivingCircles(e.sourceTarget._latlng);
+        //Builds an array of keys to call the localDB dictionary
         const callouts : string[] = [];
         this.src.forEach( srcName => {
           azNames.forEach( destName =>{
             callouts.push(srcName +','+ destName)
           });
         });
-        //REVERSE CALLS
+        //Reverse calls to get the opposite direction tests
         azNames.forEach( srcName => {
           this.src.forEach( destName =>{
             callouts.push(srcName +','+ destName)
           });
         });
-
+        //Adds all tests to data array
         callouts.forEach( azPair =>
           this.insertFromLocalDBToDataArray(azPair)
           );
+        //Average the two together
         this.coAverage();
         this.findFastestAZ();
-
       }
     }
 
+    /*
+    Adds all supported region bubbles to the map
+    */
     private getRegionMarkers(): void{
         //Virginia
         const virginia = L.circle([38.262715, -78.205075], {
@@ -534,6 +554,9 @@ export class MapViewComponent implements AfterViewInit{
       markers.addTo(this.map);
     }
 
+    /*
+    Creates the selection circles for the first bubble clicked on
+    */
     private createSendingCircles(latlng: any, radius: number): void{
 
       const sendingCircle = L.circle([latlng.lat, latlng.lng], {
@@ -553,7 +576,9 @@ export class MapViewComponent implements AfterViewInit{
       markers.addTo(this.map);
       this.sendingCirclesLayer = markers;
     }
-
+    /*
+    Creates the selection circles for the second bubble clicked on
+    */
     private createReceivingCircles(latlng: any): void{
       const receivingCircle = L.circle([latlng.lat, latlng.lng], {
         color: 'green',
@@ -573,12 +598,18 @@ export class MapViewComponent implements AfterViewInit{
       this.receivingCirclesLayer = markers;
     }
 
+    /*
+    Removes the bubbles from the map
+    */
     private removeSelectionCircles(): void{
       this.dataArray = [];
       this.sendingCirclesLayer.remove();
       this.receivingCirclesLayer.remove();
     }
 
+    /*
+    Goes through the data array to find the fastest AZ pair for the given selections
+    */
     private findFastestAZ():void{
       let fastestRecord: AZData= {
         Percentile75: 0,
@@ -608,7 +639,6 @@ export class MapViewComponent implements AfterViewInit{
       const split = pair.split(',');
       this.fastestFirstAZ = split[0];
       this.fastestSecondAZ = split[1];
-
     }
 
     toggleOverlay(): void {
