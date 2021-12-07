@@ -49,6 +49,7 @@ export class GraphViewComponent{
     ){
   }
 
+  // on creation, pull in injected data of graph data
   ngOnInit(): void{
     this.AZ1 = this.data.AZ1;
     this.AZ2 = this.data.AZ2;
