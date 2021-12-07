@@ -28,7 +28,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## Introduction and How to Use
 
-Welcome to the AWSome Availibility Zones project!
+Welcome to the AWSome Availability Zones project!
 
 
 This was a project for a university course at Michigan State University. 
