@@ -36,7 +36,7 @@ This was a project for a university course at Michigan State University.
 This project was done by five Michigan State University students in the fall of 2021. The purpose of this front end is to display latency data between regions by using Leaflet and OpenStreetMap and AngularMaterials. To get this project to work correctly, please follow the instructions for the back-end to setup the data collection algorithms before using this front end. In the AWS console, a API will need to be created to retrieve data from a DynamoDB. As long as the api address is up and running the front end should function as intended.
 
 
-The map-view.ts is the main file for this webapp. It is designed to be almost a one page application. The data flow is as follows: data is brought in on load from an API Gateway setup on AWS services. The data then is stored in a local DB dictionary with the keys being az-to-az strings. For example, "use1-az1,use1-az2" is the key for the local DB dictionary that will return the latency test that starts at use1-az1 and travels to use1-az2 and then returns to az1.
+The map-view.ts is the main file for this webapp. It is designed to be almost a one page application so all functionality runs through that to prevent loading times between pages. The data flow is as follows: data is brought in on load from an API Gateway setup on AWS services. The data then is stored in a local DB dictionary with the keys being az-to-az strings. For example, "use1-az1,use1-az2" is the key for the local DB dictionary that will return the latency test that starts at use1-az1 and travels to use1-az2 and then returns to az1.
 
  The map view shows the average between the test from az1-az2 and az2-az1, while the list-view only shows the raw data. 
 
