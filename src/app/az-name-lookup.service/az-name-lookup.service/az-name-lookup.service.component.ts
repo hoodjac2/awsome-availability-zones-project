@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { Injectable, OnInit } from '@angular/core';
 import {NgModule} from '@angular/core';
 @NgModule ({
   exports: []

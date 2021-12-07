@@ -1,11 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { Component, AfterViewInit, Inject } from "@angular/core";
-import { BrowserModule } from '@angular/platform-browser';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { AZDataResponse, JsonObj, AZData } from "../classes-and-interfaces/az.model";
+import { Component, Inject } from "@angular/core";
+import { AZData } from "../classes-and-interfaces/az.model";
 import { HttpClientServiceComponent } from "../http-client.service/http-client.service.component";
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 export interface GraphViewData {
   dataArray: { name: string; value: number; }[]; //data pulled from database

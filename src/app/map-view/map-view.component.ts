@@ -2,8 +2,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Component, AfterViewInit, ElementRef, ViewChild } from "@angular/core";
 import * as L from 'leaflet';
-import { AZData, AZDataResponse, DBRecord, JsonObj, ResponseFromDB } from "../classes-and-interfaces/az.model";
-import { MarkerService } from '../marker.service';
+import { AZData, DBRecord } from "../classes-and-interfaces/az.model";
 import { HttpClientServiceComponent } from "../http-client.service/http-client.service.component";
 import { MatTable, MatTableDataSource } from "@angular/material/table";
 import { ThemePalette } from "@angular/material/core";
@@ -13,16 +12,11 @@ import {MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {MatChipInputEvent} from '@angular/material/chips';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
-import { GraphViewComponent } from "../graph-view/graph-view.component";
 import { MatDialog } from "@angular/material/dialog";
-import { name } from "aws-sdk/clients/importexport";
-import { Console } from "console";
 import { AzNameLookupServiceComponent } from "../az-name-lookup.service/az-name-lookup.service/az-name-lookup.service.component";
 import { MatSort, Sort } from '@angular/material/sort';
 import { DisplayAZPairPipe } from '../az-name-lookup.service/az-name-lookup.service/display-azpair.pipe';
-import { List } from "aws-sdk/lib/model";
-//import { GraphViewComponent } from "../graph-view/graph-view.component";
-//import { MatDialog } from "@angular/material/dialog";
+import { GraphViewComponent } from "../graph-view/graph-view.component";
 
 export interface Task {
   name: string;
@@ -107,19 +101,6 @@ export class MapViewComponent implements AfterViewInit{
     //Used so we can determine what the destination AZ names are
     src: string[] = [];
     des: string[] = [];
-    //---------GRAPH DATA FIELDS----------------//
-    // graphDataString = "name:173.05, value:18.0\nname:173.7, value:20.0\nname:174.35, value:22.0\nname:175.01, value:0.0\nname:175.66, value:20.0\nname:176.31, value:0.0\nname:176.96, value:0.0\nname:177.62, value:0.0\nname:178.27, value:0.0\nname:178.92, value:20.0\n";
-    // mind = 12345768;
-    // maxd = 12345768;
-    // aved = 12345768;
-    // medd = 12345768;
-    // percent50 = 345678;
-    // percent75 = 345678;
-    // percent90 = 345678;
-    // percent99 = 345678;
-    // CurrAZA = 'MAPTEST1';
-    // CurrAZB = 'MAPTEST2';
-
 
     dataArray: AZData[] = [];
     emptyArray: AZData[] = [];
@@ -151,7 +132,7 @@ export class MapViewComponent implements AfterViewInit{
 
     public fastestFirstAZ ='';
     public fastestSecondAZ = '';
-    private map : any;
+    private map : any; //Helps instantiate the map
     public sendingAZString = 'Select the first Region';
     sendingCirclesLayer = L.layerGroup();
     public receivingAZString = 'Select the second Region';
@@ -195,7 +176,6 @@ export class MapViewComponent implements AfterViewInit{
       // Initialize data arrays
       this.dbService.loadAZNames().subscribe( result =>{
         result.forEach((azCall: { body: string[]; }) => {
-          //console.log(azCall.body);
           const arrayName = azCall.body[0].substring(0,4);
           const arrayNum = azCall.body[0].charAt(4);
           if (arrayName == "afs1") {
@@ -269,7 +249,6 @@ export class MapViewComponent implements AfterViewInit{
       this.removeSelectionCircles();
       this.fastestFirstAZ = '';
       this.fastestSecondAZ = '';
-      //this.findFastestAZ();
     });
 
     tiles.addTo(this.map);
@@ -314,15 +293,12 @@ export class MapViewComponent implements AfterViewInit{
         this.findFastestAZ();
       }
       else{
-
         this.dataArray = [];
-
         if(this.receivingAZString !== 'Select the second Region' ){
           this.receivingCirclesLayer.remove();
         }
         this.receivingAZString = regionString;
         this.createReceivingCircles(e.sourceTarget._latlng);
-
         const callouts : string[] = [];
         this.src.forEach( srcName => {
           azNames.forEach( destName =>{
