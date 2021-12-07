@@ -1,4 +1,4 @@
-# AWSome Availibility Zones
+# AWSome Availability Zones
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.5.
 
@@ -45,3 +45,7 @@ This front end utilizes:
 - Leaflet
 - Angular Materials 
 - Ngx-Charts
+
+We are also using a tool to deploy to GHPages. To deploy this application to GHPages run this in an ADMINISTRATOR POWERSHELL ONLY:
+
+ng deploy ----base-href=/awsome-availability-zones-project/
