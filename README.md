@@ -45,3 +45,7 @@ This front end utilizes:
 - Leaflet
 - Angular Materials 
 - Ngx-Charts
+
+We are also using a tool to deploy to GHPages. To deploy this application to GHPages run this in an ADMINISTRATOR POWERSHELL ONLY:
+
+ng deploy ----base-href=/awsome-availability-zones-project/
