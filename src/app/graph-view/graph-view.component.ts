@@ -43,6 +43,7 @@ export class GraphViewComponent{
   percent90 = '0';
   percent99 = '0';
 
+  // Constructor
   constructor(
     private dbService: HttpClientServiceComponent,
     @Inject (MAT_DIALOG_DATA) public data: GraphViewData
