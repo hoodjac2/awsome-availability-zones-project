@@ -648,9 +648,11 @@ export class MapViewComponent implements AfterViewInit{
       }
     }
 
-    // ------------------------ LIST VIEW HAPPENS BELOW! BEWARE ------------------------- //
-
     // *************** CHIP ELEMENTS ***************** //
+
+  /*
+  * Call the dynamoDB database and retrieve data
+  */
 
   callDB() : void {
     this.dataArray = [];
@@ -666,6 +668,10 @@ export class MapViewComponent implements AfterViewInit{
       this.refresh();
   }
 
+  /**
+   * This handles sorting the data based on the column that has been clicked on
+   * in the list-view table
+   */
   sortData(sort: Sort) {
     const data = this.dataArray.slice();
     if (!sort.active || sort.direction === '') {
@@ -701,12 +707,18 @@ export class MapViewComponent implements AfterViewInit{
     this.refresh();
   }
 
-
+  /**
+   * The helper function that compares each entry and returns based on whether
+   * the rows should be sorted in ascending or descending order
+   */
   compare(a: number | string, b: number | string, isAsc: boolean) {
     return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
   }
 
-
+  /**
+   * Initializes the chip in the first chip element in order to
+   * prepare for displaying data in table
+   */
   addChipOne(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
 
@@ -721,6 +733,9 @@ export class MapViewComponent implements AfterViewInit{
     this.regionCtrlOne.setValue(null);
   }
 
+  /**
+   * Remove the chip in the first chip element
+   */
   removeChipOne(region: string): void {
     const index = this.regionsOne.indexOf(region);
     if (index >= 0) {
@@ -783,6 +798,11 @@ export class MapViewComponent implements AfterViewInit{
     }
   }
 
+  /**
+   * This function is called when the user selects a specific region within the
+   * first chip element's list of regions. It also calls the selected region
+   *  from the database and refreshes table
+   */
   selectedChipOne(event: MatAutocompleteSelectedEvent): void {
     this.regionsOne.push(event.option.viewValue);
     this.regionOneInput.nativeElement.value = '';
@@ -863,13 +883,19 @@ export class MapViewComponent implements AfterViewInit{
     this.table?.renderRows();
   }
 
-
+  /**
+   * Filtering the chip in the first chip element
+   */
   private _filterChipOne(value: string): string[] {
     const filterValue = value.toLowerCase();
 
     return this.allRegionsOne.filter(region => region.toLowerCase().includes(filterValue));
   }
 
+   /**
+   * Initializes the chip in the second chip element in order to
+   * prepare for displaying data in table
+   */
   addChipTwo(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
 
@@ -884,6 +910,9 @@ export class MapViewComponent implements AfterViewInit{
     this.regionCtrlTwo.setValue(null);
   }
 
+   /**
+   * Remove the chip in the second chip element
+   */
   removeChipTwo(region: string): void {
     const index2 = this.regionsTwo.indexOf(region);
     if (index2 >= 0) {
@@ -946,6 +975,11 @@ export class MapViewComponent implements AfterViewInit{
     }
   }
 
+    /**
+   * This function is called when the user selects a specific region within the
+   * first chip element's list of regions. It also calls the selected region
+   *  from the database and refreshes table
+   */
   selectedChipTwo(event: MatAutocompleteSelectedEvent): void {
     this.regionsTwo.push(event.option.viewValue);
     this.regionTwoInput.nativeElement.value = '';
@@ -1021,20 +1055,13 @@ export class MapViewComponent implements AfterViewInit{
     this.regionCtrlTwo.setValue(null);
   }
 
+  /**
+   * Filtering the chip in the second chip element
+   */
   private _filterChipTwo(value: string): string[] {
     const filterValue = value.toLowerCase();
 
     return this.allRegionsTwo.filter(region => region.toLowerCase().includes(filterValue));
-  }
-
-  bttnClick(event: any):void{
-    //const val = document.querySelector('input').value;
-    console.log(event);
-  }
-
-  applyFilter(filterValue: string):void {
-    this.filterArray.splice(this.filterArray.indexOf(filterValue));
-    this.filterGrid();
   }
 
   //Checkbox
@@ -1068,32 +1095,6 @@ export class MapViewComponent implements AfterViewInit{
       return;
     }
     this.task.subtasks.forEach(t => t.completed = completed);
-  }
-
-  filterGrid():void{
-    if(this.filterArray.length === 0){
-      //this.filteredDataArray = this.dataArray;
-      this.filteredDataArray = [];
-    }
-    else{
-    this.filteredDataArray = [];
-    this.filterArray.forEach(filterValue =>
-      {
-        this.dataArray.forEach(data =>{
-          // Separate based on only source or only destination AZs
-          // *WORK IN PROGRESS* //
-/*
-          if( data.sourceAZ === filterValue || data.destinationAZ === filterValue){
-            this.filteredDataArray.push(data);
-          }
-*/
-          // if (data.sourceAZ == filterValue) {
-          //   this.filteredDataArray.push(data);
-          // }
-        });
-      });
-    }
-    this.table?.renderRows();
   }
 
   /*
